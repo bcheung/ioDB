@@ -1,0 +1,5 @@
+dispatch:
+  # Send all api calls to the one static backend.
+  - url: "*/api/*"
+    service: api
+    
