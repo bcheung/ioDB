@@ -1,0 +1,6 @@
+runtime: python37
+service: api
+
+handlers:
+- url: /api
+  script: auto
