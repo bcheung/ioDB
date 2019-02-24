@@ -23,3 +23,9 @@ yarn-debug.log*
 yarn-error.log*
 
 .vscode
+# Python venv
+venv/
+# Python pycache:
+__pycache__/
+# Ignored by the build system
+/setup.cfg
