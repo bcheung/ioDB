@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Location1 from './pages/Location1/location1.js';
+import App from './pages/App/App';
+// import LocationPage from './pages/LocationMain/LocationPage'
+// import HomePage from './pages/Home/HomePage'
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<Location1 />, document.getElementById('root'));
