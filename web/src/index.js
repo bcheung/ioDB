@@ -5,18 +5,30 @@ import * as serviceWorker from './serviceWorker';
 import './index.css';
 import App from './pages/App/App';
 import HomePage from './pages/Home/HomePage'
+import OccupationPage from './pages/OccupationMain/OccupationPage';
 import ChemicalEngineers from './pages/ChemicalEngineers/ChemicalEngineers';
 import DentistsGen from './pages/DentistsGen/DentistsGen';
 import SoftwareDevSystems from './pages/SoftwareDevSystems/SoftwareDevSystems';
+import LocationPage from './pages/LocationMain/LocationPage';
 
 const routing = (
   <Router>
     <div>
-      {/* <Route path="/home" component={App} /> */}
-      {/* <Route path="/industry" component={Users} /> */}
+		<Route path="/" component={HomePage} />
+			{/* <Route path="/industry" component={IndustryPage} />
+			<Route path="/industry/Austin" component={ChemicalEngineers} />
+      <Route path="/industry/SanJose" component={DentistsGen} />
+			<Route path="/industry/NewYork" component={SoftwareDevSystems} /> */}
+
+      <Route path="/occupation" component={OccupationPage} />
       <Route path="/occupation/ChemicalEngineers" component={ChemicalEngineers} />
       <Route path="/occupation/DentistsGen" component={DentistsGen} />
 			<Route path="/occupation/SoftwareDevSystems" component={SoftwareDevSystems} />
+
+			<Route path="/location" component={LocationPage} />
+			<Route path="/location/Austin" component={ChemicalEngineers} />
+      <Route path="/location/SanJose" component={DentistsGen} />
+			
     </div>
   </Router>
 )
