@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Location-page.css';
 
-class Page extends Component {
+class LocationPage extends Component {
   render() {
     return (
       <div className="Links">
@@ -25,38 +25,36 @@ class Page extends Component {
             href="https://www.iodb.info/industry"
             target="_self"
           >
-            Industry
+            Industry 
           </a>
           <a
             className="Occupation-link"
             href="https://www.iodb.info/occupation"
             target="_self"
           >
-            Occupation
+            Occupation 
           </a>
           <a
             className="Location-link"
             href="https://www.iodb.info/location"
             target="_self"
           >
-            Location
+            Location 
           </a>
         </header>
-        <p
+        <form
           className="Search-Area"
         >
           <input
             className="Location-Search"
             type="text"
-          >
-          </input>
-          <input
+          />
+          <input 
             className="Location-Button"
-            type="button"
-          >
-            Search
-          </input>
-        </p>
+            type="submit"
+          />
+        </form>
+
         <p
           className="Buttons"
         >
@@ -81,4 +79,4 @@ class Page extends Component {
   }
 }
 
-export default Page;
+export default LocationPage;

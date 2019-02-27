@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Industry-page.css';
 
-class Page extends Component {
+class IndustryPage extends Component {
   render() {
     return (
       <div className="Links">
@@ -42,21 +42,18 @@ class Page extends Component {
             Location
           </a>
         </header>
-        <p
+        <form
           className="Search-Area"
         >
           <input
-            className="Industry-Search"
+            className="Location-Search"
             type="text"
-          >
-          </input>
-          <input
-            className="Industry-Button"
-            type="button"
-          >
-            Search
-          </input>
-        </p>
+          />
+          <input 
+            className="Location-Button"
+            type="submit"
+          />
+        </form>
         <p
           className="Buttons"
         >
@@ -81,4 +78,4 @@ class Page extends Component {
   }
 }
 
-export default Page;
+export default IndustryPage;

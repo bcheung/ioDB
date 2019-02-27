@@ -55,22 +55,22 @@
 }
 
 .Search-Area {
-    display: inline-flex;
+    display: inline;
     align-items: center;
     justify-content: center;
-    height: 40vmin;
 }
 
 .Industry-Search {
-    width: 100vmin;
+    width: 20pt;
 }
 
 .Industry-Button {
-    width: 50vmin;
+    width: 50pt;
 }
 
 .Buttons {
-    display: inline-flex;
+    display: flex;
     justify-content: center;
+    align-content: center;
     height: 20vmin;
 }
