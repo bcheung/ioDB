@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import 'location2.css';
 
-class Page extends Component {
+class SanJose extends Component {
   render() {
     return (
       <div className="Page">
@@ -71,4 +71,4 @@ class Page extends Component {
   }
 }
 
-export default Page;
+export default SanJose;

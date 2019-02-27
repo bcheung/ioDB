@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import 'location3.css';
 
-class Page extends Component {
+class NewYork extends Component {
   render() {
     return (
       <div className="Page">
         <header className="Page-header"></header>
         <body>
 
-        <h2>Austin-Round Rock, TX</h2>
-        <p>Annual Mean: $51,840</p>
+        <h2>New York-Newark-Jersey City, NY-NJ-PA</h2>
+        <p>Annual Mean: $62,870</p>
         <p>Occupations</p>
 
         <table style="width:100%">
@@ -24,42 +24,42 @@ class Page extends Component {
             <tr>
             <td>Office and Administrative Support Occupations</td>
             <td>430000</td>
-            <td>175300</td>
-            <td>38780</td>
-            <td>1.14</td>
+            <td>1522930</td>
+            <td>43870</td>
+            <td>1.06</td>
             </tr>
             
             <tr>
             <td>Sales and Related Occupations</td>
             <td>410000</td>
-            <td>113350</td>
-            <td>47860</td>
-            <td>1.12</td>
+            <td>954440</td>
+            <td>53740</td>
+            <td>1.01</td>
             </tr>
             
             <tr>
             <td>Food Preparation and Serving Related Occupations</td>
             <td>350000</td>
-            <td>107270</td>
-            <td>25080</td>
-            <td>1.16</td>
+            <td>713170</td>
+            <td>29000</td>
+            <td>0.83</td>
             </tr>
             
             <tr>
             <td>Business and Financial Operations Occupations</td>
             <td>130000</td>
-            <td>61340</td>
-            <td>75200</td>
-            <td>1.17</td>
+            <td>593610</td>
+            <td>97410</td>
+            <td>1.22</td>
             </tr>
             
             
             <tr>
-            <td>Computer and Mathematical Occupations</td>
-            <td>150000</td>
-            <td>60070</td>
-            <td>90420</td>
-            <td>2.02</td>
+            <td>Food Preparation and Serving Related Occupations</td>
+            <td>250000</td>
+            <td>667590</td>
+            <td>68140</td>
+            <td>1.17</td>
             </tr>
             
             
@@ -71,4 +71,4 @@ class Page extends Component {
   }
 }
 
-export default Page;
+export default NewYork;
