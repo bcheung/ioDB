@@ -5,6 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import './index.css';
 // import App from './pages/App/App';
 import HomePage from './pages/Home/HomePage'
+import AboutPage from './pages/About/AboutPage';
 import IndustryPage from './pages/IndustryMain/IndustryPage';
 import OccupationPage from './pages/OccupationMain/OccupationPage';
 import ChemicalEngineers from './pages/ChemicalEngineers/ChemicalEngineers';
@@ -19,7 +20,7 @@ const routing = (
   <Router>
     <div>
 			<Route path="/" component={HomePage} />
-			<Route path="/about" component={HomePage} />
+			<Route path="/about" component={AboutPage} />
 			
 			<Route path="/industry" component={IndustryPage} />
 			{/* <Route path="/industry/Dentists" component={Dentists} />
