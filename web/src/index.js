@@ -4,6 +4,7 @@ import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker';
 import './index.css';
 import App from './pages/App/App';
+import HomePage from './pages/Home/HomePage'
 import ChemicalEngineers from './pages/ChemicalEngineers/ChemicalEngineers';
 import DentistsGen from './pages/DentistsGen/DentistsGen';
 import SoftwareDevSystems from './pages/SoftwareDevSystems/SoftwareDevSystems';
