@@ -57,21 +57,27 @@ class IndustryPage extends Component {
         <p
           className="Buttons"
         >
-          <button
+          <a
             className="Industry1"
+            href="https://www.iodb.info/industry/Dentists"
+            target="_self"
           >
             Industry1
-          </button>
-          <button
+          </a>
+          <a
             className="Industry2"
+            href="https://www.iodb.info/industry/CEManufacturing"
+            target="_self"
           >
             Industry2
-          </button>
-          <button
+          </a>
+          <a
             className="Industry3"
+            href="https://www.iodb.info/industry/Research"
+            target="_self"
           >
             Industry3
-          </button>
+          </a>
         </p>
       </div>
     );
