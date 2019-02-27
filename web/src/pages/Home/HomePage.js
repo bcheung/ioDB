@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import './Occupation-page.css';
+import './Home-page.css';
 
-class OccupationPage extends Component {
+class HomePage extends Component {
   render() {
     return (
       <div className="Links">
-        <header className="OccupationMain-Header">
-          <a
+        <a
             className="Home-link"
             href="https://www.iodb.info/"
             target="_self"
@@ -41,41 +40,9 @@ class OccupationPage extends Component {
           >
             Location
           </a>
-        </header>
-        <form
-          className="Search-Area"
-        >
-          <input
-            className="Location-Search"
-            type="text"
-          />
-          <input 
-            className="Location-Button"
-            type="submit"
-          />
-        </form>
-        <p
-          className="Buttons"
-        >
-          <button
-            className="Occupation1"
-          >
-            Occupation1
-          </button>
-          <button
-            className="Occupation2"
-          >
-            Occupation2
-          </button>
-          <button
-            className="Occupation3"
-          >
-            Occupation3
-          </button>
-        </p>
       </div>
     );
   }
 }
 
-export default OccupationPage;
+export default HomePage;
