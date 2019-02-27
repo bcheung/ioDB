@@ -8,8 +8,6 @@ class Page extends Component {
         <header className="About Our Team"></header>
       </div>
     );
-    <h1 id="header">About Team Amethyst</h1>
-    
   }
 }
 
