@@ -1,0 +1,76 @@
+.IndustryMain-Header {
+    display: inline-flex;
+    text-align: left;
+    height: 12vh;
+}
+
+.Home-link:link {
+    color: blue;
+    background-color: transparent;
+}
+
+.Home-link:active {
+    color: blueviolet;
+    background-color: transparent;
+}
+
+.About-link:link {
+    color: blue;
+    background-color: transparent;
+}
+
+.About-link:active {
+    color: blueviolet;
+    background-color: transparent;
+}
+
+.Location-link:link {
+    color: blue;
+    background-color: transparent;
+}
+
+.Location-link:active {
+    color: blueviolet;
+    background-color: transparent;
+}
+
+.Occupation-link:link {
+    color: blue;
+    background-color: transparent;
+}
+
+.Occupation-link:active {
+    color: blueviolet;
+    background-color: transparent;
+}
+
+.Industry-link:link {
+    color: blue;
+    background-color: transparent;
+}
+
+.Industry-link:active {
+    color: blueviolet;
+    background-color: transparent;
+}
+
+.Search-Area {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40vmin;
+}
+
+.Industry-Search {
+    width: 100vmin;
+}
+
+.Industry-Button {
+    width: 50vmin;
+}
+
+.Buttons {
+    display: inline-flex;
+    justify-content: center;
+    height: 20vmin;
+}
