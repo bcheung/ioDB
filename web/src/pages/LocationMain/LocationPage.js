@@ -58,21 +58,27 @@ class LocationPage extends Component {
         <p
           className="Buttons"
         >
-          <button
+          <a
             className="Location1"
+            href="https://www.iodb.info/location/Austin"
+            target="_self"
           >
             Location1
-          </button>
-          <button
+          </a>
+          <a
             className="Location2"
+            href="https://www.iodb.info/location/SanJose"
+            target="_self"
           >
             Location2
-          </button>
-          <button
+          </a>
+          <a
             className="Location3"
+            href="https://www.iodb.info/location/NewYork"
+            target="_self"
           >
             Location3
-          </button>
+          </a>
         </p>
       </div>
     );

@@ -57,21 +57,27 @@ class OccupationPage extends Component {
         <p
           className="Buttons"
         >
-          <button
+          <a
             className="Occupation1"
+            href="https://www.iodb.info/occupation/ChemicalEngineers"
+            target="_self"
           >
             Occupation1
-          </button>
-          <button
+          </a>
+          <a
             className="Occupation2"
+            href="https://www.iodb.info/occupation/DentistGen"
+            target="_self"
           >
             Occupation2
-          </button>
-          <button
+          </a>
+          <a
             className="Occupation3"
+            href="https://www.iodb.info/occupation/SoftwareDevSystems"
+            target="_self"
           >
             Occupation3
-          </button>
+          </a>
         </p>
       </div>
     );
