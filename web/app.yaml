@@ -1,9 +1,11 @@
 runtime: nodejs10
 # service: web
 
-handlers:
-- url: /
-  static_files: build/index.html
-  upload: build/index.html
-- url: /
-  static_dir: build
+# handlers:
+# - url: .*
+#   script: auto
+# - url: /
+#   static_files: build/index.html
+#   upload: build/index.html
+# - url: /
+#   static_dir: build
