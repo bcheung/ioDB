@@ -12,7 +12,7 @@ class SanJose extends Component {
         <p>Annual Mean: $77,180</p>
         <p>Occupations</p>
 
-        <table style="width:100%">
+        <table>
             <tr>
             <th>Occupation</th>
             <th>SOC</th> 

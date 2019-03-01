@@ -1,26 +1,51 @@
-import React, { Component } from 'react';
-import logo from '../../logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import { Route, Link, BrowserRouter as Router } from "react-router-dom";
+import logo from "../../logo.svg";
+import "./App.css";
+
+import HomePage from '../Home/HomePage'
+import AboutPage from '../About/AboutPage';
+
+import IndustryPage from '../IndustryMain/IndustryPage';
+import Dentists from '../Dentists/Dentists';
+import CEManufacturing from '../CEManufacturing/CEManufacturing';
+import Research from '../Research/Research';
+
+import OccupationPage from '../OccupationMain/OccupationPage';
+import ChemicalEngineers from '../ChemicalEngineers/ChemicalEngineers';
+import DentistsGen from '../DentistsGen/DentistsGen';
+import SoftwareDevSystems from '../SoftwareDevSystems/SoftwareDevSystems';
+
+import LocationPage from '../LocationMain/LocationPage';
+import Austin from '../Austin/Austin';
+import SanJose from '../SanJose/SanJose';
+import NewYork from '../NewYork/NewYork';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload. (default)
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Router>
+        <div>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/about" component={AboutPage} />
+
+          <Route path="/industry" component={IndustryPage} />
+          <Route path="/industry/Dentists" component={Dentists} />
+          <Route path="/industry/CEManufacturing" component={CEManufacturing} />
+          <Route path="/industry/Research" component={Research} />
+
+          <Route path="/occupation" component={OccupationPage} />
+          <Route path="/occupation/ChemicalEngineers" component={ChemicalEngineers} />
+          <Route path="/occupation/DentistsGen" component={DentistsGen} />
+          <Route path="/occupation/SoftwareDevSystems" component={SoftwareDevSystems} />
+
+          <Route path="/location" component={LocationPage} />
+          <Route path="/location/Austin" component={Austin} />
+          <Route path="/location/SanJose" component={SanJose} />
+          <Route path="/location/NewYork" component={NewYork} />
+        </div>
+      </Router>
     );
   }
 }

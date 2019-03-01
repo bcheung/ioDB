@@ -12,7 +12,7 @@ class NewYork extends Component {
         <p>Annual Mean: $62,870</p>
         <p>Occupations</p>
 
-        <table style="width:100%">
+        <table>
             <tr>
             <th>Occupation</th>
             <th>SOC</th> 
