@@ -157,9 +157,9 @@ class AboutPage extends Component {
       <div>
         <h1>About ioDB</h1>
         <p>We seek to provide a more intuitive and less cluttered interface 
-          that will focus on the key metrics that people look for while 
-          researching occupations and industries in the US. This includes implementing
-           a versatile graphical view of the data to help users gain a more meaningful 
+          that will focus on key metrics of US occupations such as location, occupation category,
+          and industry that people look for while researching occupations and industries in the US. 
+          ioDB provides its users with an easy to navigate UI to help users gain a more meaningful 
            understanding of all the available information.</p>
         <p>Group Name: Team Amethyst</p>
         <ul>
