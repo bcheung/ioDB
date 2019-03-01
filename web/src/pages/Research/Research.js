@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import './Page.css';
+import './Research.css';
+import { IndustryComponent } from '../../components/IndustryComponent';
 
-class Page extends Component {
+class Research extends Component {
   render() {
     return (
       <IndustryComponent data={data} />

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './CEManufacturing.css';
-import { OccupationComponent } from '../../components/OccupationComponent';
+import { IndustryComponent } from '../../components/IndustryComponent';
 
 class CEManufacturing extends Component {
 
@@ -36,11 +36,7 @@ const data = {
     meanWage: 'Annual mean wage: $79,820',
     
   },
-  // percentile: {
-  //   title: 'Annual Percentile Wages',
-  //   headers: [10, 25, 50, 75, 90],
-  //   values: [65670, 84290, 107600, 135740, 164150]
-  // },
+
   industries: {
     headers: ['Occupation', 'SOC', 'Employment', 'Annual Mean'],
     values: [
@@ -51,26 +47,6 @@ const data = {
       ['Computer and Mathematical Occupations', '150000', 139950, 107560]
     ]
   },
-  // states: {
-  //   headers: ['State', 'SOC', 'Location Quotient', 'Employment', 'Annual Mean Wage', 'Annual Median Wage'],
-  //   values: [
-  //     ['Massachusetts', '2500000', 2.72, 26560, 114900, 112880],
-  //     ['Virginia', '5100000', 2.35, 24650, 121560, 119430],
-  //     ['Maryland', '2400000', 2.04, 15030, 118330, 114660],
-  //     ['Colorado', '0800000', 1.87, 13260, 122170, 115110],
-  //     ['California', '0600000', 1.79, 82630, 127230, 124190]
-  //   ]
-  // },
-  // metropolitan: {
-  //   headers: ['Area', 'SOC', 'Location Quotient', 'Employment', 'Annual Mean Wage', 'Annual Median Wage'],
-  //   values: [
-  //     ['Lowell-Billerica-Chelmsford, MA-NH NECTA Division', '0074804', 8.27, 3560, 126090, 123910],
-  //     ['San Jose-Sunnyvale-Santa Clara, CA', '0041940', 7.99, 24070, 141890, 139960],
-  //     ['Framingham, MA NECTA Division', '0073104', 6.97, 3330, 110680, 110240],
-  //     ['California-Lexington Park, MD', '0015680', 5.97, 750, 112190, 111060],
-  //     ['Palm Bay-Melbourne-Titusville, FL', '0037340', 4.22, 2420, 111000, 109860]
-  //   ]
-  // }
 };
 
 

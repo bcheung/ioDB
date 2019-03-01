@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import './Page.css';
+import './Dentists.css';
+import { IndustryComponent } from '../../components/IndustryComponent';
 
-class Page extends Component {
+
+class Dentists extends Component {
   render() {
     return (
       <IndustryComponent data={data} />
