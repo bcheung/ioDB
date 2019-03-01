@@ -66,7 +66,7 @@ class OccupationPage extends Component {
           </a>
           <a
             className="Occupation2"
-            href="https://www.iodb.info/occupation/DentistGen"
+            href="https://www.iodb.info/occupation/DentistsGen"
             target="_self"
           >
             Occupation2
