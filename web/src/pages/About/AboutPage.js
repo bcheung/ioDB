@@ -207,7 +207,8 @@ class AboutPage extends Component {
                   you can find him in the gym or out on the river kayaking.
                 </li></ul>
                 <ul><li>
-                  <b>Responsibilities:</b>
+                  <b>Responsibilities:</b> Develop data scraper using Python, create 3 static web pages using React.js
+                  and deploy onto GCP, configure backend framework for data using Python.
                 </li></ul>
                <ul><li><b>Commits: </b>{this.state.commits[0]}</li></ul>
                <ul><li><b>Issues: </b>{this.state.issues[0]}</li></ul>
@@ -218,14 +219,19 @@ class AboutPage extends Component {
                <img src={Brian} id="Brian" width="250" height = "250" alt = "Brian Cheung"></img>
                <ul><li><b>Major: </b>{" Electrical and Computer Engineering"}</li></ul>
                <ul><li>
-                  <b>Bio:</b>
+                  <b>Bio:</b> Brian is a second year student at the University of Texas at Austin. 
+                  He is currently pursuing an Electrical and Computer Engineering degree with a focus 
+                  in software engineering. At the moment, Brian is looking to gain some industry experience 
+                  in order to narrow down his area of interest in software engineering. Some of Brian’s 
+                  hobbies include learning piano, playing basketball, weightlifting, and of course, eating.
                 </li></ul>
                 <ul><li>
-                  <b>Responsibilities:</b>
+                  <b>Responsibilities:</b> Configure routing for each web page, create 3 static main web pages
+                  for Industry, Location, and Occupation using React.js and deploy onto GCP.
                 </li></ul>
                <ul><li><b>Commits: </b>{this.state.commits[1]}</li></ul>
                <ul><li><b>Issues: </b>{this.state.issues[1]}</li></ul>
-               <ul><li><b>Unit Tests: </b>0</li></ul>
+               <ul><li><b>Unit Tests: </b>2</li></ul>
             </td>
           </tr>
           <tr id="row1">
@@ -240,23 +246,30 @@ class AboutPage extends Component {
                   software engineering. She enjoys riding her bike around Austin and soaking up the sun outdoors.
                 </li></ul>
                 <ul><li>
-                  <b>Responsibilities:</b>
+                  <b>Responsibilities:</b> Create About page with GitHub stats derived dynamically from the 
+                  GitHub API and deploy to GCP, create issues and post to issue board on GitHub.
                 </li></ul>
                 <ul><li><b>Commits: </b>{this.state.commits[2]}</li></ul>
                 <ul><li><b>Issues: </b>{this.state.issues[2]}</li></ul>
+                <ul><li><b>Unit Tests: </b>2</li></ul>
             </td>
             <td id="cell1-1">
               <h2>{this.people[3].name+ ": "+this.people[3].github}</h2> 
                 <img src={Sean} id="Sean" width="250" height = "250" alt = "Sean Wang"></img>
                 <ul><li><b>Major:</b>{" Electrical and Computer Engineering"}</li></ul>
                 <ul><li>
-                  <b>Bio:</b>
+                  <b>Bio:</b> Sean is a second year Electrical and Computer Engineering student at the 
+                  University of Texas at Austin. He has completed a minor in business, but would like to 
+                  pursue a career and gain experience in software engineering before making a decision on obtaining a higher degree, 
+                  such as an MBA. In his free time, he enjoys playing piano or taking a nice and relaxing nap.
                 </li></ul>
                 <ul><li>
-                  <b>Responsibilities:</b>
+                  <b>Responsibilities:</b> Create 3 static web pages for 3 different occupation instances, create issues
+                  and post to issue board on GitHub.
                 </li></ul>
                 <ul><li><b>Commits: </b>{this.state.commits[3]}</li></ul>
                 <ul><li><b>Issues: </b>{this.state.issues[3]}</li></ul>
+                <ul><li><b>Unit Tests: </b>3</li></ul>
             </td>
           </tr>
           <tr id="row2">
@@ -268,23 +281,29 @@ class AboutPage extends Component {
                   <b>Bio:</b>
                 </li></ul>
                 <ul><li>
-                  <b>Responsibilities:</b>
+                  <b>Responsibilities:</b> Create 3 static pages with location data using React.js and deploy onto GCP,
+                  configure backend framework for data using Python.
                 </li></ul>
                 <ul><li><b>Commits: </b>{this.state.commits[4]}</li></ul>
                 <ul><li><b>Issues: </b>{this.state.issues[4]}</li></ul>
+                <ul><li><b>Unit Tests: </b>3</li></ul>
             </td>
             <td id="cell2-1">
               <h2>{this.people[5].name+ ": "+this.people[5].github}</h2>
                 <img src={logo} id="Johnny" width="250" height = "250" alt = "Johnny Gabriel"></img> 
                 <ul><li><b>Major:</b>{" Electrical and Computer Engineering"}</li></ul>
                 <ul><li>
-                  <b>Bio:</b>
+                  <b>Bio:</b> John is studying Electrical and Computer Engineering with a focus in Software 
+                  Engineering and Design. His interests lie in startups and his plans after graduation is to 
+                  start his own company.
                 </li></ul>
                 <ul><li>
-                  <b>Responsibilities:</b>
+                  <b>Responsibilities:</b> Create 3 static web pages for 3 different industry instances and deploy
+                   onto GCP.
                 </li></ul>
                 <ul><li><b>Commits: </b>{this.state.commits[5]}</li></ul>
                 <ul><li><b>Issues: </b>{this.state.issues[5]}</li></ul>
+                <ul><li><b>Unit Tests: </b>2</li></ul>
             </td>
           </tr>
         </tbody>
@@ -296,7 +315,33 @@ class AboutPage extends Component {
           <li>Unit Tests: 14 </li>
         </ul>
         <h3>Data:</h3>
+        <ul>Data was scraped using our own scraper written in Python that parses through the
+          CSV files holding our data, equating about 30,000 lines of information.
+          <li><a href ="https://www.bls.gov/oes/tables.htm">BLS OES Data</a></li>
+          <li><a href ="https://www.bls.gov/ooh/">US Occupational Data</a>
+            <ul><li>Left column of this page contains each major industry category.  
+              Clicking on the category brings up a table with a description for each 
+              occupation in that industry</li>
+            </ul>
+          </li>
+          <li><a href="https://simplemaps.com/data/us-cities">US Census Cities Data</a>
+            <ul><li>Provides info for each US city, such as:</li>
+              <ul>
+                <li>Population</li>
+                <li>City</li>
+                <li>County</li>
+              </ul>
+            </ul>
+          </li>
+        </ul>
         <h3>Tools:</h3>
+        <ul>
+          <li>Google App Engine (GCP)</li>
+          <li>PyCharm</li>
+          <li>Postman</li>
+          <li>PostgreSQL</li>
+          <li>React</li>
+        </ul>
         <p>The following is a link to our Github:
         <a href="https://github.com/bcheung/ioDB/">Github Repo</a>
         </p>
