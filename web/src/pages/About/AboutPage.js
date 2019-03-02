@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import "./about-page.css";
 import Brooke from './brooke.jpg';
-//import Cooper from './cooper.jpg';
-//import Brian from './brian.jpg';
-//import Sean from './sean.jpg';
 import Cooper from './cooper.png';
 import Brian from './brian.jpeg';
 import Sean from './sean.jpeg';
-//import David from './david.jpg';
-//import Johnny from './johnny.jpg';
+import David from './david.jpeg';
+import Johnny from './johnny.jpg';
 import logo from './default.jpg';
 
 
@@ -72,6 +69,7 @@ class AboutPage extends Component {
     this.fetchBranches();
     this.obtainURLs();
     this.fetchCommits();
+    this.fetchMasterCommits();
   }
 
   obtainURLs(){
@@ -101,6 +99,24 @@ class AboutPage extends Component {
       })
     })
 
+  }
+
+  fetchMasterCommits(){
+    var t = 0;
+    var num = this.state.commitNum;
+    const url = "https://api.github.com/repos/bcheung/ioDB/commits";
+    fetch(url)
+    .then(results => results.json())
+    .then(data => {
+      console.log(data,"fetchMasterCommits");
+      for(t = 0; t < data.length; t++){
+        if(data[t].author.login === "bcheung"){ //brian's commits on master branch
+          num++;
+        }
+      }
+      this.state.commits[1] = num
+      this.forceUpdate()
+    })
   }
 
   fetchCommits() {
@@ -241,7 +257,7 @@ class AboutPage extends Component {
                 <ul><li><b>Major:</b>{" Electrical and Computer Engineering"}</li></ul>
                 <ul><li>
                   <b>Bio:</b> Brooke is in her third year at the University of Texas at Austin studying 
-                  Electrical and Computer Engineering. She also has a secondary focus in Psychology 
+                  Electrical and Computer Engineering with a focus in Software Engineering. She also has a secondary focus in Psychology 
                   and is interested in learning about how the psychology of human behavior and cognition overlaps with 
                   software engineering. She enjoys riding her bike around Austin and soaking up the sun outdoors.
                 </li></ul>
@@ -265,7 +281,7 @@ class AboutPage extends Component {
                 </li></ul>
                 <ul><li>
                   <b>Responsibilities:</b> Create 3 static web pages for 3 different occupation instances, create issues
-                  and post to issue board on GitHub.
+                  and post to issue board on GitHub. Write tests to make sure the links direct to the correct pages.
                 </li></ul>
                 <ul><li><b>Commits: </b>{this.state.commits[3]}</li></ul>
                 <ul><li><b>Issues: </b>{this.state.issues[3]}</li></ul>
@@ -275,10 +291,14 @@ class AboutPage extends Component {
           <tr id="row2">
             <td id="cell2-0">
               <h2>{this.people[4].name+ ": "+this.people[4].github}</h2>
-                <img src={logo} id="David" width="250" height = "250" alt = "David Terral"></img> 
+                <img src={David} id="David" width="250" height = "250" alt = "David Terral"></img> 
                 <ul><li><b>Major:</b>{" Electrical and Computer Engineering"}</li></ul>
                 <ul><li>
-                  <b>Bio:</b>
+                  <b>Bio:</b> David is a third year student at the University of Texas from New Orleans, LA.
+                  He is pursuing a degree in Electrical and Computer Engineering with a focus in Software
+                  Engineering and Design. His main interests are application development as well as database management
+                  and analysis. In his free time he plays and watches football and soccer. His favorite teams are the 
+                  New Orleans Saints and Arsenal.
                 </li></ul>
                 <ul><li>
                   <b>Responsibilities:</b> Create 3 static pages with location data using React.js and deploy onto GCP,
@@ -290,7 +310,7 @@ class AboutPage extends Component {
             </td>
             <td id="cell2-1">
               <h2>{this.people[5].name+ ": "+this.people[5].github}</h2>
-                <img src={logo} id="Johnny" width="250" height = "250" alt = "Johnny Gabriel"></img> 
+                <img src={Johnny} id="Johnny" width="250" height = "250" alt = "Johnny Gabriel"></img> 
                 <ul><li><b>Major:</b>{" Electrical and Computer Engineering"}</li></ul>
                 <ul><li>
                   <b>Bio:</b> John is studying Electrical and Computer Engineering with a focus in Software 
@@ -336,11 +356,13 @@ class AboutPage extends Component {
         </ul>
         <h3>Tools:</h3>
         <ul>
-          <li>Google App Engine (GCP)</li>
-          <li>PyCharm</li>
-          <li>Postman</li>
-          <li>PostgreSQL</li>
-          <li>React</li>
+          <li>Google App Engine (GCP): Used to set up our PostgreSQL database.</li>
+          <li>PyCharm: Python IDE used to write and develop data scraper.</li>
+          <li>Postman: Used to design our RESTful API and to test HTTP GET 
+            requests from GitHub API.
+          </li>
+          <li>PostgreSQL: Used to create our database for each of our models and instances.</li>
+          <li>React: Used to write 14 static webpages and dynamic about page to deploy to GCP.</li>
         </ul>
         <p>The following is a link to our Github:
         <a href="https://github.com/bcheung/ioDB/">Github Repo</a>
