@@ -19,12 +19,6 @@ h1{
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
       "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
       sans-serif;
-<<<<<<< HEAD
-    text-align: left;
-    font-size:15px;
-
-  }
-=======
     text-align: center;
     font-size:15px;
 
@@ -57,7 +51,6 @@ h1{
       margin-right: 10px;
   }
 
->>>>>>> b3cbb89... Updated About Page
   p{
     padding: 10px;
     text-align: justify;
@@ -65,12 +58,6 @@ h1{
   a{
     padding:10px;
   }
-<<<<<<< HEAD
-  img{
-    image-orientation: 90deg;
-  }
-=======
->>>>>>> b3cbb89... Updated About Page
 
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
