@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const IndustryComponent = ({ data: { info, industries } }) => {
 
@@ -58,4 +58,5 @@ const styles = {
   }
 };
 
-export {IndustryComponent};
+export { IndustryComponent };
+

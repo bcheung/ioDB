@@ -1,32 +1,34 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import { Route, Link, BrowserRouter as Router } from "react-router-dom";
-import logo from "../../logo.svg";
+import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+import AboutPage from "../About/AboutPage";
+import Austin from "../detail/Austin/Austin";
+import CEManufacturing from "../detail/CEManufacturing/CEManufacturing";
+import ChemicalEngineers from "../detail/ChemicalEngineers/ChemicalEngineers";
+import Dentists from "../detail/Dentists/Dentists";
+import DentistsGen from "../detail/DentistsGen/DentistsGen";
+import NewYork from "../detail/NewYork/NewYork";
+import Research from "../detail/Research/Research";
+import SanJose from "../detail/SanJose/SanJose";
+import SoftwareDevSystems from "../detail/SoftwareDevSystems/SoftwareDevSystems";
+import HomePage from "../Home/HomePage";
+import IndustryPage from "../main/IndustryMain/IndustryPage";
+import LocationPage from "../main/LocationMain/LocationPage";
+import OccupationPage from "../main/OccupationMain/OccupationPage";
 import "./App.css";
-
-import HomePage from '../Home/HomePage'
-import AboutPage from '../About/AboutPage';
-
-import IndustryPage from '../IndustryMain/IndustryPage';
-import Dentists from '../Dentists/Dentists';
-import CEManufacturing from '../CEManufacturing/CEManufacturing';
-import Research from '../Research/Research';
-
-import OccupationPage from '../OccupationMain/OccupationPage';
-import ChemicalEngineers from '../ChemicalEngineers/ChemicalEngineers';
-import DentistsGen from '../DentistsGen/DentistsGen';
-import SoftwareDevSystems from '../SoftwareDevSystems/SoftwareDevSystems';
-
-import LocationPage from '../LocationMain/LocationPage';
-import Austin from '../Austin/Austin';
-import SanJose from '../SanJose/SanJose';
-import NewYork from '../NewYork/NewYork';
 
 class App extends Component {
   render() {
     return (
       <Router>
         <div>
+          <div className="Links">
+            <Link to="/">Home</Link>
+            <Link to="/about">About</Link>
+            <Link to="/industry">Industry</Link>
+            <Link to="/occupation">Occupation</Link>
+            <Link to="/location">Location</Link>
+          </div>
+
           <Route exact path="/" component={HomePage} />
           <Route path="/about" component={AboutPage} />
 
@@ -36,9 +38,15 @@ class App extends Component {
           <Route path="/industry/Research" component={Research} />
 
           <Route path="/occupation" component={OccupationPage} />
-          <Route path="/occupation/ChemicalEngineers" component={ChemicalEngineers} />
+          <Route
+            path="/occupation/ChemicalEngineers"
+            component={ChemicalEngineers}
+          />
           <Route path="/occupation/DentistsGen" component={DentistsGen} />
-          <Route path="/occupation/SoftwareDevSystems" component={SoftwareDevSystems} />
+          <Route
+            path="/occupation/SoftwareDevSystems"
+            component={SoftwareDevSystems}
+          />
 
           <Route path="/location" component={LocationPage} />
           <Route path="/location/Austin" component={Austin} />

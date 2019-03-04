@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const OccupationComponent = ({ data: { info, percentile, industries, states, metropolitan } }) => {
   const percentileHeaders = percentile.headers.map((percent) =>
@@ -137,4 +137,5 @@ const styles = {
   }
 };
 
-export {OccupationComponent};
+export { OccupationComponent };
+
