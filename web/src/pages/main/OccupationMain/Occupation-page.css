@@ -1,0 +1,26 @@
+.OccupationMain-Header {
+    display: inline-flex;
+    text-align: left;
+    height: 12vh;
+}
+
+.Search-Area {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40vmin;
+}
+
+.Occupation-Search {
+    width: 100vmin;
+}
+
+.Occupation-Button {
+    width: 50vmin;
+}
+
+.Buttons {
+    display: inline-flex;
+    justify-content: center;
+    height: 20vmin;
+}
