@@ -22,178 +22,84 @@ class AboutPage extends Component {
 
   commitCount = 0;
 
-  people = [
-    {
+  contributors = {
+    CooperTravis: {
       name: "Cooper Travis",
-      github: "CooperTravis",
-      eventURL: "",
+      username: "CooperTravis",
+      commits: 0,
       issues: 0
     },
-    {
+    bcheung: {
       name: "Brian Cheung",
-      github: "bcheung",
-      eventURL: "",
+      username: "bcheung",
+      commits: 0,
       issues: 0
     },
-    {
+    brookepaxman: {
       name: "Brooke Paxman",
-      github: "brookepaxman",
-      eventURL: "",
+      username: "brookepaxman",
+      commits: 0,
       issues: 0
     },
-    {
+    "wang-sz": {
       name: "Sean Wang",
-      github: "wang-sz",
-      eventURL: "",
+      username: "wang-sz",
+      commits: 0,
       issues: 0
     },
-    {
+    dterral504: {
       name: "David Terral",
-      github: "dterral504",
-      eventURL: "",
+      username: "dterral504",
+      commits: 0,
       issues: 0
     },
-    {
+    jmgabriel96: {
       name: "Johnny Gabriel",
-      github: "jmgabriel96",
-      eventURL: "",
+      username: "jmgabriel96",
+      commits: 0,
       issues: 0
     }
-  ];
+  };
 
   componentDidMount() {
-    this.fetchTotalIssues();
-    this.fetchBranches();
-    this.obtainURLs();
+    // this.fetchTotalIssues();
+    // this.fetchBranches();
+    // this.obtainURLs();
     this.fetchCommits();
-    this.fetchMasterCommits();
-  }
-
-  obtainURLs() {
-    var url = "";
-    var user = "";
-    var i;
-    for (i = 0; i < this.people.length; i++) {
-      user = this.people[i].github;
-      url = `https://api.github.com/users/${user}/events`;
-      this.people[i].eventURL = url;
-    }
-  }
-
-  fetchBranches() {
-    const url = "https://api.github.com/repos/bcheung/ioDB/branches";
-    fetch(url)
-      .then(results => results.json())
-      .then(data => {
-        console.log(data, "fetchBranches");
-        let branchesCopy = JSON.parse(JSON.stringify(data));
-        var i;
-        for (i = 0; i < data.length; i++) {
-          branchesCopy[i] = data[i].commit.url;
-        }
-        this.setState({
-          branches: branchesCopy
-        });
-      });
-  }
-
-  fetchMasterCommits() {
-    var t = 0;
-    var num = this.state.commitNum;
-    const url = "https://api.github.com/repos/bcheung/ioDB/commits";
-    fetch(url)
-      .then(results => results.json())
-      .then(data => {
-        console.log(data, "fetchMasterCommits");
-        for (t = 0; t < data.length; t++) {
-          if (data[t].author.login === "bcheung") {
-            //brian's commits on master branch
-            num++;
-          }
-        }
-        let commits = this.state.commits;
-        commits[1] = num;
-        this.setState({ commits });
-        this.forceUpdate();
-      });
+    // this.fetchMasterCommits();
   }
 
   fetchCommits() {
-    var q;
-    var url;
-    for (q = 0; q < this.people.length; q++) {
-      url = this.people[q].eventURL;
-      this.fetchURL(url, q);
-    }
-  }
-
-  fetchURL(url, q) {
-    if (q < this.people.length) {
-      fetch(url)
-        .then(results => results.json())
-        .then(data => {
-          let dataCopy = this.state.commits;
-          var j;
-          for (j = 0; j < data.length; j++) {
-            if (data[j].type === "PushEvent") {
-              if (data[j].repo.name === "bcheung/ioDB") {
-                dataCopy[q] += 1;
-              }
-            }
-          }
-          this.setState({
-            commits: dataCopy
-          });
-          this.setState({
-            commitNum: this.state.commitNum + dataCopy[q]
-          });
-        });
-    }
-  }
-
-  fetchTotalIssues() {
-    var githubName;
-    var index = 0;
-    const url = "https://api.github.com/repos/bcheung/ioDB/issues";
+    const url = `https://api.github.com/repos/bcheung/ioDB/stats/contributors`;
     fetch(url)
-      .then(results => results.json())
+      .then(response => response.json())
       .then(data => {
-        let issuesCopy = this.state.issues;
-        var q;
-        var l;
-        for (q = 0; q < data.length; q++) {
-          githubName = data[q].user.login;
-          console.log(githubName, "gituser");
-          for (l = 0; l < this.people.length; l++) {
-            if (this.people[l].github === githubName) {
-              index = l;
-            }
-          }
-          console.log(index, "indx");
-          issuesCopy[index] += 1;
-        }
-        console.log(issuesCopy, "fetchIssuesCopy");
-        this.setState({
-          issues: issuesCopy
+        data.forEach(contributor => {
+          const username = contributor.author.login;
+          this.contributors[username].commits = contributor.total;
         });
-        console.log(data, "fetchIssues");
-        this.setState({ issueNum: data.length });
       });
   }
 
-  fetchCommitNum() {
-    var j;
-    var url;
-    var num = 0;
-    for (j = 0; j < this.state.branches.length; j++) {
-      url = this.state.branches[j];
-      fetch(url)
-        .then(results => results.json())
-        .then(data => {
-          console.log(data, "fetchTotalCommits");
-          num += data.length;
-        });
-    }
+  fetchTotalIssues() {
+    const url = "https://api.github.com/repos/bcheung/ioDB/issues";
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+          data.forEach(issue => {
+            const username = issue.user;
+            this.contributors[username].issues++;
+          })
+      });
+        // console.log(issuesCopy, "fetchIssuesCopy");
+        // this.setState({
+        //   issues: issuesCopy
+        // });
+        // console.log(data, "fetchIssues");
+        // this.setState({ issueNum: data.length });
+  }
+
+  getTotalCommits() {
     this.setState({ commitNum: num });
   }
 
@@ -214,7 +120,11 @@ class AboutPage extends Component {
           <tbody>
             <tr id="row0">
               <td id="cell0-0">
-                <h2>{this.people[0].name + ": " + this.people[0].github}</h2>
+                <h2>
+                  {this.contributors[0].name +
+                    ": " +
+                    this.contributors[0].github}
+                </h2>
                 <img
                   src={Cooper}
                   id="Cooper"
@@ -265,7 +175,11 @@ class AboutPage extends Component {
                 </ul>
               </td>
               <td id="cell0-1">
-                <h2>{this.people[1].name + ": " + this.people[1].github}</h2>
+                <h2>
+                  {this.contributors[1].name +
+                    ": " +
+                    this.contributors[1].github}
+                </h2>
                 <img
                   src={Brian}
                   id="Brian"
@@ -319,7 +233,11 @@ class AboutPage extends Component {
             </tr>
             <tr id="row1">
               <td id="cell1-0">
-                <h2>{this.people[2].name + ": " + this.people[2].github}</h2>
+                <h2>
+                  {this.contributors[2].name +
+                    ": " +
+                    this.contributors[2].github}
+                </h2>
                 <img
                   src={Brooke}
                   id="Brooke"
@@ -370,7 +288,11 @@ class AboutPage extends Component {
                 </ul>
               </td>
               <td id="cell1-1">
-                <h2>{this.people[3].name + ": " + this.people[3].github}</h2>
+                <h2>
+                  {this.contributors[3].name +
+                    ": " +
+                    this.contributors[3].github}
+                </h2>
                 <img
                   src={Sean}
                   id="Sean"
@@ -424,7 +346,11 @@ class AboutPage extends Component {
             </tr>
             <tr id="row2">
               <td id="cell2-0">
-                <h2>{this.people[4].name + ": " + this.people[4].github}</h2>
+                <h2>
+                  {this.contributors[4].name +
+                    ": " +
+                    this.contributors[4].github}
+                </h2>
                 <img
                   src={David}
                   id="David"
@@ -475,7 +401,11 @@ class AboutPage extends Component {
                 </ul>
               </td>
               <td id="cell2-1">
-                <h2>{this.people[5].name + ": " + this.people[5].github}</h2>
+                <h2>
+                  {this.contributors[5].name +
+                    ": " +
+                    this.contributors[5].github}
+                </h2>
                 <img
                   src={Johnny}
                   id="Johnny"
