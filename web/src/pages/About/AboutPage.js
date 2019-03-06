@@ -11,12 +11,10 @@ class AboutPage extends Component {
   constructor() {
     super();
     this.state = {
-      branches: [],
       issues: [0, 0, 0, 0, 0, 0],
-      issueNum: 0,
+      issuesTotal: 0,
       commits: [0, 0, 0, 0, 0, 0],
-      commitNum: 0,
-      urlD: []
+      commitTotal: 0
     };
   }
 
@@ -78,6 +76,7 @@ class AboutPage extends Component {
           const username = contributor.author.login;
           this.contributors[username].commits = contributor.total;
         });
+        this.setState();
       });
   }
 
@@ -86,21 +85,21 @@ class AboutPage extends Component {
     fetch(url)
       .then(response => response.json())
       .then(data => {
-          data.forEach(issue => {
-            const username = issue.user;
-            this.contributors[username].issues++;
-          })
+        data.forEach(issue => {
+          const username = issue.user;
+          this.contributors[username].issues++;
+        });
       });
-        // console.log(issuesCopy, "fetchIssuesCopy");
-        // this.setState({
-        //   issues: issuesCopy
-        // });
-        // console.log(data, "fetchIssues");
-        // this.setState({ issueNum: data.length });
+    // console.log(issuesCopy, "fetchIssuesCopy");
+    // this.setState({
+    //   issues: issuesCopy
+    // });
+    // console.log(data, "fetchIssues");
+    // this.setState({ issueNum: data.length });
   }
 
   getTotalCommits() {
-    this.setState({ commitNum: num });
+    // this.setState({ commitNum: num });
   }
 
   render() {
