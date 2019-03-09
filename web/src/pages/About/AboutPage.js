@@ -202,9 +202,12 @@ class AboutPage extends Component {
     const username = this.contributorKeys[id];
     const { contributorStats } = this.state;
     console.log("renderProfile", id, username, contributorStats[username]);
+    
+    // calculate cell position
     const rowNum = Math.floor(id / 2);
     const colNum = id % 2;
     console.log(`cell${rowNum}-${colNum}`);
+
     return (
       <td id={`cell${rowNum}-${colNum}`}>
         <h2>
@@ -263,6 +266,8 @@ class AboutPage extends Component {
     const profiles = [];
     for (var id = 0; id < this.contributorKeys.length; id += 2) {
       const rowNum = Math.floor(id / 2);
+
+      // render each row
       profiles.push(
         <tr id={`row${rowNum}`} key={id}>
           {this.renderProfile(id)}
