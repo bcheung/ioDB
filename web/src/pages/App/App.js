@@ -14,6 +14,7 @@ import HomePage from '../Home/HomePage';
 import IndustryPage from '../main/IndustryMain/IndustryPage';
 import LocationPage from '../main/LocationMain/LocationPage';
 import OccupationPage from '../main/OccupationMain/OccupationPage';
+import LocationInstance from '../LocationInstance/LocationInstance';
 import './App.css';
 
 class App extends Component {
@@ -27,6 +28,7 @@ class App extends Component {
                         <Link to="/industry">Industry</Link>
                         <Link to="/occupation">Occupation</Link>
                         <Link to="/location">Location</Link>
+                        <Link to="/location/location-instance">Location Instance</Link>
                     </div>
 
                     <Route exact path="/" component={HomePage} />
@@ -46,6 +48,7 @@ class App extends Component {
                     <Route path="/location/Austin" component={Austin} />
                     <Route path="/location/SanJose" component={SanJose} />
                     <Route path="/location/NewYork" component={NewYork} />
+                    <Route path="/location/location-instance" component={LocationInstance} />
                 </div>
             </Router>
         );
