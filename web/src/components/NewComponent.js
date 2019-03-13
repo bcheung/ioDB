@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 
-const NewComponent = (props) => {
-    return (
-      <div style={styles.divStyle} className="NewComponent">
-        <header className="NewComponent-header"></header>
-      </div>
-    );
-}
+const NewComponent = props => (
+    <div style={styles.divStyle} className="NewComponent">
+        <header className="NewComponent-header" />
+    </div>
+);
 
 const styles = {
-  divStyle: {
-  }
+    divStyle: {}
 };
 
-export {NewComponent};
+export { NewComponent };
