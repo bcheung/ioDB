@@ -1,4 +1,11 @@
 {
-	"python.linting.pylintEnabled": true,
-	"python.pythonPath": "venv/bin/python3"
+    "python.linting.pylintEnabled": true,
+    "python.pythonPath": "venv/bin/python3",
+    "editor.formatOnSave": true,
+    "[javascript]": {
+        "editor.formatOnSave": false
+    },
+    "eslint.autoFixOnSave": true,
+    "prettier.eslintIntegration": true,
+    "prettier.tabWidth": 4
 }
