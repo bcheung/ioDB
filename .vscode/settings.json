@@ -1,6 +1,6 @@
 {
     "python.linting.pylintEnabled": true,
-    "python.pythonPath": "venv/bin/python3",
+    "python.pythonPath": "env/bin/python",
     "editor.formatOnSave": true,
     "[javascript]": {
         "editor.formatOnSave": false
