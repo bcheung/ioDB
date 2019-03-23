@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Jumbotron, Container, Row, Col, Image, Button } from 'react-bootstrap';
+import { Doughnut, Bar } from 'react-chartjs-2';
 import { IndustryComponent } from '../../../components/IndustryComponent';
 
 import './Dentists.css';
@@ -37,7 +38,14 @@ class Dentists extends Component {
                         <IndustryComponent data={data} />
 
                         {/* Charts located at: https://www.chartjs.org/docs/latest/ */}
-
+                        <Bar
+                            data={data}
+                            width={100}
+                            height={50}
+                            options={{
+                                maintainAspectRatio: false
+                            }}
+                        />
                         {/* // Top Occupations for (Industry) */}
 
                         {/* // Includes Graphs, Tables, and Statistics */}
