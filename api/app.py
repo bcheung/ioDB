@@ -6,7 +6,12 @@ import socket
 from flask import Flask, request
 import sqlalchemy
 
-from models import db, Visit
+from models.visit import Visit
+from models.industry import Industry3dModel, Industry4dModel
+from models.occupation import OccupationMajorModel, OccupationDetailedModel
+from models.location import StateModel, MetroAreaModel
+from models.industry_occupation import Ind3dOccMajorModel, Ind4dOccMajorModel, Ind3dOccDetailedModel, Ind4dOccDetailedModel
+from models.location_occupation import StateOccMajorModel, MetroAreaOccMajorModel, StateOccDetailedModel, MetroAreaOccDetailedModel
 
 app = Flask(__name__)
 
@@ -24,8 +29,10 @@ def is_ipv6(addr):
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db.app = app
-db.init_app(app)
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 
 @app.route('/api/')
@@ -74,4 +81,6 @@ def server_error(e):
 if __name__ == '__main__':
     # This is used when running locally. Gunicorn is used to run the
     # application on Google App Engine. See entrypoint in app.yaml.
+    from db import db
+    db.init_app(app)
     app.run(host='127.0.0.1', port=8080, debug=True)
