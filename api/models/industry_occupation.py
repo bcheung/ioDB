@@ -2,7 +2,7 @@ from db import db
 
 
 class Ind3dOccMajorModel(db.Model):
-    __tablename__ = 'ind_3d_occu_major'
+    __tablename__ = 'ind_3d_occ_major'
     industry_3d_id = db.Column(db.Integer, db.ForeignKey(
         'industries_3d.id'), primary_key=True)
     occupation_major_id = db.Column(db.Integer, db.ForeignKey(
@@ -28,7 +28,7 @@ class Ind3dOccMajorModel(db.Model):
 
 
 class Ind4dOccMajorModel(db.Model):
-    __tablename__ = 'ind_4d_occu_major'
+    __tablename__ = 'ind_4d_occ_major'
     industry_4d_id = db.Column(db.Integer, db.ForeignKey(
         'industries_4d.id'), primary_key=True)
     occupation_major_id = db.Column(db.Integer, db.ForeignKey(
@@ -54,7 +54,7 @@ class Ind4dOccMajorModel(db.Model):
 
 
 class Ind3dOccDetailedModel(db.Model):
-    __tablename__ = 'ind_3d_occu_detailed'
+    __tablename__ = 'ind_3d_occ_detailed'
     industry_3d_id = db.Column(db.Integer, db.ForeignKey(
         'industries_3d.id'), primary_key=True)
     occupation_detailed_id = db.Column(db.Integer, db.ForeignKey(
@@ -80,7 +80,7 @@ class Ind3dOccDetailedModel(db.Model):
 
 
 class Ind4dOccDetailedModel(db.Model):
-    __tablename__ = 'ind_4d_occu_detailed'
+    __tablename__ = 'ind_4d_occ_detailed'
     industry_4d_id = db.Column(db.Integer, db.ForeignKey(
         'industries_4d.id'), primary_key=True)
     occupation_detailed_id = db.Column(db.Integer, db.ForeignKey(
