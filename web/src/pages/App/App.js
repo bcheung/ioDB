@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import Navbar from '../../components/customnavbar';
 import AboutPage from '../About/AboutPage';
 import Austin from '../detail/Austin/Austin';
 import CEManufacturing from '../detail/CEManufacturing/CEManufacturing';
@@ -14,6 +15,8 @@ import HomePage from '../Home/HomePage';
 import IndustryPage from '../main/IndustryMain/IndustryPage';
 import LocationPage from '../main/LocationMain/LocationPage';
 import OccupationPage from '../main/OccupationMain/OccupationPage';
+import IndustryInstances from '../IndustryInstances/IndustryInstances';
+
 import './App.css';
 
 class App extends Component {
@@ -36,6 +39,7 @@ class App extends Component {
                     <Route path="/industry/Dentists" component={Dentists} />
                     <Route path="/industry/CEManufacturing" component={CEManufacturing} />
                     <Route path="/industry/Research" component={Research} />
+                    <Router path="/IndustryInstances/IndustryInstances" component={IndustryInstances} />
 
                     <Route path="/occupation" component={OccupationPage} />
                     <Route path="/occupation/ChemicalEngineers" component={ChemicalEngineers} />
