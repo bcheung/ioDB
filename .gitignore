@@ -25,9 +25,17 @@ yarn-error.log*
 
 # .vscode
 
-# Python venv
+# Python virtualenv
 venv/
+env/
+
 # Python pycache:
 __pycache__/
 # Ignored by the build system
 /setup.cfg
+
+# api key
+iodb-api-key.json
+
+# secret environment variables
+env_variables.yaml
