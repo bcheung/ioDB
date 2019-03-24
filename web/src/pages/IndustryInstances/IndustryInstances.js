@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Jumbotron, Container, Row, Col, Image, Button } from 'react-bootstrap';
-import { Bar } from 'react-chartjs-2';
+import { BarComponent } from '../../components/BarComponent';
+import { PieComponent } from '../../components/PieComponent';
 import { IndustryComponent } from '../../components/IndustryComponent';
 import './IndustryInstances.css';
 
@@ -25,6 +26,22 @@ const data = {
     }
 };
 
+const chartData = {
+    labels: ['1', '2', '3', '4', '5'],
+    datasets: [
+        {
+            label: 'Videos Made',
+            backgroundColor: 'rgba(255,0,255,0.75)',
+            data: [4, 5, 1, 10, 32, 2, 12]
+        },
+        {
+            label: 'Subscription',
+            backgroundColor: 'rgba(0,255,0,0.75)',
+            data: [14, 15, 21, 0, 12, 45, 2]
+        }
+    ]
+};
+
 class IndustryInstances extends Component {
     render() {
         return (
@@ -46,14 +63,20 @@ class IndustryInstances extends Component {
                         <IndustryComponent data={data} />
                         {/* Charts located at: https://www.chartjs.org/docs/latest/ */}
 
-                        <Bar
-                            data={data}
-                            width={50}
-                            height={25}
+                        <BarComponent
+                            data={chartData}
                             options={{
                                 maintainAspectRatio: true
                             }}
                         />
+
+                        <PieComponent
+                            data={chartData}
+                            options={{
+                                maintainAspectRatio: true
+                            }}
+                        />
+
                         {/* // Top Occupations for (Industry) */}
 
                         {/* // Includes Graphs, Tables, and Statistics */}
