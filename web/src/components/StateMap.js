@@ -6,6 +6,8 @@ import {
   Geography
 } from "react-simple-maps";
 import { geoAlbersUsa } from "d3-geo";
+import stateData from '../static/usa-map.json';
+import msaData from '../static/msa-map.json';
 
 class StateMap extends Component {
   constructor(props) {
@@ -17,11 +19,11 @@ class StateMap extends Component {
     }
     this.handleAreaClick = this.handleAreaClick.bind(this);
   }
-  componentWillUpdate() {
-    const { path } = this.props.stateName;
-    console.log(path);
-    import(`${path}`).then(file => this.setState({geoData: file.default}));
-  }
+  // componentWillUpdate() {
+  //   const { path } = this.props.stateName;
+  //   console.log(path);
+  //   import(`${path}`).then(file => this.setState({geoData: file.default}));
+  // }
   handleAreaClick(geography) {
     console.log("Geo data: ", geography);
     
@@ -40,35 +42,80 @@ class StateMap extends Component {
           }}
           >
           <ZoomableGroup center={this.state.center} zoom={this.state.zoom} disablePanning>
-            <Geographies geography={this.state.geoData} disableOptimization>
+            <Geographies geography={stateData} disableOptimization>
               {(geographies, projection) =>
-                geographies.map((geography, i) =>
-                <Geography
-                  key={i}
-                  geography={geography}
-                  projection={projection}
-                  onClick={this.handleAreaClick}
-                  style={{
-                    default: {
-                      fill: "#ECEFF1",
-                      stroke: "#607D8B",
-                      strokeWidth: 0.75,
-                      outline: "none",
-                    },
-                    hover: {
-                      fill: "#CFD8DC",
-                      stroke: "#607D8B",
-                      strokeWidth: 0.75,
-                      outline: "none",
-                    },
-                    pressed: {
-                      fill: "#FF5722",
-                      stroke: "#607D8B",
-                      strokeWidth: 0.75,
-                      outline: "none",
-                    },
-                  }}
-                />
+                geographies.map((geography, i) => {
+                {/* console.log(geography.properties.NAME_1); */}
+                if(geography.properties.NAME_1 !== this.props.area.name) {
+                  {/* console.log(JSON.stringify(geography.properties.NAME_1), JSON.stringify(this.props.stateName)); */}
+                  return null;
+                }
+                return(
+                  <Geography
+                    key={i}
+                    geography={geography}
+                    projection={projection}
+                    style={{
+                      default: {
+                        fill: "#ECEFF1",
+                        stroke: "#607D8B",
+                        strokeWidth: 0.75,
+                        outline: "none",
+                      },
+                      hover: {
+                        fill: "#CFD8DC",
+                        stroke: "#607D8B",
+                        strokeWidth: 0.75,
+                        outline: "none",
+                      },
+                      pressed: {
+                        fill: "#FF5722",
+                        stroke: "#607D8B",
+                        strokeWidth: 0.75,
+                        outline: "none",
+                      },
+                    }}
+                  />
+                )}
+              )}
+            </Geographies>
+            <Geographies geography={msaData} disableOptimization>
+              {(geographies, projection) =>
+                geographies.map((geography, i) => {
+                {/* let x = geography.properties.NAME; */}
+                let stateID = geography.properties.NAME.substring(geography.properties.NAME.length-2);
+                {/* console.log(x.substring(x.length-2)); */}
+                if(stateID !== this.props.area.id) {
+                  return null;
+                }
+                return (
+                  <Geography
+                    key={i}
+                    geography={geography}
+                    projection={projection}
+                    onClick={this.handleAreaClick}
+                    style={{
+                      default: {
+                        fill: "#ECEFF1",
+                        stroke: "#607D8B",
+                        strokeWidth: 0.75,
+                        outline: "none",
+                      },
+                      hover: {
+                        fill: "#CFD8DC",
+                        stroke: "#607D8B",
+                        strokeWidth: 0.75,
+                        outline: "none",
+                      },
+                      pressed: {
+                        fill: "#FF5722",
+                        stroke: "#607D8B",
+                        strokeWidth: 0.75,
+                        outline: "none",
+                      },
+                    }}
+                  />
+                )}
               )}
             </Geographies>
           </ZoomableGroup>

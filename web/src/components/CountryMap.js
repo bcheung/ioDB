@@ -25,7 +25,7 @@ class CountryMap extends Component {
   }
   handleStateClick(geography) {
     console.log("Geo data: ", geography);
-    this.props.onStateClick(geography.properties.NAME_1);
+    this.props.onStateClick(geography.properties);
   }
 
   render() {

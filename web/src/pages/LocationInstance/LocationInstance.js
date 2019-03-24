@@ -7,23 +7,26 @@ class LocationInstance extends Component {
     super();
     this.state = {
       state: '',
+      showMsa: false,
     };
 
     this.handleStateClick = this.handleStateClick.bind(this);
   }
-  handleStateClick(stateName) {
+  handleStateClick(geographyProps) {
     this.setState({
-      state: stateName,
-      statePath: "../static/"+stateName+".json",
+      state: {
+        name: geographyProps.NAME_1,
+        id: geographyProps.VARNAME_1.substring(0,2),
+      },
+      showMsa: true,
     });
-    console.log(this.state.statePath);
   }
 
   render() {
     return (
       <div>
         <CountryMap onStateClick={this.handleStateClick} />
-        {(this.state.state === '') ? null : <StateMap stateName={'../static/'+this.state.stateName} />}
+        {(!this.state.showMsa) ? null : <StateMap area={this.state.state} />}
       </div>
     );
   }
