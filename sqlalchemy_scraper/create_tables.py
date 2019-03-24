@@ -13,6 +13,7 @@ locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 
 def populate_occupations():
+    # populate occupations_major and occupations_detailed tables
     with app.app_context():
         line_cnt = major_cnt = detailed_cnt = 0
         with open('sqlalchemy_scraper/national_occupations_by_group.csv', 'r') as f:
@@ -29,17 +30,19 @@ def populate_occupations():
                         hourly_median = parse_float(occupation_data[10])
                         annual_mean = parse_int(occupation_data[6])
                         annual_median = parse_int(occupation_data[15])
-                        if occ_group == "major":
+                        if occ_group == "major":    # occupations_major table
                             occupation = OccupationMajorModel(
                                 occ_code, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
                             occupation_major = occupation
                             major_cnt += 1
-                        else:
+                        else:   # occupations_detailed table
                             occupation = OccupationDetailedModel(
                                 occ_code, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
+                            # link occupation_detailed to occupation_major
                             occupation_major.occupations_detailed.append(
                                 occupation)
                             detailed_cnt += 1
+                        # insert into database
                         db.session.add(occupation)
                 line_cnt += 1
         db.session.commit()
@@ -63,19 +66,19 @@ def populate_industries_3d():
                 hourly_median = parse_float(industry_data[14])
                 annual_mean = parse_int(industry_data[10])
                 annual_median = parse_int(industry_data[19])
-                if occ_group == 'total':
+                if occ_group == 'total':    # industries_3d table
                     industry_3d = Industry3dModel(
                         industry_3d_id, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
                     db.session.add(industry_3d)
                     ind_3d_cnt += 1
-                elif occ_group == 'major':
+                elif occ_group == 'major':  # ind_3d_occ_major
                     ind_3d_occ_major = Ind3dOccMajorModel(
                         total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
                     ind_3d_occ_major.industry_3d_id = industry_3d_id
                     ind_3d_occ_major.occupation_major_id = occ_code
                     db.session.add(ind_3d_occ_major)
                     major_cnt += 1
-                elif occ_group == 'detailed':
+                elif occ_group == 'detailed':   # ind_3d_occ_detailed
                     ind_3d_occ_detailed = Ind3dOccDetailedModel(
                         total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
                     ind_3d_occ_detailed.industry_3d_id = industry_3d_id
@@ -104,22 +107,23 @@ def populate_industries_4d():
                 hourly_median = parse_float(industry_data[14])
                 annual_mean = parse_int(industry_data[10])
                 annual_median = parse_int(industry_data[19])
-                if occ_group == 'total':
+                if occ_group == 'total':    # industries_4d table
                     industry_4d = Industry4dModel(
                         industry_4d_id, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
                     db.session.add(industry_4d)
+                    # find industry_3d and link industry_4d
                     industry_3d = Industry3dModel.query.filter_by(
                         id=(industry_4d_id[0:3] + '000')).first()
                     industry_3d.industries_4d.append(industry_4d)
                     ind_4d_cnt += 1
-                elif occ_group == 'major':
+                elif occ_group == 'major':  # ind_4d_occ_major table
                     ind_4d_occ_major = Ind4dOccMajorModel(
                         total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
                     ind_4d_occ_major.industry_4d_id = industry_4d_id
                     ind_4d_occ_major.occupation_major_id = occ_code
                     db.session.add(ind_4d_occ_major)
                     major_cnt += 1
-                elif occ_group == 'detailed':
+                elif occ_group == 'detailed':   # ind_4d_occ_detailed table
                     ind_4d_occ_detailed = Ind4dOccDetailedModel(
                         total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
                     ind_4d_occ_detailed.industry_4d_id = industry_4d_id
@@ -150,19 +154,19 @@ def populate_states():
                 hourly_median = parse_float(state_data[15])
                 annual_mean = parse_int(state_data[11])
                 annual_median = parse_int(state_data[20])
-                if occ_group == 'total':
+                if occ_group == 'total':    # states table
                     state = StateModel(
                         state_id, name, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
                     db.session.add(state)
                     states_cnt += 1
-                elif occ_group == 'major':
+                elif occ_group == 'major':  # state_occ_major table
                     state_occ_major = StateOccMajorModel(
                         total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_median, annual_mean, annual_median)
                     state_occ_major.state_id = state_id
                     state_occ_major.occupation_major_id = occ_code
                     db.session.add(state_occ_major)
                     major_cnt += 1
-                elif occ_group == 'detailed':
+                elif occ_group == 'detailed':   # state_occ_detailed table
                     state_occ_detailed = StateOccDetailedModel(
                         total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_median, annual_mean, annual_median)
                     state_occ_detailed.state_id = state_id
@@ -194,21 +198,22 @@ def populate_metro_areas():
                 hourly_median = parse_float(metro_data[15])
                 annual_mean = parse_int(metro_data[11])
                 annual_median = parse_int(metro_data[20])
-                if occ_group == 'total':
+                if occ_group == 'total':    # metro_areas table
                     metro_area = MetroAreaModel(
                         metro_area_id, name, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
                     db.session.add(metro_area)
+                    # find state and link metro_area
                     state = StateModel.query.filter_by(id=(state_id)).first()
                     state.metro_areas.append(metro_area)
                     metro_areas_cnt += 1
-                elif occ_group == 'major':
+                elif occ_group == 'major':  # metro_area_occ_major table
                     metro_area_occ_major = MetroAreaOccMajorModel(
                         total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_median, annual_mean, annual_median)
                     metro_area_occ_major.metro_area_id = metro_area_id
                     metro_area_occ_major.occupation_major_id = occ_code
                     db.session.add(metro_area_occ_major)
                     major_cnt += 1
-                elif occ_group == 'detailed':
+                elif occ_group == 'detailed':   # metro_area_occ_detailed table
                     metro_area_occ_detailed = MetroAreaOccDetailedModel(
                         total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_median, annual_mean, annual_median)
                     metro_area_occ_detailed.metro_area_id = metro_area_id
@@ -241,7 +246,7 @@ def parse_int(value):
             '*': -1,
             '#': 208000
         }
-        return switcher.get(value, 0.0)
+        return switcher.get(value, 0)
 
 
 if __name__ == '__main__':
