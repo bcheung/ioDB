@@ -3,24 +3,28 @@ from api.db import db
 
 class StateOccMajorModel(db.Model):
     __tablename__ = 'state_occ_major'
-    industry_3d_id = db.Column(db.Integer, db.ForeignKey(
+    state_id = db.Column(db.String(2), db.ForeignKey(
         'states.id'), primary_key=True)
     occupation_major_id = db.Column(db.String(), db.ForeignKey(
         'occupations_major.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)
+    jobs_1000 = db.Column(db.Float)
+    loc_quotient = db.Column(db.Float)
     hourly_mean = db.Column(db.Float)
     hourly_median = db.Column(db.Float)
     annual_mean = db.Column(db.Float)
     annual_median = db.Column(db.Float)
 
-    industry_3d = db.relationship(
+    state = db.relationship(
         'StateModel', backref='occupations_major')
     occupation_major = db.relationship(
         'OccupationMajorModel', backref='states')
 
-    def __init__(self, total_employment, hourly_mean, hourly_median, annual_mean, annual_median):
+    def __init__(self, total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_median, annual_mean, annual_median):
         self.total_employment = total_employment
+        self.jobs_1000 = jobs_1000
+        self.loc_quotient = loc_quotient
         self.hourly_mean = hourly_mean
         self.hourly_median = hourly_median
         self.annual_mean = annual_mean
@@ -35,6 +39,8 @@ class MetroAreaOccMajorModel(db.Model):
         'occupations_major.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)
+    jobs_1000 = db.Column(db.Float)
+    loc_quotient = db.Column(db.Float)
     hourly_mean = db.Column(db.Float)
     hourly_median = db.Column(db.Float)
     annual_mean = db.Column(db.Float)
@@ -45,8 +51,10 @@ class MetroAreaOccMajorModel(db.Model):
     occupation_major = db.relationship(
         'OccupationMajorModel', backref='metro_areas')
 
-    def __init__(self, total_employment, hourly_mean, hourly_median, annual_mean, annual_median):
+    def __init__(self, total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_median, annual_mean, annual_median):
         self.total_employment = total_employment
+        self.jobs_1000 = jobs_1000
+        self.loc_quotient = loc_quotient
         self.hourly_mean = hourly_mean
         self.hourly_median = hourly_median
         self.annual_mean = annual_mean
@@ -55,24 +63,29 @@ class MetroAreaOccMajorModel(db.Model):
 
 class StateOccDetailedModel(db.Model):
     __tablename__ = 'state_occ_detailed'
-    industry_3d_id = db.Column(db.Integer, db.ForeignKey(
+    state_id = db.Column(db.String(2), db.ForeignKey(
         'states.id'), primary_key=True)
     occupation_detailed_id = db.Column(db.String(), db.ForeignKey(
         'occupations_detailed.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)
+    jobs_1000 = db.Column(db.Float)
+    loc_quotient = db.Column(db.Float)
     hourly_mean = db.Column(db.Float)
     hourly_median = db.Column(db.Float)
     annual_mean = db.Column(db.Float)
     annual_median = db.Column(db.Float)
 
-    industry_3d = db.relationship(
+    state = db.relationship(
         'StateModel', backref='occupations_detailed')
     occupation_detailed = db.relationship(
         'OccupationDetailedModel', backref='states')
 
-    def __init__(self, total_employment, hourly_mean, hourly_median, annual_mean, annual_median):
+    def __init__(self, total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_median, annual_mean, annual_median):
         self.total_employment = total_employment
+        self.jobs_1000 = jobs_1000
+        self.loc_quotient = loc_quotient
+        self.hourly_mean = hourly_mean
         self.hourly_mean = hourly_mean
         self.hourly_median = hourly_median
         self.annual_mean = annual_mean
@@ -87,6 +100,8 @@ class MetroAreaOccDetailedModel(db.Model):
         'occupations_detailed.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)
+    jobs_1000 = db.Column(db.Float)
+    loc_quotient = db.Column(db.Float)
     hourly_mean = db.Column(db.Float)
     hourly_median = db.Column(db.Float)
     annual_mean = db.Column(db.Float)
@@ -97,8 +112,10 @@ class MetroAreaOccDetailedModel(db.Model):
     occupation_detailed = db.relationship(
         'OccupationDetailedModel', backref='metro_areas')
 
-    def __init__(self, total_employment, hourly_mean, hourly_median, annual_mean, annual_median):
+    def __init__(self, total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_median, annual_mean, annual_median):
         self.total_employment = total_employment
+        self.jobs_1000 = jobs_1000
+        self.loc_quotient = loc_quotient
         self.hourly_mean = hourly_mean
         self.hourly_median = hourly_median
         self.annual_mean = annual_mean

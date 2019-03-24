@@ -3,7 +3,7 @@ from api.db import db
 
 class Industry3dModel(db.Model):
     __tablename__ = 'industries_3d'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(), primary_key=True)
     title = db.Column(db.String())
     description = db.Column(db.String())
     total_employment = db.Column(db.Integer)
@@ -14,7 +14,7 @@ class Industry3dModel(db.Model):
 
     industries_4d = db.relationship('Industry4dModel', backref='industry_3d')
 
-    def __init__(self, id, title, description, total_employment, hourly_mean, hourly_median, annual_mean, annual_median):
+    def __init__(self, id, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median, description=''):
         self.id = id
         self.title = title
         self.description = description
@@ -27,7 +27,7 @@ class Industry3dModel(db.Model):
 
 class Industry4dModel(db.Model):
     __tablename__ = 'industries_4d'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(), primary_key=True)
     title = db.Column(db.String())
     description = db.Column(db.String())
     total_employment = db.Column(db.Integer)
@@ -36,10 +36,10 @@ class Industry4dModel(db.Model):
     annual_mean = db.Column(db.Float)
     annual_median = db.Column(db.Float)
 
-    industry_3d_id = db.Column(db.Integer, db.ForeignKey('industries_3d.id'))
+    industry_3d_id = db.Column(db.String(), db.ForeignKey('industries_3d.id'))
     # industry_3d = db.relationship('Industry3dModel')
 
-    def __init__(self, id, title, description, total_employment, hourly_mean, hourly_median, annual_mean, annual_median):
+    def __init__(self, id, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median, description=''):
         self.id = id
         self.title = title
         self.description = description
