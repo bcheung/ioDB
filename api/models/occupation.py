@@ -1,9 +1,9 @@
-from db import db
+from api.db import db
 
 
 class OccupationMajorModel(db.Model):
     __tablename__ = 'occupations_major'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(), primary_key=True)
     title = db.Column(db.String())
     description = db.Column(db.String())
     total_employment = db.Column(db.Integer)
@@ -15,7 +15,7 @@ class OccupationMajorModel(db.Model):
     occupations_detailed = db.relationship(
         'OccupationDetailedModel', backref='occupation_major')
 
-    def __init__(self, id, title, description, total_employment, hourly_mean, hourly_median, annual_mean, annual_median):
+    def __init__(self, id, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median, description=''):
         self.id = id
         self.title = title
         self.description = description
@@ -28,7 +28,7 @@ class OccupationMajorModel(db.Model):
 
 class OccupationDetailedModel(db.Model):
     __tablename__ = 'occupations_detailed'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(), primary_key=True)
     title = db.Column(db.String())
     description = db.Column(db.String())
     total_employment = db.Column(db.Integer)
@@ -38,10 +38,10 @@ class OccupationDetailedModel(db.Model):
     annual_median = db.Column(db.Float)
 
     occupation_major_id = db.Column(
-        db.Integer, db.ForeignKey('occupations_major.id'))
+        db.String(), db.ForeignKey('occupations_major.id'))
     # occupation_major = db.relationship('OccupationMajorModel')
 
-    def __init__(self, id, title, description, total_employment, hourly_mean, hourly_median, annual_mean, annual_median):
+    def __init__(self, id, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median, description=''):
         self.id = id
         self.title = title
         self.description = description

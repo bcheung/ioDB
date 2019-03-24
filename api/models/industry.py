@@ -1,4 +1,4 @@
-from db import db
+from api.db import db
 
 
 class Industry3dModel(db.Model):

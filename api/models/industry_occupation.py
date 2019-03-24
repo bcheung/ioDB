@@ -1,11 +1,11 @@
-from db import db
+from api.db import db
 
 
 class Ind3dOccMajorModel(db.Model):
     __tablename__ = 'ind_3d_occ_major'
     industry_3d_id = db.Column(db.Integer, db.ForeignKey(
         'industries_3d.id'), primary_key=True)
-    occupation_major_id = db.Column(db.Integer, db.ForeignKey(
+    occupation_major_id = db.Column(db.String(), db.ForeignKey(
         'occupations_major.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)
@@ -31,7 +31,7 @@ class Ind4dOccMajorModel(db.Model):
     __tablename__ = 'ind_4d_occ_major'
     industry_4d_id = db.Column(db.Integer, db.ForeignKey(
         'industries_4d.id'), primary_key=True)
-    occupation_major_id = db.Column(db.Integer, db.ForeignKey(
+    occupation_major_id = db.Column(db.String(), db.ForeignKey(
         'occupations_major.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)
@@ -57,7 +57,7 @@ class Ind3dOccDetailedModel(db.Model):
     __tablename__ = 'ind_3d_occ_detailed'
     industry_3d_id = db.Column(db.Integer, db.ForeignKey(
         'industries_3d.id'), primary_key=True)
-    occupation_detailed_id = db.Column(db.Integer, db.ForeignKey(
+    occupation_detailed_id = db.Column(db.String(), db.ForeignKey(
         'occupations_detailed.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)
@@ -83,7 +83,7 @@ class Ind4dOccDetailedModel(db.Model):
     __tablename__ = 'ind_4d_occ_detailed'
     industry_4d_id = db.Column(db.Integer, db.ForeignKey(
         'industries_4d.id'), primary_key=True)
-    occupation_detailed_id = db.Column(db.Integer, db.ForeignKey(
+    occupation_detailed_id = db.Column(db.String(), db.ForeignKey(
         'occupations_detailed.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)

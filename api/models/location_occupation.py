@@ -1,11 +1,11 @@
-from db import db
+from api.db import db
 
 
 class StateOccMajorModel(db.Model):
     __tablename__ = 'state_occ_major'
     industry_3d_id = db.Column(db.Integer, db.ForeignKey(
         'states.id'), primary_key=True)
-    occupation_major_id = db.Column(db.Integer, db.ForeignKey(
+    occupation_major_id = db.Column(db.String(), db.ForeignKey(
         'occupations_major.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)
@@ -31,7 +31,7 @@ class MetroAreaOccMajorModel(db.Model):
     __tablename__ = 'metro_area_occ_major'
     metro_area_id = db.Column(db.Integer, db.ForeignKey(
         'metro_areas.id'), primary_key=True)
-    occupation_major_id = db.Column(db.Integer, db.ForeignKey(
+    occupation_major_id = db.Column(db.String(), db.ForeignKey(
         'occupations_major.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)
@@ -57,7 +57,7 @@ class StateOccDetailedModel(db.Model):
     __tablename__ = 'state_occ_detailed'
     industry_3d_id = db.Column(db.Integer, db.ForeignKey(
         'states.id'), primary_key=True)
-    occupation_detailed_id = db.Column(db.Integer, db.ForeignKey(
+    occupation_detailed_id = db.Column(db.String(), db.ForeignKey(
         'occupations_detailed.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)
@@ -83,7 +83,7 @@ class MetroAreaOccDetailedModel(db.Model):
     __tablename__ = 'metro_area_occ_detailed'
     metro_area_id = db.Column(db.Integer, db.ForeignKey(
         'metro_areas.id'), primary_key=True)
-    occupation_detailed_id = db.Column(db.Integer, db.ForeignKey(
+    occupation_detailed_id = db.Column(db.String(), db.ForeignKey(
         'occupations_detailed.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)
