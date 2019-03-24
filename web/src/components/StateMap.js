@@ -6,28 +6,26 @@ import {
   Geography
 } from "react-simple-maps";
 import { geoAlbersUsa } from "d3-geo";
-import geoData from '../static/usa-map.json';
 
-const wrapperStyles = {
-  width: "100%",
-  maxWidth: 980,
-  margin: "0 auto",
-}
-
-class CountryMap extends Component {
+class StateMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      center: [-97, 40],
+      center: [0, 0],
       zoom: 1,
+      geoData: null,
     }
-    this.handleStateClick = this.handleStateClick.bind(this);
+    this.handleAreaClick = this.handleAreaClick.bind(this);
   }
-  handleStateClick(geography) {
+  componentWillUpdate() {
+    const { path } = this.props.stateName;
+    console.log(path);
+    import(`${path}`).then(file => this.setState({geoData: file.default}));
+  }
+  handleAreaClick(geography) {
     console.log("Geo data: ", geography);
-    this.props.onStateClick(geography.properties.NAME_1);
+    
   }
-
   render() {
     return (
       <div className="map-container">
@@ -42,14 +40,14 @@ class CountryMap extends Component {
           }}
           >
           <ZoomableGroup center={this.state.center} zoom={this.state.zoom} disablePanning>
-            <Geographies geography={geoData} disableOptimization>
+            <Geographies geography={this.state.geoData} disableOptimization>
               {(geographies, projection) =>
                 geographies.map((geography, i) =>
                 <Geography
                   key={i}
                   geography={geography}
                   projection={projection}
-                  onClick={this.handleStateClick}
+                  onClick={this.handleAreaClick}
                   style={{
                     default: {
                       fill: "#ECEFF1",
@@ -76,8 +74,8 @@ class CountryMap extends Component {
           </ZoomableGroup>
         </ComposableMap>
       </div>
-    );
+    )
   }
 }
 
-export default CountryMap;
+export default StateMap;
