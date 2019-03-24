@@ -69,6 +69,11 @@ def hello_world():
     return 'Hello, World!'
 
 
+@app.route('/api/occupations_major')
+def occupations_major():
+    return OccupationMajorModel.query.all()
+
+
 @app.errorhandler(500)
 def server_error(e):
     logging.exception('An error occurred during a request.')
