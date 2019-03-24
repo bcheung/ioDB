@@ -37,7 +37,6 @@ class Industry4dModel(db.Model):
     annual_median = db.Column(db.Float)
 
     industry_3d_id = db.Column(db.String(), db.ForeignKey('industries_3d.id'))
-    # industry_3d = db.relationship('Industry3dModel')
 
     def __init__(self, id, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median, description=''):
         self.id = id

@@ -37,7 +37,6 @@ class MetroAreaModel(db.Model):
     total_population = db.Column(db.Integer)
 
     state_id = db.Column(db.String(2), db.ForeignKey('states.id'))
-    # state = db.relationship('StateModel')
 
     def __init__(self, id, name, total_employment, hourly_mean, hourly_median, annual_mean, annual_median, total_population=0):
         self.id = id

@@ -39,7 +39,6 @@ class OccupationDetailedModel(db.Model):
 
     occupation_major_id = db.Column(
         db.String(), db.ForeignKey('occupations_major.id'))
-    # occupation_major = db.relationship('OccupationMajorModel')
 
     def __init__(self, id, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median, description=''):
         self.id = id
