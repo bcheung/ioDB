@@ -6,6 +6,8 @@ import {
   Geography
 } from "react-simple-maps";
 import { geoAlbersUsa } from "d3-geo";
+import { geoPath } from "d3-geo";
+import { geoTimes } from "d3-geo-projection";
 import geoData from '../static/usa-map.json';
 
 const wrapperStyles = {
@@ -15,6 +17,10 @@ const wrapperStyles = {
 }
 
 class CountryMap extends Component {
+  static defaultProps = {
+    width: 980,
+    height: 551,
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -22,10 +28,26 @@ class CountryMap extends Component {
       zoom: 1,
     }
     this.handleStateClick = this.handleStateClick.bind(this);
+    this.projection = this.projection.bind(this);
   }
   handleStateClick(geography) {
     console.log("Geo data: ", geography);
+    const path = geoPath().projection(this.projection());
+    const center = this.projection().invert(path.centroid(geography));
+    // const bounds = path.bounds(geography);
+    // const dx = bounds[1][0] - bounds[0][0];
+    // const dy = bounds[1][1] - bounds[0][1];
+    // const zoom = 0.9 / Math.max(dx / this.props.width, dy / this.props.height);
+    this.setState({
+      center,
+      zoom: 2,
+    });
     this.props.onStateClick(geography.properties);
+  }
+  projection() {
+    return geoTimes()
+      .translate([this.props.width/2, this.props.height/2])
+      .scale(160);
   }
 
   render() {
@@ -34,14 +56,14 @@ class CountryMap extends Component {
         <ComposableMap
           projection={geoAlbersUsa}
           projectionConfig={{ scale: 1000 }}
-          width={980}
-          height={551}
+          width={this.props.width}
+          height={this.props.height}
           style={{
             width: "100%",
             height: "auto",
           }}
           >
-          <ZoomableGroup center={this.state.center} zoom={this.state.zoom} disablePanning>
+          <ZoomableGroup center={this.state.center} zoom={this.state.zoom}>
             <Geographies geography={geoData} disableOptimization>
               {(geographies, projection) =>
                 geographies.map((geography, i) =>

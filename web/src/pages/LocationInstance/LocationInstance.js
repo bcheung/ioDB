@@ -16,7 +16,7 @@ class LocationInstance extends Component {
     this.setState({
       state: {
         name: geographyProps.NAME_1,
-        id: geographyProps.VARNAME_1.substring(0,2),
+        id: geographyProps.HASC_1.substring(geographyProps.HASC_1.length-2),
       },
       showMsa: true,
     });
