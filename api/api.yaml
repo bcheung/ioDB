@@ -1,6 +1,6 @@
 runtime: python37
 service: api
-entrypoint: gunicorn -b :$PORT main:app
+entrypoint: gunicorn -b :$PORT app:app
 
 handlers:
     - url: /api
