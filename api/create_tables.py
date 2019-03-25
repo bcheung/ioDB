@@ -29,17 +29,25 @@ def populate_occupations():
                     title = occupation_data[1]
                     total_employment = parse_int(occupation_data[3])
                     hourly_mean = parse_float(occupation_data[5])
+                    hourly_10 = parse_float(occupation_data[8])
+                    hourly_25 = parse_float(occupation_data[9])
                     hourly_median = parse_float(occupation_data[10])
+                    hourly_75 = parse_float(occupation_data[11])
+                    hourly_90 = parse_float(occupation_data[12])
                     annual_mean = parse_int(occupation_data[6])
+                    annual_10 = parse_int(occupation_data[13])
+                    annual_25 = parse_int(occupation_data[14])
                     annual_median = parse_int(occupation_data[15])
+                    annual_75 = parse_int(occupation_data[16])
+                    annual_90 = parse_int(occupation_data[17])
                     if occ_group == "major":    # occupations_major table
                         occupation = OccupationMajorModel(
-                            occ_code, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
+                            occ_code, title, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                         occupation_major = occupation
                         major_cnt += 1
                     else:   # occupations_detailed table
                         occupation = OccupationDetailedModel(
-                            occ_code, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
+                            occ_code, title, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                         # link occupation_detailed to occupation_major
                         occupation_major.occupations_detailed.append(
                             occupation)
@@ -65,24 +73,32 @@ def populate_industries_3d():
                 occ_group = industry_data[4]
                 total_employment = parse_int(industry_data[5])
                 hourly_mean = parse_float(industry_data[9])
+                hourly_10 = parse_float(industry_data[12])
+                hourly_25 = parse_float(industry_data[13])
                 hourly_median = parse_float(industry_data[14])
+                hourly_75 = parse_float(industry_data[15])
+                hourly_90 = parse_float(industry_data[16])
                 annual_mean = parse_int(industry_data[10])
+                annual_10 = parse_int(industry_data[17])
+                annual_25 = parse_int(industry_data[18])
                 annual_median = parse_int(industry_data[19])
+                annual_75 = parse_int(industry_data[20])
+                annual_90 = parse_int(industry_data[21])
                 if occ_group == 'total':    # industries_3d table
                     industry_3d = Industry3dModel(
-                        industry_3d_id, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
+                        industry_3d_id, title, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                     db.session.add(industry_3d)
                     ind_3d_cnt += 1
                 elif occ_group == 'major':  # ind_3d_occ_major
                     ind_3d_occ_major = Ind3dOccMajorModel(
-                        total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
+                        total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                     ind_3d_occ_major.industry_3d_id = industry_3d_id
                     ind_3d_occ_major.occupation_major_id = occ_code
                     db.session.add(ind_3d_occ_major)
                     major_cnt += 1
                 elif occ_group == 'detailed':   # ind_3d_occ_detailed
                     ind_3d_occ_detailed = Ind3dOccDetailedModel(
-                        total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
+                        total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                     ind_3d_occ_detailed.industry_3d_id = industry_3d_id
                     ind_3d_occ_detailed.occupation_detailed_id = occ_code
                     db.session.add(ind_3d_occ_detailed)
@@ -106,12 +122,20 @@ def populate_industries_4d():
                 occ_group = industry_data[4]
                 total_employment = parse_int(industry_data[5])
                 hourly_mean = parse_float(industry_data[9])
+                hourly_10 = parse_float(industry_data[12])
+                hourly_25 = parse_float(industry_data[13])
                 hourly_median = parse_float(industry_data[14])
+                hourly_75 = parse_float(industry_data[15])
+                hourly_90 = parse_float(industry_data[16])
                 annual_mean = parse_int(industry_data[10])
+                annual_10 = parse_int(industry_data[17])
+                annual_25 = parse_int(industry_data[18])
                 annual_median = parse_int(industry_data[19])
+                annual_75 = parse_int(industry_data[20])
+                annual_90 = parse_int(industry_data[21])
                 if occ_group == 'total':    # industries_4d table
                     industry_4d = Industry4dModel(
-                        industry_4d_id, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
+                        industry_4d_id, title, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                     db.session.add(industry_4d)
                     # find industry_3d and link industry_4d
                     industry_3d = Industry3dModel.query.filter_by(
@@ -120,14 +144,14 @@ def populate_industries_4d():
                     ind_4d_cnt += 1
                 elif occ_group == 'major':  # ind_4d_occ_major table
                     ind_4d_occ_major = Ind4dOccMajorModel(
-                        total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
+                        total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                     ind_4d_occ_major.industry_4d_id = industry_4d_id
                     ind_4d_occ_major.occupation_major_id = occ_code
                     db.session.add(ind_4d_occ_major)
                     major_cnt += 1
                 elif occ_group == 'detailed':   # ind_4d_occ_detailed table
                     ind_4d_occ_detailed = Ind4dOccDetailedModel(
-                        total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
+                        total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                     ind_4d_occ_detailed.industry_4d_id = industry_4d_id
                     ind_4d_occ_detailed.occupation_detailed_id = occ_code
                     db.session.add(ind_4d_occ_detailed)
@@ -153,24 +177,32 @@ def populate_states():
                 jobs_1000 = parse_float(state_data[8])
                 loc_quotient = parse_float(state_data[9])
                 hourly_mean = parse_float(state_data[10])
+                hourly_10 = parse_float(state_data[13])
+                hourly_25 = parse_float(state_data[14])
                 hourly_median = parse_float(state_data[15])
+                hourly_75 = parse_float(state_data[16])
+                hourly_90 = parse_float(state_data[17])
                 annual_mean = parse_int(state_data[11])
+                annual_10 = parse_int(state_data[18])
+                annual_25 = parse_int(state_data[19])
                 annual_median = parse_int(state_data[20])
+                annual_75 = parse_int(state_data[21])
+                annual_90 = parse_int(state_data[22])
                 if occ_group == 'total':    # states table
                     state = StateModel(
-                        state_id, name, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
+                        state_id, name, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                     db.session.add(state)
                     states_cnt += 1
                 elif occ_group == 'major':  # state_occ_major table
                     state_occ_major = StateOccMajorModel(
-                        total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_median, annual_mean, annual_median)
+                        total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                     state_occ_major.state_id = state_id
                     state_occ_major.occupation_major_id = occ_code
                     db.session.add(state_occ_major)
                     major_cnt += 1
                 elif occ_group == 'detailed':   # state_occ_detailed table
                     state_occ_detailed = StateOccDetailedModel(
-                        total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_median, annual_mean, annual_median)
+                        total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                     state_occ_detailed.state_id = state_id
                     state_occ_detailed.occupation_detailed_id = occ_code
                     db.session.add(state_occ_detailed)
@@ -197,12 +229,20 @@ def populate_metro_areas():
                 jobs_1000 = parse_float(metro_data[8])
                 loc_quotient = parse_float(metro_data[9])
                 hourly_mean = parse_float(metro_data[10])
+                hourly_10 = parse_float(metro_data[13])
+                hourly_25 = parse_float(metro_data[14])
                 hourly_median = parse_float(metro_data[15])
+                hourly_75 = parse_float(metro_data[16])
+                hourly_90 = parse_float(metro_data[17])
                 annual_mean = parse_int(metro_data[11])
+                annual_10 = parse_int(metro_data[18])
+                annual_25 = parse_int(metro_data[19])
                 annual_median = parse_int(metro_data[20])
+                annual_75 = parse_int(metro_data[21])
+                annual_90 = parse_int(metro_data[22])
                 if occ_group == 'total':    # metro_areas table
                     metro_area = MetroAreaModel(
-                        metro_area_id, name, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
+                        metro_area_id, name, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                     db.session.add(metro_area)
                     # find state and link metro_area
                     state = StateModel.query.filter_by(id=(state_id)).first()
@@ -210,14 +250,14 @@ def populate_metro_areas():
                     metro_areas_cnt += 1
                 elif occ_group == 'major':  # metro_area_occ_major table
                     metro_area_occ_major = MetroAreaOccMajorModel(
-                        total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_median, annual_mean, annual_median)
+                        total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                     metro_area_occ_major.metro_area_id = metro_area_id
                     metro_area_occ_major.occupation_major_id = occ_code
                     db.session.add(metro_area_occ_major)
                     major_cnt += 1
                 elif occ_group == 'detailed':   # metro_area_occ_detailed table
                     metro_area_occ_detailed = MetroAreaOccDetailedModel(
-                        total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_median, annual_mean, annual_median)
+                        total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                     metro_area_occ_detailed.metro_area_id = metro_area_id
                     metro_area_occ_detailed.occupation_detailed_id = occ_code
                     db.session.add(metro_area_occ_detailed)
