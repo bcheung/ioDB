@@ -1,4 +1,4 @@
-from config import db
+from config import db, ma
 
 
 class Ind3dOccMajorModel(db.Model):
@@ -27,6 +27,12 @@ class Ind3dOccMajorModel(db.Model):
         self.annual_median = annual_median
 
 
+class Ind3dOccMajorSchema(ma.ModelSchema):
+    class Meta:
+        model = Ind3dOccMajorModel
+        sqla_session = db.session
+
+
 class Ind4dOccMajorModel(db.Model):
     __tablename__ = 'ind_4d_occ_major'
     industry_4d_id = db.Column(db.String(), db.ForeignKey(
@@ -51,6 +57,12 @@ class Ind4dOccMajorModel(db.Model):
         self.hourly_median = hourly_median
         self.annual_mean = annual_mean
         self.annual_median = annual_median
+
+
+class Ind4dOccMajorSchema(ma.ModelSchema):
+    class Meta:
+        model = Ind4dOccMajorModel
+        sqla_session = db.session
 
 
 class Ind3dOccDetailedModel(db.Model):
@@ -79,6 +91,12 @@ class Ind3dOccDetailedModel(db.Model):
         self.annual_median = annual_median
 
 
+class Ind3dOccDetailedSchema(ma.ModelSchema):
+    class Meta:
+        model = Ind3dOccDetailedModel
+        sqla_session = db.session
+
+
 class Ind4dOccDetailedModel(db.Model):
     __tablename__ = 'ind_4d_occ_detailed'
     industry_4d_id = db.Column(db.String(), db.ForeignKey(
@@ -103,3 +121,9 @@ class Ind4dOccDetailedModel(db.Model):
         self.hourly_median = hourly_median
         self.annual_mean = annual_mean
         self.annual_median = annual_median
+
+
+class Ind4dOccDetailedSchema(ma.ModelSchema):
+    class Meta:
+        model = Ind4dOccDetailedModel
+        sqla_session = db.session

@@ -9,11 +9,11 @@ import sqlalchemy
 import config
 from config import app, db
 from models.visit import Visit
-from models.industry import Industry3dModel, Industry4dModel
 from models.occupation import OccupationMajorModel, OccupationDetailedModel, OccupationMajorSchema, OccupationDetailedSchema
-from models.location import StateModel, MetroAreaModel
-from models.industry_occupation import Ind3dOccMajorModel, Ind4dOccMajorModel, Ind3dOccDetailedModel, Ind4dOccDetailedModel
-from models.location_occupation import StateOccMajorModel, MetroAreaOccMajorModel, StateOccDetailedModel, MetroAreaOccDetailedModel
+from models.industry import Industry3dModel, Industry4dModel, Industry3dSchema, Industry4dSchema
+from models.location import StateModel, MetroAreaModel, StateSchema, MetroAreaSchema
+from models.industry_occupation import Ind3dOccMajorModel, Ind4dOccMajorModel, Ind3dOccDetailedModel, Ind4dOccDetailedModel, Ind3dOccMajorSchema, Ind4dOccMajorSchema, Ind3dOccDetailedSchema, Ind4dOccDetailedSchema
+from models.location_occupation import StateOccMajorModel, MetroAreaOccMajorModel, StateOccDetailedModel, MetroAreaOccDetailedModel, StateOccMajorSchema, MetroAreaOccMajorSchema, StateOccDetailedSchema, MetroAreaOccDetailedSchema
 
 
 def is_ipv6(addr):
@@ -48,51 +48,85 @@ def index():
     db.session.commit()
 
     visits = Visit.query.order_by(sqlalchemy.desc(Visit.timestamp)).limit(10)
-
     results = [
         'Time: {} Addr: {}'.format(x.timestamp, x.user_ip)
         for x in visits]
-
     output = 'Last 10 visits:\n{}'.format('\n'.join(results))
 
     return output, 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
 
-@app.route('/api/hello')
-def hello_world():
-    return 'Hello, World!'
+all_model_switcher = {
+    'occupations_major': OccupationMajorModel,
+    'occupations_detailed': OccupationDetailedModel,
+    'industries_3d': Industry3dModel,
+    'industries_4d': Industry4dModel,
+    'states': StateModel,
+    'metro_areas': MetroAreaModel,
+    'ind_3d_occ_major': Ind3dOccMajorModel,
+    'ind_4d_occ_major': Ind4dOccMajorModel,
+    'ind_3d_occ_detailed': Ind3dOccDetailedModel,
+    'ind_4d_occ_detailed': Ind4dOccDetailedModel,
+    'state_occ_major': StateOccMajorModel,
+    'metro_area_occ_major': MetroAreaOccMajorModel,
+    'state_occ_detailed': StateOccDetailedModel,
+    'metro_area_occ_detailed': MetroAreaOccDetailedModel
+}
+
+all_schema_switcher = {
+    'occupations_major': OccupationMajorSchema,
+    'occupations_detailed': OccupationDetailedSchema,
+    'industries_3d': Industry3dSchema,
+    'industries_4d': Industry4dSchema,
+    'states': StateSchema,
+    'metro_areas': MetroAreaSchema,
+    'ind_3d_occ_major': Ind3dOccMajorSchema,
+    'ind_4d_occ_major': Ind4dOccMajorSchema,
+    'ind_3d_occ_detailed': Ind3dOccDetailedSchema,
+    'ind_4d_occ_detailed': Ind4dOccDetailedSchema,
+    'state_occ_major': StateOccMajorSchema,
+    'metro_area_occ_major': MetroAreaOccMajorSchema,
+    'state_occ_detailed': StateOccDetailedSchema,
+    'metro_area_occ_detailed': MetroAreaOccDetailedSchema
+}
+
+model_switcher = {
+    'occupations_major': OccupationMajorModel,
+    'occupations_detailed': OccupationDetailedModel,
+    'industries_3d': Industry3dModel,
+    'industries_4d': Industry4dModel,
+    'states': StateModel,
+    'metro_areas': MetroAreaModel
+}
+
+schema_switcher = {
+    'occupations_major': OccupationMajorSchema,
+    'occupations_detailed': OccupationDetailedSchema,
+    'industries_3d': Industry3dSchema,
+    'industries_4d': Industry4dSchema,
+    'states': StateSchema,
+    'metro_areas': MetroAreaSchema
+}
 
 
-@app.route('/api/occupations_major')
-def occupations_major():
-    occ_major_schema = OccupationMajorSchema()
+@app.route('/api/<tablename>')
+def get_table(tablename):
     data = []
-    for occupation in OccupationMajorModel.query.all():
-        data.append(occ_major_schema.dump(occupation).data)
+    model = all_model_switcher.get(tablename, None)
+    schema = all_schema_switcher.get(tablename, None)
+    if model != None and schema != None:
+        for instance in model.query.all():
+            data.append(schema().dump(instance).data)
     return jsonify(data)
 
 
-@app.route('/api/list/occupations_major')
-def list_occupations_major():
+@app.route('/api/list/<tablename>')
+def list_table(tablename):
     data = []
-    for occupation in OccupationMajorModel.query.with_entities(OccupationMajorModel.id, OccupationMajorModel.title):
-        data.append({'value': occupation.id, 'label': occupation.title})
-    return jsonify(data)
-
-
-@app.route('/api/list/industries_3d')
-def list_industries_3d():
-    data = []
-    for industry in Industry3dModel.query.with_entities(Industry3dModel.id, Industry3dModel.title):
-        data.append({'value': industry.id, 'label': industry.title})
-    return jsonify(data)
-
-
-@app.route('/api/list/states')
-def list_states():
-    data = []
-    for state in StateModel.query.with_entities(StateModel.id, StateModel.name):
-        data.append({'value': state.id, 'label': state.name})
+    model = model_switcher.get(tablename, None)
+    if model != None:
+        for instance in model.query.with_entities(model.id, model.title):
+            data.append({'value': instance.id, 'label': instance.title})
     return jsonify(data)
 
 

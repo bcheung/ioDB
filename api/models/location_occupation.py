@@ -1,4 +1,4 @@
-from config import db
+from config import db, ma
 
 
 class StateOccMajorModel(db.Model):
@@ -31,6 +31,12 @@ class StateOccMajorModel(db.Model):
         self.annual_median = annual_median
 
 
+class StateOccMajorSchema(ma.ModelSchema):
+    class Meta:
+        model = StateOccMajorModel
+        sqla_session = db.session
+
+
 class MetroAreaOccMajorModel(db.Model):
     __tablename__ = 'metro_area_occ_major'
     metro_area_id = db.Column(db.Integer, db.ForeignKey(
@@ -59,6 +65,12 @@ class MetroAreaOccMajorModel(db.Model):
         self.hourly_median = hourly_median
         self.annual_mean = annual_mean
         self.annual_median = annual_median
+
+
+class MetroAreaOccMajorSchema(ma.ModelSchema):
+    class Meta:
+        model = MetroAreaOccMajorModel
+        sqla_session = db.session
 
 
 class StateOccDetailedModel(db.Model):
@@ -92,6 +104,12 @@ class StateOccDetailedModel(db.Model):
         self.annual_median = annual_median
 
 
+class StateOccDetailedSchema(ma.ModelSchema):
+    class Meta:
+        model = StateOccDetailedModel
+        sqla_session = db.session
+
+
 class MetroAreaOccDetailedModel(db.Model):
     __tablename__ = 'metro_area_occ_detailed'
     metro_area_id = db.Column(db.Integer, db.ForeignKey(
@@ -120,3 +138,9 @@ class MetroAreaOccDetailedModel(db.Model):
         self.hourly_median = hourly_median
         self.annual_mean = annual_mean
         self.annual_median = annual_median
+
+
+class MetroAreaOccDetailedSchema(ma.ModelSchema):
+    class Meta:
+        model = MetroAreaOccDetailedModel
+        sqla_session = db.session
