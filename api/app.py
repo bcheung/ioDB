@@ -3,17 +3,17 @@ import logging
 import os
 import socket
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import sqlalchemy
 
+import config
+from config import app, db
 from models.visit import Visit
-from models.industry import Industry3dModel, Industry4dModel
-from models.occupation import OccupationMajorModel, OccupationDetailedModel
-from models.location import StateModel, MetroAreaModel
-from models.industry_occupation import Ind3dOccMajorModel, Ind4dOccMajorModel, Ind3dOccDetailedModel, Ind4dOccDetailedModel
-from models.location_occupation import StateOccMajorModel, MetroAreaOccMajorModel, StateOccDetailedModel, MetroAreaOccDetailedModel
-
-app = Flask(__name__)
+from models.occupation import OccupationMajorModel, OccupationDetailedModel, OccupationMajorSchema, OccupationDetailedSchema
+from models.industry import Industry3dModel, Industry4dModel, Industry3dSchema, Industry4dSchema
+from models.location import StateModel, MetroAreaModel, StateSchema, MetroAreaSchema
+from models.industry_occupation import Ind3dOccMajorModel, Ind4dOccMajorModel, Ind3dOccDetailedModel, Ind4dOccDetailedModel, Ind3dOccMajorSchema, Ind4dOccMajorSchema, Ind3dOccDetailedSchema, Ind4dOccDetailedSchema
+from models.location_occupation import StateOccMajorModel, MetroAreaOccMajorModel, StateOccDetailedModel, MetroAreaOccDetailedModel, StateOccMajorSchema, MetroAreaOccMajorSchema, StateOccDetailedSchema, MetroAreaOccDetailedSchema
 
 
 def is_ipv6(addr):
@@ -23,12 +23,6 @@ def is_ipv6(addr):
         return True
     except socket.error:
         return False
-
-
-# Environment variables are defined in app.yaml.
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 
 # @app.before_first_request
 # def create_tables():
@@ -54,24 +48,86 @@ def index():
     db.session.commit()
 
     visits = Visit.query.order_by(sqlalchemy.desc(Visit.timestamp)).limit(10)
-
     results = [
         'Time: {} Addr: {}'.format(x.timestamp, x.user_ip)
         for x in visits]
-
     output = 'Last 10 visits:\n{}'.format('\n'.join(results))
 
     return output, 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
 
-@app.route('/api/hello')
-def hello_world():
-    return 'Hello, World!'
+all_model_switcher = {
+    'occupations_major': OccupationMajorModel,
+    'occupations_detailed': OccupationDetailedModel,
+    'industries_3d': Industry3dModel,
+    'industries_4d': Industry4dModel,
+    'states': StateModel,
+    'metro_areas': MetroAreaModel,
+    'ind_3d_occ_major': Ind3dOccMajorModel,
+    'ind_4d_occ_major': Ind4dOccMajorModel,
+    'ind_3d_occ_detailed': Ind3dOccDetailedModel,
+    'ind_4d_occ_detailed': Ind4dOccDetailedModel,
+    'state_occ_major': StateOccMajorModel,
+    'metro_area_occ_major': MetroAreaOccMajorModel,
+    'state_occ_detailed': StateOccDetailedModel,
+    'metro_area_occ_detailed': MetroAreaOccDetailedModel
+}
+
+all_schema_switcher = {
+    'occupations_major': OccupationMajorSchema,
+    'occupations_detailed': OccupationDetailedSchema,
+    'industries_3d': Industry3dSchema,
+    'industries_4d': Industry4dSchema,
+    'states': StateSchema,
+    'metro_areas': MetroAreaSchema,
+    'ind_3d_occ_major': Ind3dOccMajorSchema,
+    'ind_4d_occ_major': Ind4dOccMajorSchema,
+    'ind_3d_occ_detailed': Ind3dOccDetailedSchema,
+    'ind_4d_occ_detailed': Ind4dOccDetailedSchema,
+    'state_occ_major': StateOccMajorSchema,
+    'metro_area_occ_major': MetroAreaOccMajorSchema,
+    'state_occ_detailed': StateOccDetailedSchema,
+    'metro_area_occ_detailed': MetroAreaOccDetailedSchema
+}
+
+model_switcher = {
+    'occupations_major': OccupationMajorModel,
+    'occupations_detailed': OccupationDetailedModel,
+    'industries_3d': Industry3dModel,
+    'industries_4d': Industry4dModel,
+    'states': StateModel,
+    'metro_areas': MetroAreaModel
+}
+
+schema_switcher = {
+    'occupations_major': OccupationMajorSchema,
+    'occupations_detailed': OccupationDetailedSchema,
+    'industries_3d': Industry3dSchema,
+    'industries_4d': Industry4dSchema,
+    'states': StateSchema,
+    'metro_areas': MetroAreaSchema
+}
 
 
-@app.route('/api/occupations_major')
-def occupations_major():
-    return OccupationMajorModel.query.all()
+@app.route('/api/<tablename>')
+def get_table(tablename):
+    data = []
+    model = all_model_switcher.get(tablename, None)
+    schema = all_schema_switcher.get(tablename, None)
+    if model != None and schema != None:
+        for instance in model.query.all():
+            data.append(schema().dump(instance).data)
+    return jsonify(data)
+
+
+@app.route('/api/list/<tablename>')
+def list_table(tablename):
+    data = []
+    model = model_switcher.get(tablename, None)
+    if model != None:
+        for instance in model.query.with_entities(model.id, model.title):
+            data.append({'value': instance.id, 'label': instance.title})
+    return jsonify(data)
 
 
 @app.errorhandler(500)
@@ -86,6 +142,6 @@ def server_error(e):
 if __name__ == '__main__':
     # This is used when running locally. Gunicorn is used to run the
     # application on Google App Engine. See entrypoint in app.yaml.
-    from db import db
-    db.init_app(app)
+    # from config import db
+    # db.init_app(app)
     app.run(host='127.0.0.1', port=8080, debug=True)

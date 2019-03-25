@@ -23,3 +23,7 @@ cloud_sql_proxy
 
 # credentials
 iodb-api-key.json
+
+# sql
+iodb.sql
+iodb_mod.sql

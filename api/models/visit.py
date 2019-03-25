@@ -1,4 +1,4 @@
-from api.db import db
+from config import db
 
 
 class Visit(db.Model):
