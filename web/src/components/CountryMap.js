@@ -9,7 +9,6 @@ import { geoAlbersUsa } from "d3-geo";
 import { geoPath } from "d3-geo";
 import { geoTimes } from "d3-geo-projection";
 import { Motion, spring } from "react-motion"
-import StateMap from './StateMap';
 import stateData from '../static/usa-map.json';
 import msaData from '../static/msa-map.json';
 

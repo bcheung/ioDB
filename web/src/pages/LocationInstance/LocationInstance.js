@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import CountryMap from '../../components/CountryMap';
-import StateMap from '../../components/StateMap';
 
 class LocationInstance extends Component {
   constructor() {
