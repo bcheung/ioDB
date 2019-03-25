@@ -3,17 +3,17 @@ import logging
 import os
 import socket
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import sqlalchemy
 
+import config
+from config import app, db
 from models.visit import Visit
 from models.industry import Industry3dModel, Industry4dModel
-from models.occupation import OccupationMajorModel, OccupationDetailedModel
+from models.occupation import OccupationMajorModel, OccupationDetailedModel, OccupationMajorSchema, OccupationDetailedSchema
 from models.location import StateModel, MetroAreaModel
 from models.industry_occupation import Ind3dOccMajorModel, Ind4dOccMajorModel, Ind3dOccDetailedModel, Ind4dOccDetailedModel
 from models.location_occupation import StateOccMajorModel, MetroAreaOccMajorModel, StateOccDetailedModel, MetroAreaOccDetailedModel
-
-app = Flask(__name__)
 
 
 def is_ipv6(addr):
@@ -23,12 +23,6 @@ def is_ipv6(addr):
         return True
     except socket.error:
         return False
-
-
-# Environment variables are defined in app.yaml.
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 
 # @app.before_first_request
 # def create_tables():
@@ -71,7 +65,11 @@ def hello_world():
 
 @app.route('/api/occupations_major')
 def occupations_major():
-    return OccupationMajorModel.query.all()
+    occ_major_schema = OccupationMajorSchema()
+    data = []
+    for occupation in OccupationMajorModel.query.all():
+        data.append(occ_major_schema.dump(occupation).data)
+    return jsonify(data)
 
 
 @app.errorhandler(500)
@@ -86,6 +84,6 @@ def server_error(e):
 if __name__ == '__main__':
     # This is used when running locally. Gunicorn is used to run the
     # application on Google App Engine. See entrypoint in app.yaml.
-    from db import db
-    db.init_app(app)
+    # from config import db
+    # db.init_app(app)
     app.run(host='127.0.0.1', port=8080, debug=True)

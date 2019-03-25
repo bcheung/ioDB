@@ -1,12 +1,15 @@
 import csv
 import locale
-from api.db import db, create_app
-from api.models.visit import Visit
-from api.models.industry import Industry3dModel, Industry4dModel
-from api.models.occupation import OccupationMajorModel, OccupationDetailedModel
-from api.models.location import StateModel, MetroAreaModel
-from api.models.industry_occupation import Ind3dOccMajorModel, Ind4dOccMajorModel, Ind3dOccDetailedModel, Ind4dOccDetailedModel
-from api.models.location_occupation import StateOccMajorModel, MetroAreaOccMajorModel, StateOccDetailedModel, MetroAreaOccDetailedModel
+# from config import db, create_app
+import config
+from config import db, ma
+from models.visit import Visit
+from models.industry import Industry3dModel, Industry4dModel
+from models.occupation import OccupationMajorModel, OccupationDetailedModel
+# , OccupationMajorSchema, OccupationDetailedSchema
+from models.location import StateModel, MetroAreaModel
+from models.industry_occupation import Ind3dOccMajorModel, Ind4dOccMajorModel, Ind3dOccDetailedModel, Ind4dOccDetailedModel
+from models.location_occupation import StateOccMajorModel, MetroAreaOccMajorModel, StateOccDetailedModel, MetroAreaOccDetailedModel
 
 
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
@@ -14,44 +17,43 @@ locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
 def populate_occupations():
     # populate occupations_major and occupations_detailed tables
-    with app.app_context():
-        line_cnt = major_cnt = detailed_cnt = 0
-        with open('sqlalchemy_scraper/national_occupations_by_group.csv', 'r') as f:
-            reader = csv.reader(f)
-            for line in reader:
-                if line_cnt > 0:
-                    occupation_data = line
-                    occ_group = occupation_data[2]
-                    if occ_group == "major" or occ_group == "detailed":
-                        occ_code = occupation_data[0]
-                        title = occupation_data[1]
-                        total_employment = parse_int(occupation_data[3])
-                        hourly_mean = parse_float(occupation_data[5])
-                        hourly_median = parse_float(occupation_data[10])
-                        annual_mean = parse_int(occupation_data[6])
-                        annual_median = parse_int(occupation_data[15])
-                        if occ_group == "major":    # occupations_major table
-                            occupation = OccupationMajorModel(
-                                occ_code, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
-                            occupation_major = occupation
-                            major_cnt += 1
-                        else:   # occupations_detailed table
-                            occupation = OccupationDetailedModel(
-                                occ_code, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
-                            # link occupation_detailed to occupation_major
-                            occupation_major.occupations_detailed.append(
-                                occupation)
-                            detailed_cnt += 1
-                        # insert into database
-                        db.session.add(occupation)
-                line_cnt += 1
-        db.session.commit()
-        return line_cnt, major_cnt, detailed_cnt
+    line_cnt = major_cnt = detailed_cnt = 0
+    with open('data/national_occupations_by_group.csv', 'r') as f:
+        reader = csv.reader(f)
+        for line in reader:
+            if line_cnt > 0:
+                occupation_data = line
+                occ_group = occupation_data[2]
+                if occ_group == "major" or occ_group == "detailed":
+                    occ_code = occupation_data[0]
+                    title = occupation_data[1]
+                    total_employment = parse_int(occupation_data[3])
+                    hourly_mean = parse_float(occupation_data[5])
+                    hourly_median = parse_float(occupation_data[10])
+                    annual_mean = parse_int(occupation_data[6])
+                    annual_median = parse_int(occupation_data[15])
+                    if occ_group == "major":    # occupations_major table
+                        occupation = OccupationMajorModel(
+                            occ_code, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
+                        occupation_major = occupation
+                        major_cnt += 1
+                    else:   # occupations_detailed table
+                        occupation = OccupationDetailedModel(
+                            occ_code, title, total_employment, hourly_mean, hourly_median, annual_mean, annual_median)
+                        # link occupation_detailed to occupation_major
+                        occupation_major.occupations_detailed.append(
+                            occupation)
+                        detailed_cnt += 1
+                    # insert into database
+                    db.session.add(occupation)
+            line_cnt += 1
+    db.session.commit()
+    return line_cnt, major_cnt, detailed_cnt
 
 
 def populate_industries_3d():
     # Populate industries_3d, ind_3d_occ_major, ind_3d_occ_detailed tables
-    with open('sqlalchemy_scraper/industries_3d.csv', 'r') as f:
+    with open('data/industries_3d.csv', 'r') as f:
         line_cnt = ind_3d_cnt = major_cnt = detailed_cnt = 0
         reader = csv.reader(f)
         for line in reader:
@@ -92,7 +94,7 @@ def populate_industries_3d():
 
 def populate_industries_4d():
     # Populate industries_4d, ind_4d_occ_major, ind_4d_occ_detailed tables
-    with open('sqlalchemy_scraper/industries_4d.csv', 'r') as f:
+    with open('data/industries_4d.csv', 'r') as f:
         line_cnt = ind_4d_cnt = major_cnt = detailed_cnt = 0
         reader = csv.reader(f)
         for line in reader:
@@ -137,7 +139,7 @@ def populate_industries_4d():
 
 def populate_states():
     # Populate states, states_occ_major, states_occ_detailed tables
-    with open('sqlalchemy_scraper/occupations_by_state.csv', 'r') as f:
+    with open('data/occupations_by_state.csv', 'r') as f:
         line_cnt = states_cnt = major_cnt = detailed_cnt = 0
         reader = csv.reader(f)
         for line in reader:
@@ -180,7 +182,7 @@ def populate_states():
 
 def populate_metro_areas():
     # Populate metro_areas, metro_areas_occ_major, metro_areas_occ_detailed tables
-    with open('sqlalchemy_scraper/occupations_by_metropolitan_areas.csv', 'r') as f:
+    with open('data/occupations_by_metropolitan_areas.csv', 'r') as f:
         line_cnt = metro_areas_cnt = major_cnt = detailed_cnt = 0
         reader = csv.reader(f)
         for line in reader:
@@ -250,24 +252,24 @@ def parse_int(value):
 
 
 if __name__ == '__main__':
-    app = create_app()
-    app.app_context().push()
-    with app.app_context():
-        print('Creating all database tables...')
-        db.create_all()
-        print('Done creating tables!')
-        line_cnt, major_cnt, detailed_cnt = populate_occupations()
-        print('Done populating occupation tables! line_cnt: {}, major_cnt: {}, detailed_cnt: {}'.format(
-            line_cnt, major_cnt, detailed_cnt))
-        line_cnt, ind_3d_cnt, major_cnt, detailed_cnt = populate_industries_3d()
-        print('Done populating industry 3d tables! line_cnt: {}, ind_3d_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
-            line_cnt, ind_3d_cnt, major_cnt, detailed_cnt))
-        line_cnt, ind_4d_cnt, major_cnt, detailed_cnt = populate_industries_4d()
-        print('Done populating industry 4d tables! line_cnt: {}, ind_4d_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
-            line_cnt, ind_4d_cnt, major_cnt, detailed_cnt))
-        line_cnt, state_cnt, major_cnt, detailed_cnt = populate_states()
-        print('Done populating state tables! line_cnt: {}, state_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
-            line_cnt, state_cnt, major_cnt, detailed_cnt))
-        line_cnt, metro_areas_cnt, major_cnt, detailed_cnt = populate_metro_areas()
-        print('Done populating metro areas tables! line_cnt: {}, metro_areas_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
-            line_cnt, metro_areas_cnt, major_cnt, detailed_cnt))
+    # app = create_app()
+    # app.app_context().push()
+    # with app.app_context():
+    print('Creating all database tables...')
+    db.create_all()
+    print('Done creating tables!')
+    line_cnt, major_cnt, detailed_cnt = populate_occupations()
+    print('Done populating occupation tables! line_cnt: {}, major_cnt: {}, detailed_cnt: {}'.format(
+        line_cnt, major_cnt, detailed_cnt))
+    line_cnt, ind_3d_cnt, major_cnt, detailed_cnt = populate_industries_3d()
+    print('Done populating industry 3d tables! line_cnt: {}, ind_3d_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
+        line_cnt, ind_3d_cnt, major_cnt, detailed_cnt))
+    line_cnt, ind_4d_cnt, major_cnt, detailed_cnt = populate_industries_4d()
+    print('Done populating industry 4d tables! line_cnt: {}, ind_4d_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
+        line_cnt, ind_4d_cnt, major_cnt, detailed_cnt))
+    line_cnt, state_cnt, major_cnt, detailed_cnt = populate_states()
+    print('Done populating state tables! line_cnt: {}, state_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
+        line_cnt, state_cnt, major_cnt, detailed_cnt))
+    line_cnt, metro_areas_cnt, major_cnt, detailed_cnt = populate_metro_areas()
+    print('Done populating metro areas tables! line_cnt: {}, metro_areas_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
+        line_cnt, metro_areas_cnt, major_cnt, detailed_cnt))
