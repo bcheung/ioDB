@@ -72,6 +72,30 @@ def occupations_major():
     return jsonify(data)
 
 
+@app.route('/api/list/occupations_major')
+def list_occupations_major():
+    data = []
+    for occupation in OccupationMajorModel.query.with_entities(OccupationMajorModel.id, OccupationMajorModel.title):
+        data.append({'value': occupation.id, 'label': occupation.title})
+    return jsonify(data)
+
+
+@app.route('/api/list/industries_3d')
+def list_industries_3d():
+    data = []
+    for industry in Industry3dModel.query.with_entities(Industry3dModel.id, Industry3dModel.title):
+        data.append({'value': industry.id, 'label': industry.title})
+    return jsonify(data)
+
+
+@app.route('/api/list/states')
+def list_states():
+    data = []
+    for state in StateModel.query.with_entities(StateModel.id, StateModel.name):
+        data.append({'value': state.id, 'label': state.name})
+    return jsonify(data)
+
+
 @app.errorhandler(500)
 def server_error(e):
     logging.exception('An error occurred during a request.')
