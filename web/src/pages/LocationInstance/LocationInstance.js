@@ -26,7 +26,6 @@ class LocationInstance extends Component {
     return (
       <div>
         <CountryMap onStateClick={this.handleStateClick} />
-        {(!this.state.showMsa) ? null : <StateMap area={this.state.state} />}
       </div>
     );
   }

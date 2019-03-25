@@ -8,7 +8,10 @@ import {
 import { geoAlbersUsa } from "d3-geo";
 import { geoPath } from "d3-geo";
 import { geoTimes } from "d3-geo-projection";
-import geoData from '../static/usa-map.json';
+import { Motion, spring } from "react-motion"
+import StateMap from './StateMap';
+import stateData from '../static/usa-map.json';
+import msaData from '../static/msa-map.json';
 
 const wrapperStyles = {
   width: "100%",
@@ -26,21 +29,46 @@ class CountryMap extends Component {
     this.state = {
       center: [-97, 40],
       zoom: 1,
-    }
+      detail: false,
+      state: '',
+    };
+    this.handleReset = this.handleReset.bind(this);
+    // this.handleMSAClick = this.handleMSAClick.bind(this);
     this.handleStateClick = this.handleStateClick.bind(this);
     this.projection = this.projection.bind(this);
+  }
+  handleReset() {
+    this.setState({
+      center: [-97, 40],
+      zoom: 1,
+      detail: false,
+      state: '',
+    });
   }
   handleStateClick(geography) {
     console.log("Geo data: ", geography);
     const path = geoPath().projection(this.projection());
     const center = this.projection().invert(path.centroid(geography));
-    // const bounds = path.bounds(geography);
-    // const dx = bounds[1][0] - bounds[0][0];
-    // const dy = bounds[1][1] - bounds[0][1];
-    // const zoom = 0.9 / Math.max(dx / this.props.width, dy / this.props.height);
+    let zoom;
+    if(geography.properties.NAME_1 === "Alaska") {
+      zoom = 2.5;
+    } else if (geography.properties.NAME_1 === "Hawaii") {
+      zoom = 4.7;
+    } else {
+      const bounds = path.bounds(geography);
+      const dx = bounds[1][0] - bounds[0][0];
+      const dy = bounds[1][1] - bounds[0][1];
+      zoom = 0.1 / Math.max(dx / this.props.width, dy / this.props.height);
+    }
+    console.log(zoom);
     this.setState({
       center,
-      zoom: 2,
+      zoom,
+      detail: true,
+      state: {
+        name: geography.properties.NAME_1,
+        id: geography.properties.HASC_1.substring(geography.properties.HASC_1.length-2),
+      },
     });
     this.props.onStateClick(geography.properties);
   }
@@ -49,54 +77,116 @@ class CountryMap extends Component {
       .translate([this.props.width/2, this.props.height/2])
       .scale(160);
   }
-
   render() {
     return (
       <div className="map-container">
-        <ComposableMap
-          projection={geoAlbersUsa}
-          projectionConfig={{ scale: 1000 }}
-          width={this.props.width}
-          height={this.props.height}
+        <button onClick={this.handleReset}>Reset</button>
+        <Motion
+          defaultStyle={{
+            zoom: this.state.zoom,
+            x: this.state.center[0],
+            y: this.state.center[1],
+          }}
           style={{
-            width: "100%",
-            height: "auto",
+            zoom: spring(this.state.zoom, {stiffness: 210, damping: 20}),
+            x: spring(this.state.center[0], {stiffness: 210, damping: 20}),
+            y: spring(this.state.center[1], {stiffness: 210, damping: 20}),
           }}
           >
-          <ZoomableGroup center={this.state.center} zoom={this.state.zoom}>
-            <Geographies geography={geoData} disableOptimization>
-              {(geographies, projection) =>
-                geographies.map((geography, i) =>
-                <Geography
-                  key={i}
-                  geography={geography}
-                  projection={projection}
-                  onClick={this.handleStateClick}
-                  style={{
-                    default: {
-                      fill: "#ECEFF1",
-                      stroke: "#607D8B",
-                      strokeWidth: 0.75,
-                      outline: "none",
-                    },
-                    hover: {
-                      fill: "#CFD8DC",
-                      stroke: "#607D8B",
-                      strokeWidth: 0.75,
-                      outline: "none",
-                    },
-                    pressed: {
-                      fill: "#FF5722",
-                      stroke: "#607D8B",
-                      strokeWidth: 0.75,
-                      outline: "none",
-                    },
-                  }}
-                />
-              )}
-            </Geographies>
-          </ZoomableGroup>
-        </ComposableMap>
+          {({zoom, x, y}) => (
+            <ComposableMap
+              projection={geoAlbersUsa}
+              projectionConfig={{ scale: 1000 }}
+              width={this.props.width}
+              height={this.props.height}
+              style={{
+                width: "100%",
+                height: "auto",
+              }}
+              >
+              <ZoomableGroup center={[x,y]} zoom={zoom}>
+                <Geographies geography={stateData} disableOptimization>
+                  {(geographies, projection) =>
+                    geographies.map((geography, i) =>
+                    <Geography
+                      key={i}
+                      geography={geography}
+                      projection={projection}
+                      onClick={this.handleStateClick}
+                      style={
+                        (this.state.detail) ? {
+                          default: {
+                          fill: "#ECEFF1",
+                          stroke: "#607D8B",
+                          strokeWidth: 0.75,
+                          outline: "none",
+                        },
+                        } : {
+                        default: {
+                          fill: "#ECEFF1",
+                          stroke: "#607D8B",
+                          strokeWidth: 0.75,
+                          outline: "none",
+                        },
+                        hover: {
+                          fill: "#CFD8DC",
+                          stroke: "#607D8B",
+                          strokeWidth: 0.75,
+                          outline: "none",
+                        },
+                        pressed: {
+                          fill: "#FF5722",
+                          stroke: "#607D8B",
+                          strokeWidth: 0.75,
+                          outline: "none",
+                        },
+                      }}
+                    />
+                  )}
+                </Geographies>
+                <Geographies geography={msaData} disableOptimization>
+                  {(geographies, projection) =>
+                    geographies.map((geography, i) => {
+                    {/* let x = geography.properties.NAME; */}
+                    let stateID = geography.properties.NAME.substring(geography.properties.NAME.length-2);
+                    {/* console.log(x.substring(x.length-2)); */}
+                    if(stateID !== this.state.state.id) {
+                      return null;
+                    }
+                    return (
+                      <Geography
+                        key={i}
+                        geography={geography}
+                        projection={projection}
+                        onClick={this.handleAreaClick}
+                        style={{
+                          default: {
+                            fill: "#ECEFF1",
+                            stroke: "#607D8B",
+                            strokeWidth: 0.75,
+                            outline: "none",
+                          },
+                          hover: {
+                            fill: "#CFD8DC",
+                            stroke: "#607D8B",
+                            strokeWidth: 0.75,
+                            outline: "none",
+                          },
+                          pressed: {
+                            fill: "#FF5722",
+                            stroke: "#607D8B",
+                            strokeWidth: 0.75,
+                            outline: "none",
+                          },
+                        }}
+                      />
+                    )}
+                  )}
+                </Geographies>
+              </ZoomableGroup>
+            </ComposableMap>
+          )}
+        </Motion>
       </div>
     );
   }
