@@ -45,6 +45,7 @@ class Industry4dSchema(ma.ModelSchema):
     class Meta:
         model = Industry4dModel
         sqla_session = db.session
+        include_fk = True
 
 
 class Industry3dModel(db.Model):
@@ -91,3 +92,4 @@ class Industry3dSchema(ma.ModelSchema):
     class Meta:
         model = Industry3dModel
         sqla_session = db.session
+        include_fk = True

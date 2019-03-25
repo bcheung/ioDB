@@ -47,6 +47,10 @@ class Ind3dOccMajorSchema(ma.ModelSchema):
     class Meta:
         model = Ind3dOccMajorModel
         sqla_session = db.session
+        include_fk = True
+        exclude = tuple(prop.key
+                        for prop in Ind3dOccMajorModel.__mapper__.iterate_properties
+                        if hasattr(prop, 'direction'))
 
 
 class Ind4dOccMajorModel(db.Model):
@@ -95,6 +99,10 @@ class Ind4dOccMajorSchema(ma.ModelSchema):
     class Meta:
         model = Ind4dOccMajorModel
         sqla_session = db.session
+        include_fk = True
+        exclude = tuple(prop.key
+                        for prop in Ind4dOccMajorModel.__mapper__.iterate_properties
+                        if hasattr(prop, 'direction'))
 
 
 class Ind3dOccDetailedModel(db.Model):
@@ -143,6 +151,10 @@ class Ind3dOccDetailedSchema(ma.ModelSchema):
     class Meta:
         model = Ind3dOccDetailedModel
         sqla_session = db.session
+        include_fk = True
+        exclude = tuple(prop.key
+                        for prop in Ind3dOccDetailedModel.__mapper__.iterate_properties
+                        if hasattr(prop, 'direction'))
 
 
 class Ind4dOccDetailedModel(db.Model):
@@ -191,3 +203,7 @@ class Ind4dOccDetailedSchema(ma.ModelSchema):
     class Meta:
         model = Ind4dOccDetailedModel
         sqla_session = db.session
+        include_fk = True
+        exclude = tuple(prop.key
+                        for prop in Ind4dOccDetailedModel.__mapper__.iterate_properties
+                        if hasattr(prop, 'direction'))

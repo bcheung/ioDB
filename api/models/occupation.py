@@ -48,6 +48,8 @@ class OccupationDetailedSchema(ma.ModelSchema):
     class Meta:
         model = OccupationDetailedModel
         sqla_session = db.session
+        include_fk = True
+        include_fk = True
 
 
 class OccupationMajorModel(db.Model):
@@ -95,3 +97,4 @@ class OccupationMajorSchema(ma.ModelSchema):
     class Meta:
         model = OccupationMajorModel
         sqla_session = db.session
+        include_fk = True

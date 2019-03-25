@@ -51,6 +51,10 @@ class StateOccMajorSchema(ma.ModelSchema):
     class Meta:
         model = StateOccMajorModel
         sqla_session = db.session
+        include_fk = True
+        exclude = tuple(prop.key
+                        for prop in StateOccMajorModel.__mapper__.iterate_properties
+                        if hasattr(prop, 'direction'))
 
 
 class MetroAreaOccMajorModel(db.Model):
@@ -103,6 +107,10 @@ class MetroAreaOccMajorSchema(ma.ModelSchema):
     class Meta:
         model = MetroAreaOccMajorModel
         sqla_session = db.session
+        include_fk = True
+        exclude = tuple(prop.key
+                        for prop in MetroAreaOccMajorModel.__mapper__.iterate_properties
+                        if hasattr(prop, 'direction'))
 
 
 class StateOccDetailedModel(db.Model):
@@ -156,6 +164,10 @@ class StateOccDetailedSchema(ma.ModelSchema):
     class Meta:
         model = StateOccDetailedModel
         sqla_session = db.session
+        include_fk = True
+        exclude = tuple(prop.key
+                        for prop in StateOccDetailedModel.__mapper__.iterate_properties
+                        if hasattr(prop, 'direction'))
 
 
 class MetroAreaOccDetailedModel(db.Model):
@@ -208,3 +220,7 @@ class MetroAreaOccDetailedSchema(ma.ModelSchema):
     class Meta:
         model = MetroAreaOccDetailedModel
         sqla_session = db.session
+        include_fk = True
+        exclude = tuple(prop.key
+                        for prop in MetroAreaOccDetailedModel.__mapper__.iterate_properties
+                        if hasattr(prop, 'direction'))

@@ -45,6 +45,7 @@ class MetroAreaSchema(ma.ModelSchema):
     class Meta:
         model = MetroAreaModel
         sqla_session = db.session
+        include_fk = True
 
 
 class StateModel(db.Model):
@@ -91,3 +92,4 @@ class StateSchema(ma.ModelSchema):
     class Meta:
         model = StateModel
         sqla_session = db.session
+        include_fk = True
