@@ -9,6 +9,7 @@ from sqlalchemy.inspection import inspect
 
 import config
 from config import app, db
+from constants import all_model_switcher, all_schema_switcher, model_switcher, schema_switcher, joined_model_switcher, joined_schema_switcher, primary_key_switcher
 from models.visit import Visit
 from models.occupation import OccupationMajorModel, OccupationDetailedModel, OccupationMajorSchema, OccupationDetailedSchema
 from models.industry import Industry3dModel, Industry4dModel, Industry3dSchema, Industry4dSchema
@@ -57,91 +58,6 @@ def index():
     return output, 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
 
-all_model_switcher = {
-    'occupations_major': OccupationMajorModel,
-    'occupations_detailed': OccupationDetailedModel,
-    'industries_3d': Industry3dModel,
-    'industries_4d': Industry4dModel,
-    'states': StateModel,
-    'metro_areas': MetroAreaModel,
-    'ind_3d_occ_major': Ind3dOccMajorModel,
-    'ind_4d_occ_major': Ind4dOccMajorModel,
-    'ind_3d_occ_detailed': Ind3dOccDetailedModel,
-    'ind_4d_occ_detailed': Ind4dOccDetailedModel,
-    'state_occ_major': StateOccMajorModel,
-    'metro_area_occ_major': MetroAreaOccMajorModel,
-    'state_occ_detailed': StateOccDetailedModel,
-    'metro_area_occ_detailed': MetroAreaOccDetailedModel
-}
-
-all_schema_switcher = {
-    'occupations_major': OccupationMajorSchema,
-    'occupations_detailed': OccupationDetailedSchema,
-    'industries_3d': Industry3dSchema,
-    'industries_4d': Industry4dSchema,
-    'states': StateSchema,
-    'metro_areas': MetroAreaSchema,
-    'ind_3d_occ_major': Ind3dOccMajorSchema,
-    'ind_4d_occ_major': Ind4dOccMajorSchema,
-    'ind_3d_occ_detailed': Ind3dOccDetailedSchema,
-    'ind_4d_occ_detailed': Ind4dOccDetailedSchema,
-    'state_occ_major': StateOccMajorSchema,
-    'metro_area_occ_major': MetroAreaOccMajorSchema,
-    'state_occ_detailed': StateOccDetailedSchema,
-    'metro_area_occ_detailed': MetroAreaOccDetailedSchema
-}
-
-model_switcher = {
-    'occupations_major': OccupationMajorModel,
-    'occupations_detailed': OccupationDetailedModel,
-    'industries_3d': Industry3dModel,
-    'industries_4d': Industry4dModel,
-    'states': StateModel,
-    'metro_areas': MetroAreaModel
-}
-
-schema_switcher = {
-    'occupations_major': OccupationMajorSchema,
-    'occupations_detailed': OccupationDetailedSchema,
-    'industries_3d': Industry3dSchema,
-    'industries_4d': Industry4dSchema,
-    'states': StateSchema,
-    'metro_areas': MetroAreaSchema
-}
-
-
-joined_model_switcher = {
-    'ind_3d_occ_major': Ind3dOccMajorModel,
-    'ind_4d_occ_major': Ind4dOccMajorModel,
-    'ind_3d_occ_detailed': Ind3dOccDetailedModel,
-    'ind_4d_occ_detailed': Ind4dOccDetailedModel,
-    'state_occ_major': StateOccMajorModel,
-    'metro_area_occ_major': MetroAreaOccMajorModel,
-    'state_occ_detailed': StateOccDetailedModel,
-    'metro_area_occ_detailed': MetroAreaOccDetailedModel
-}
-
-joined_schema_switcher = {
-    'ind_3d_occ_major': Ind3dOccMajorSchema,
-    'ind_4d_occ_major': Ind4dOccMajorSchema,
-    'ind_3d_occ_detailed': Ind3dOccDetailedSchema,
-    'ind_4d_occ_detailed': Ind4dOccDetailedSchema,
-    'state_occ_major': StateOccMajorSchema,
-    'metro_area_occ_major': MetroAreaOccMajorSchema,
-    'state_occ_detailed': StateOccDetailedSchema,
-    'metro_area_occ_detailed': MetroAreaOccDetailedSchema
-}
-
-primary_key_switcher = {
-    'occupations_major': 'occupation_major_id',
-    'occupations_detailed': 'occupation_detailed_id',
-    'industries_3d': 'industry_3d_id',
-    'industries_4d': 'industry_4d_id',
-    'states': 'state_id',
-    'metro_areas': 'metro_area_id'
-}
-
-
 @app.route('/api/<tablename>')
 def get_table(tablename):
     data = []
@@ -181,10 +97,6 @@ def get_joined_row(tablename, id_1, id_2):
     data = {}
     model = joined_model_switcher.get(tablename, None)
     schema = joined_schema_switcher.get(tablename, None)
-    # keys = [key.name for key in inspect(model).primary_key]
-    # **{inspect(model).primary_key[0].key: id}
-    # model.query.get({'key': '113000', 'key2': '11-0000'})
-    # model.query.filter_by(industry_3d_id='113000')
     if model != None and schema != None:
         instance = model.query.get((id_1, id_2))
         data = schema().dump(instance).data
