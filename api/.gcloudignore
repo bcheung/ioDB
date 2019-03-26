@@ -17,3 +17,13 @@
 __pycache__/
 # Ignored by the build system
 /setup.cfg
+
+# cloud sql
+cloud_sql_proxy
+
+# credentials
+iodb-api-key.json
+
+# sql
+iodb.sql
+iodb_mod.sql

@@ -1,6 +1,13 @@
 runtime: python37
 service: api
+entrypoint: gunicorn -b :$PORT app:app
 
 handlers:
-- url: /api
-  script: auto
+    - url: /api
+      script: auto
+
+includes:
+    - env_variables.yaml
+
+beta_settings:
+    cloud_sql_instances: iodb-ee461l:us-central1:iodb

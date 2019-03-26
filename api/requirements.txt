@@ -1,1 +1,7 @@
 Flask==1.0.2
+Flask-SQLAlchemy==2.3.2
+gunicorn==19.9.0
+psycopg2==2.7.7
+flask-marshmallow==0.10.0 
+marshmallow==2.19.1 
+marshmallow-sqlalchemy==0.16.1
