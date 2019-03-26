@@ -30,9 +30,10 @@ class CountryMap extends Component {
       zoom: 1,
       detail: false,
       state: '',
+      MSA: '',
     };
     this.handleReset = this.handleReset.bind(this);
-    // this.handleMSAClick = this.handleMSAClick.bind(this);
+    this.handleMSAClick = this.handleMSAClick.bind(this);
     this.handleStateClick = this.handleStateClick.bind(this);
     this.projection = this.projection.bind(this);
   }
@@ -43,9 +44,10 @@ class CountryMap extends Component {
       detail: false,
       state: '',
     });
+    this.props.onReset();
   }
   handleStateClick(geography) {
-    console.log("Geo data: ", geography);
+    console.log("State data: ", geography);
     const path = geoPath().projection(this.projection());
     const center = this.projection().invert(path.centroid(geography));
     let zoom;
@@ -68,8 +70,16 @@ class CountryMap extends Component {
         name: geography.properties.NAME_1,
         id: geography.properties.HASC_1.substring(geography.properties.HASC_1.length-2),
       },
+      MSA: '',
     });
     this.props.onStateClick(geography.properties);
+  }
+  handleMSAClick(geography) {
+    console.log("MSA data: ", geography);
+    this.setState({
+      MSA: geography,
+    });
+    this.props.onMSAClick(geography);
   }
   projection() {
     return geoTimes()
@@ -78,7 +88,7 @@ class CountryMap extends Component {
   }
   render() {
     return (
-      <div className="map-container">
+      <div style={wrapperStyles}>
         <button onClick={this.handleReset}>Reset</button>
         <Motion
           defaultStyle={{
@@ -111,10 +121,12 @@ class CountryMap extends Component {
                       key={i}
                       geography={geography}
                       projection={projection}
-                      onClick={this.handleStateClick}
+                      onClick={
+                        (this.state.detail) ? null : this.handleStateClick
+                      }
                       style={
                         (this.state.detail) ? {
-                          default: {
+                        default: {
                           fill: "#ECEFF1",
                           stroke: "#607D8B",
                           strokeWidth: 0.75,
@@ -157,7 +169,7 @@ class CountryMap extends Component {
                         key={i}
                         geography={geography}
                         projection={projection}
-                        onClick={this.handleAreaClick}
+                        onClick={this.handleMSAClick}
                         style={{
                           default: {
                             fill: "#ECEFF1",
