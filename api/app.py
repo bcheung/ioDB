@@ -58,7 +58,7 @@ def index():
     return output, 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
 
-@app.route('/api/<tablename>')
+@app.route('/api/table/<tablename>')
 def get_table(tablename):
     data = []
     model = all_model_switcher.get(tablename, None)
@@ -69,7 +69,7 @@ def get_table(tablename):
     return jsonify(data)
 
 
-@app.route('/api/<tablename>/<id>')
+@app.route('/api/instance/<tablename>/<id>')
 def get_instance(tablename, id):
     data = {}
     model = model_switcher.get(tablename, None)
