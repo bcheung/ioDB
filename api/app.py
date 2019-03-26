@@ -5,6 +5,7 @@ import socket
 
 from flask import Flask, request, jsonify
 import sqlalchemy
+from sqlalchemy.inspection import inspect
 
 import config
 from config import app, db
@@ -109,6 +110,38 @@ schema_switcher = {
 }
 
 
+joined_model_switcher = {
+    'ind_3d_occ_major': Ind3dOccMajorModel,
+    'ind_4d_occ_major': Ind4dOccMajorModel,
+    'ind_3d_occ_detailed': Ind3dOccDetailedModel,
+    'ind_4d_occ_detailed': Ind4dOccDetailedModel,
+    'state_occ_major': StateOccMajorModel,
+    'metro_area_occ_major': MetroAreaOccMajorModel,
+    'state_occ_detailed': StateOccDetailedModel,
+    'metro_area_occ_detailed': MetroAreaOccDetailedModel
+}
+
+joined_schema_switcher = {
+    'ind_3d_occ_major': Ind3dOccMajorSchema,
+    'ind_4d_occ_major': Ind4dOccMajorSchema,
+    'ind_3d_occ_detailed': Ind3dOccDetailedSchema,
+    'ind_4d_occ_detailed': Ind4dOccDetailedSchema,
+    'state_occ_major': StateOccMajorSchema,
+    'metro_area_occ_major': MetroAreaOccMajorSchema,
+    'state_occ_detailed': StateOccDetailedSchema,
+    'metro_area_occ_detailed': MetroAreaOccDetailedSchema
+}
+
+primary_key_switcher = {
+    'occupations_major': 'occupation_major_id',
+    'occupations_detailed': 'occupation_detailed_id',
+    'industries_3d': 'industry_3d_id',
+    'industries_4d': 'industry_4d_id',
+    'states': 'state_id',
+    'metro_areas': 'metro_area_id'
+}
+
+
 @app.route('/api/<tablename>')
 def get_table(tablename):
     data = []
@@ -120,8 +153,46 @@ def get_table(tablename):
     return jsonify(data)
 
 
+@app.route('/api/<tablename>/<id>')
+def get_instance(tablename, id):
+    data = {}
+    model = model_switcher.get(tablename, None)
+    schema = schema_switcher.get(tablename, None)
+    if model != None and schema != None:
+        instance = model.query.get(id)
+        data = schema().dump(instance).data
+    return jsonify(data)
+
+
+@app.route('/api/joined_instance/<tablename>/<key_model>/<id>')
+def get_joined_instance(tablename, key_model, id):
+    data = []
+    model = joined_model_switcher.get(tablename, None)
+    schema = joined_schema_switcher.get(tablename, None)
+    key = primary_key_switcher.get(key_model, None)
+    if model != None and schema != None and key != None:
+        for instance in model.query.filter_by(**{key: id}).all():
+            data.append(schema().dump(instance).data)
+    return jsonify(data)
+
+
+@app.route('/api/joined_row/<tablename>/<id_1>/<id_2>')
+def get_joined_row(tablename, id_1, id_2):
+    data = {}
+    model = joined_model_switcher.get(tablename, None)
+    schema = joined_schema_switcher.get(tablename, None)
+    # keys = [key.name for key in inspect(model).primary_key]
+    # **{inspect(model).primary_key[0].key: id}
+    # model.query.get({'key': '113000', 'key2': '11-0000'})
+    # model.query.filter_by(industry_3d_id='113000')
+    if model != None and schema != None:
+        instance = model.query.get((id_1, id_2))
+        data = schema().dump(instance).data
+    return jsonify(data)
+
+
 @app.route('/api/list/<tablename>')
-def list_table(tablename):
+def get_list(tablename):
     data = []
     model = model_switcher.get(tablename, None)
     if model != None:
