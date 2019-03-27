@@ -4,6 +4,8 @@ import { Jumbotron, Container, Row, Col, Image, Button } from 'react-bootstrap';
 import { BarComponent } from '../../components/BarComponent';
 import { PieComponent } from '../../components/PieComponent';
 import { IndustryComponent } from '../../components/IndustryComponent';
+import { IndustryTableComponent } from '../../components/IndustryTableComponent';
+import { IndustryWageTableComponent } from '../../components/IndustryWageTableComponent';
 import './IndustryInstances.css';
 
 const data = {
@@ -25,7 +27,30 @@ const data = {
         ]
     }
 };
-
+const occupationWageData = {
+    industries: {
+        headers: ['Occupation', 'Mean Wage'],
+        values: [
+            ['Healthcare Practitioners and Technical Occupations', 112220],
+            ['Healthcare Support Occupations', 38580],
+            ['Other Healthcare Support Occupations', 38580],
+            ['Miscellaneous Healthcare Support', 38580],
+            ['Dental Assistants', 38680]
+        ]
+    }
+};
+const occupationData = {
+    industries: {
+        headers: ['Occupation', 'SOC', 'Employment', 'Annual Mean'],
+        values: [
+            ['Healthcare Practitioners and Technical Occupations', '290000', 319720, 112220],
+            ['Healthcare Support Occupations', '310000', 311330, 38580],
+            ['Other Healthcare Support Occupations', '319000', 3111270, 38580],
+            ['Miscellaneous Healthcare Support', '319090', 311250, 38580],
+            ['Dental Assistants', '319091', 305150, 38680]
+        ]
+    }
+};
 const chartData = {
     labels: ['1', '2', '3', '4', '5'],
     datasets: [
@@ -60,61 +85,50 @@ class IndustryInstances extends Component {
                 <div className="app-body">
                     <main className="main">
                         {/* // Industry + Name(from backend) */}
-                        <IndustryComponent data={data} />
+
+                        <p>
+                            Industry operators are primarily engaged in the independent practice of general or
+                            specialized dentistry or dental surgery. These practitioners operate private or group
+                            practices in their own offices (e.g. centers or clinics) or in the facilities of others,
+                            such as hospitals or HMO medical centers.
+                        </p>
+
+                        <p>NAICS: 621200</p>
+                        <p>Annual mean wage: $64,590</p>
+
                         {/* Charts located at: https://www.chartjs.org/docs/latest/ */}
 
-                        <BarComponent
-                            data={chartData}
-                            options={{
-                                maintainAspectRatio: true
-                            }}
-                        />
+                        <h2> Top Industries By Wage</h2>
 
-                        <PieComponent
-                            data={chartData}
-                            options={{
-                                maintainAspectRatio: true
-                            }}
-                        />
+                        <div className="row">
+                            <div className="col-md-2 col-md-offset-5" />
+                            <BarComponent
+                                data={chartData}
+                                options={{
+                                    maintainAspectRatio: true
+                                }}
+                            />
+                        </div>
 
-                        {/* // Top Occupations for (Industry) */}
+                        <h2> Top Industries in the United States</h2>
+                        <div className="row">
+                            <div className="col-md-2 col-md-offset-5" />
+                            <PieComponent
+                                data={chartData}
+                                options={{
+                                    maintainAspectRatio: true
+                                }}
+                            />
+                        </div>
 
-                        {/* // Includes Graphs, Tables, and Statistics */}
-
-                        {/* // Occupations for Industry */}
+                        <h2>Occupations in this Industry</h2>
+                        {/* We need a table here */}
+                        <IndustryTableComponent data={occupationData} />
                     </main>
                     <aside className="aside-menu">
-                        <h> Top Industry Occupations by Wage</h>
+                        <h2> Top Industry Occupations by Wage</h2>
 
-                        <table className="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Wage</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td colSpan="2">Larry the Bird</td>
-                                    <td>@twitter</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <IndustryWageTableComponent data={occupationWageData} />
                     </aside>
                 </div>
                 <footer className="app-footer">

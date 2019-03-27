@@ -54,7 +54,6 @@ class BarComponent extends Component {
         const { data } = this.props;
         return (
             <div style={{ position: 'relative', width: 600, height: 550 }}>
-                <h3> Chart Samples </h3>
                 <Bar
                     // this data will call the data in the state
                     options={{

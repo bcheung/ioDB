@@ -23,7 +23,6 @@ class IndustryPage extends Component {
                     <Link to="/industry/Dentists">Industry1</Link>
                     <Link to="/industry/CEManufacturing">Industry2</Link>
                     <Link to="/industry/Research">Industry3</Link>
-                    <Link to="/IndustryInstances/IndustryInstances">IndustryInstances</Link>
                     {/* For some reason this doesn't link... */}
                 </p>
             </div>
