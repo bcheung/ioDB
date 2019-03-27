@@ -59,6 +59,53 @@ def populate_occupations():
     return line_cnt, major_cnt, detailed_cnt
 
 
+def populate_occupation_descriptions_2010():
+    # populate occupation descriptions
+    line_cnt = detailed_cnt = 0
+    with open('data/soc_2010_definitions.csv', 'r') as f:
+        reader = csv.reader(f)
+        for line in reader:
+            if line_cnt > 0:
+                occupation_data = line
+                occ_code = occupation_data[0]
+                description = occupation_data[2]
+                # occupations_detailed table
+                occupation = OccupationDetailedModel.query.get(occ_code)
+                if occupation != None:
+                    occupation.description = description
+                    detailed_cnt += 1
+            line_cnt += 1
+    db.session.commit()
+    return line_cnt, detailed_cnt
+
+
+def populate_occupation_descriptions_2018():
+    # populate occupation descriptions
+    line_cnt = detailed_cnt = same = diff = 0
+    with open('data/soc_2018_definitions.csv', 'r') as f:
+        reader = csv.reader(f)
+        for line in reader:
+            if line_cnt > 0:
+                occupation_data = line
+                occ_group = occupation_data[0]
+                if occ_group == "Detailed":
+                    occ_code = occupation_data[1]
+                    description = occupation_data[3]
+                    # occupations_detailed table
+                    occupation = OccupationDetailedModel.query.get(occ_code)
+                    if occupation != None:
+                        if occupation.description == "":
+                            occupation.description = description
+                            detailed_cnt += 1
+                        elif occupation.description == description:
+                            same += 1
+                        else:
+                            diff += 1
+            line_cnt += 1
+    db.session.commit()
+    return line_cnt, detailed_cnt, same, diff
+
+
 def populate_industries_3d():
     # Populate industries_3d, ind_3d_occ_major, ind_3d_occ_detailed tables
     with open('data/industries_3d.csv', 'r') as f:
@@ -117,48 +164,88 @@ def populate_industries_4d():
             if line_cnt > 0:
                 industry_data = line
                 industry_4d_id = industry_data[0]
-                title = industry_data[1]
-                occ_code = industry_data[2]
-                occ_group = industry_data[4]
-                total_employment = parse_int(industry_data[5])
-                hourly_mean = parse_float(industry_data[9])
-                hourly_10 = parse_float(industry_data[12])
-                hourly_25 = parse_float(industry_data[13])
-                hourly_median = parse_float(industry_data[14])
-                hourly_75 = parse_float(industry_data[15])
-                hourly_90 = parse_float(industry_data[16])
-                annual_mean = parse_int(industry_data[10])
-                annual_10 = parse_int(industry_data[17])
-                annual_25 = parse_int(industry_data[18])
-                annual_median = parse_int(industry_data[19])
-                annual_75 = parse_int(industry_data[20])
-                annual_90 = parse_int(industry_data[21])
-                if occ_group == 'total':    # industries_4d table
-                    industry_4d = Industry4dModel(
-                        industry_4d_id, title, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
-                    db.session.add(industry_4d)
-                    # find industry_3d and link industry_4d
-                    industry_3d = Industry3dModel.query.filter_by(
-                        id=(industry_4d_id[0:3] + '000')).first()
-                    industry_3d.industries_4d.append(industry_4d)
-                    ind_4d_cnt += 1
-                elif occ_group == 'major':  # ind_4d_occ_major table
-                    ind_4d_occ_major = Ind4dOccMajorModel(
-                        total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
-                    ind_4d_occ_major.industry_4d_id = industry_4d_id
-                    ind_4d_occ_major.occupation_major_id = occ_code
-                    db.session.add(ind_4d_occ_major)
-                    major_cnt += 1
-                elif occ_group == 'detailed':   # ind_4d_occ_detailed table
-                    ind_4d_occ_detailed = Ind4dOccDetailedModel(
-                        total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
-                    ind_4d_occ_detailed.industry_4d_id = industry_4d_id
-                    ind_4d_occ_detailed.occupation_detailed_id = occ_code
-                    db.session.add(ind_4d_occ_detailed)
-                    detailed_cnt += 1
+                if industry_4d_id[3:6] != "000":
+                    title = industry_data[1]
+                    occ_code = industry_data[2]
+                    occ_group = industry_data[4]
+                    total_employment = parse_int(industry_data[5])
+                    hourly_mean = parse_float(industry_data[9])
+                    hourly_10 = parse_float(industry_data[12])
+                    hourly_25 = parse_float(industry_data[13])
+                    hourly_median = parse_float(industry_data[14])
+                    hourly_75 = parse_float(industry_data[15])
+                    hourly_90 = parse_float(industry_data[16])
+                    annual_mean = parse_int(industry_data[10])
+                    annual_10 = parse_int(industry_data[17])
+                    annual_25 = parse_int(industry_data[18])
+                    annual_median = parse_int(industry_data[19])
+                    annual_75 = parse_int(industry_data[20])
+                    annual_90 = parse_int(industry_data[21])
+                    if occ_group == 'total':    # industries_4d table
+                        industry_4d = Industry4dModel(
+                            industry_4d_id, title, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
+                        db.session.add(industry_4d)
+                        # find industry_3d and link industry_4d
+                        industry_3d = Industry3dModel.query.filter_by(
+                            id=(industry_4d_id[0:3] + '000')).first()
+                        industry_3d.industries_4d.append(industry_4d)
+                        ind_4d_cnt += 1
+                    elif occ_group == 'major':  # ind_4d_occ_major table
+                        ind_4d_occ_major = Ind4dOccMajorModel(
+                            total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
+                        ind_4d_occ_major.industry_4d_id = industry_4d_id
+                        ind_4d_occ_major.occupation_major_id = occ_code
+                        db.session.add(ind_4d_occ_major)
+                        major_cnt += 1
+                    elif occ_group == 'detailed':   # ind_4d_occ_detailed table
+                        ind_4d_occ_detailed = Ind4dOccDetailedModel(
+                            total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
+                        ind_4d_occ_detailed.industry_4d_id = industry_4d_id
+                        ind_4d_occ_detailed.occupation_detailed_id = occ_code
+                        db.session.add(ind_4d_occ_detailed)
+                        detailed_cnt += 1
             line_cnt += 1
         db.session.commit()
         return line_cnt, ind_4d_cnt, major_cnt, detailed_cnt
+
+
+def populate_industry_descriptions():
+    # populate industry descriptions
+    line_cnt = ind_3d_cnt = ind_4d_cnt = 0
+    null = False
+    with open('data/2017_NAICS_Descriptions_edited.csv', 'r') as f:
+        reader = csv.reader(f)
+        for line in reader:
+            if line_cnt > 0:
+                industry_data = line
+                industry_id = industry_data[0]
+                description = industry_data[2]
+                id_len = len(industry_id)
+                if id_len == 3:
+                    industry_id = industry_id + "000"
+                    industry = Industry3dModel.query.get(industry_id)
+                    if industry != None:
+                        if description == "NULL":
+                            null = True
+                        else:
+                            industry.description = description
+                            ind_3d_cnt += 1
+                elif id_len == 4:
+                    industry_id = industry_id + "00"
+                    industry = Industry4dModel.query.get(industry_id)
+                    if industry != None:
+                        if description == "NULL":
+                            null = True
+                        else:
+                            industry.description = description
+                            ind_4d_cnt += 1
+                elif null:
+                    null = False
+                    industry.description = description
+                    ind_4d_cnt += 1
+            line_cnt += 1
+    db.session.commit()
+    return line_cnt, ind_3d_cnt, ind_4d_cnt
 
 
 def populate_states():
@@ -301,12 +388,21 @@ if __name__ == '__main__':
     line_cnt, major_cnt, detailed_cnt = populate_occupations()
     print('Done populating occupation tables! line_cnt: {}, major_cnt: {}, detailed_cnt: {}'.format(
         line_cnt, major_cnt, detailed_cnt))
+    line_cnt, detailed_cnt = populate_occupation_descriptions_2010()
+    print('Done populating occupation 2010 descriptions! line_cnt: {}, detailed_cnt: {}'.format(
+        line_cnt, detailed_cnt))
+    line_cnt, detailed_cnt, same, diff = populate_occupation_descriptions_2018()
+    print('Done populating occupation 2018 descriptions! line_cnt: {}, detailed_cnt: {}, same: {}, diff: {}'.format(
+        line_cnt, detailed_cnt, same, diff))
     line_cnt, ind_3d_cnt, major_cnt, detailed_cnt = populate_industries_3d()
     print('Done populating industry 3d tables! line_cnt: {}, ind_3d_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
         line_cnt, ind_3d_cnt, major_cnt, detailed_cnt))
     line_cnt, ind_4d_cnt, major_cnt, detailed_cnt = populate_industries_4d()
     print('Done populating industry 4d tables! line_cnt: {}, ind_4d_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
         line_cnt, ind_4d_cnt, major_cnt, detailed_cnt))
+    line_cnt, ind_3d_cnt, ind_4d_cnt = populate_industry_descriptions()
+    print('Done populating industry descriptions! line_cnt: {}, ind_3d_cnt: {} ind_4d_cnt: {}'.format(
+        line_cnt, ind_3d_cnt, ind_4d_cnt))
     line_cnt, state_cnt, major_cnt, detailed_cnt = populate_states()
     print('Done populating state tables! line_cnt: {}, state_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
         line_cnt, state_cnt, major_cnt, detailed_cnt))
