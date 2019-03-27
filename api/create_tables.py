@@ -248,6 +248,21 @@ def populate_industry_descriptions():
     return line_cnt, ind_3d_cnt, ind_4d_cnt
 
 
+def get_state_population(state):
+    with open('data/States.csv', 'r') as f:
+        line_cnt = 0
+        reader = csv.reader(f)
+        for line in reader:
+            if line_cnt > 0:
+                data = line
+                name = data[0]
+                population = parse_int(data[1])
+                if name == state:
+                    return population
+            line_cnt += 1
+        return 0
+
+
 def populate_states():
     # Populate states, states_occ_major, states_occ_detailed tables
     with open('data/occupations_by_state.csv', 'r') as f:
@@ -276,8 +291,9 @@ def populate_states():
                 annual_75 = parse_int(state_data[21])
                 annual_90 = parse_int(state_data[22])
                 if occ_group == 'total':    # states table
+                    total_population = get_state_population(name)
                     state = StateModel(
-                        state_id, name, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
+                        state_id, name, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90, total_population)
                     db.session.add(state)
                     states_cnt += 1
                 elif occ_group == 'major':  # state_occ_major table
