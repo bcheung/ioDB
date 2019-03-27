@@ -6,6 +6,7 @@ import socket
 from flask import Flask, request, jsonify
 import sqlalchemy
 from sqlalchemy.inspection import inspect
+from sqlalchemy import desc
 
 import config
 from config import app, db
@@ -58,7 +59,7 @@ def index():
     return output, 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
 
-@app.route('/api/<tablename>')
+@app.route('/api/table/<tablename>')
 def get_table(tablename):
     data = []
     model = all_model_switcher.get(tablename, None)
@@ -69,7 +70,7 @@ def get_table(tablename):
     return jsonify(data)
 
 
-@app.route('/api/<tablename>/<id>')
+@app.route('/api/instance/<tablename>/<id>')
 def get_instance(tablename, id):
     data = {}
     model = model_switcher.get(tablename, None)
@@ -110,6 +111,17 @@ def get_list(tablename):
     if model != None:
         for instance in model.query.with_entities(model.id, model.title):
             data.append({'value': instance.id, 'label': instance.title})
+    return jsonify(data)
+
+
+@app.route('/api/top_ten/<tablename>/<column_name>')
+def get_top_ten(tablename, column_name):
+    data = []
+    model = model_switcher.get(tablename, None)
+    if model != None:
+        for instance in model.query.with_entities(model.id, model.title, column_name).order_by(desc(column_name)).limit(10):
+            data.append({'id': instance.id, 'title': instance.title,
+                         column_name: getattr(instance, column_name)})
     return jsonify(data)
 
 
