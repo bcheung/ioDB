@@ -1,4 +1,5 @@
 from config import db, ma
+from marshmallow import fields
 
 
 class MetroAreaModel(db.Model):
@@ -42,10 +43,12 @@ class MetroAreaModel(db.Model):
 
 
 class MetroAreaSchema(ma.ModelSchema):
+    state = fields.Nested(
+        'self', only=["id", "title"])
+
     class Meta:
         model = MetroAreaModel
         sqla_session = db.session
-        include_fk = True
 
 
 class StateModel(db.Model):
@@ -89,6 +92,9 @@ class StateModel(db.Model):
 
 
 class StateSchema(ma.ModelSchema):
+    metro_areas = fields.Nested(
+        'self', only=["id", "title"], many=True)
+
     class Meta:
         model = StateModel
         sqla_session = db.session

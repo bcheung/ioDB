@@ -1,4 +1,5 @@
 from config import db, ma
+from marshmallow import fields
 
 
 class OccupationDetailedModel(db.Model):
@@ -45,11 +46,12 @@ class OccupationDetailedModel(db.Model):
 
 
 class OccupationDetailedSchema(ma.ModelSchema):
+    occupation_major = fields.Nested(
+        'self', only=["id", "title"])
+
     class Meta:
         model = OccupationDetailedModel
         sqla_session = db.session
-        include_fk = True
-        include_fk = True
 
 
 class OccupationMajorModel(db.Model):
@@ -94,6 +96,9 @@ class OccupationMajorModel(db.Model):
 
 
 class OccupationMajorSchema(ma.ModelSchema):
+    occupations_detailed = fields.Nested(
+        'self', only=["id", "title"], many=True)
+
     class Meta:
         model = OccupationMajorModel
         sqla_session = db.session
