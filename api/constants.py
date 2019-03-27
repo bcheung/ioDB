@@ -87,3 +87,29 @@ primary_key_switcher = {
     'states': 'state_id',
     'metro_areas': 'metro_area_id'
 }
+
+def column_switcher(table, columnname):
+    if columnname == 'total_employment':
+        return table.total_employment
+    elif columnname == 'hourly_median':
+        return table.hourly_median
+    elif columnname == 'annual_median':
+        return table.annual_median
+    # if table is Industry3dModel:
+    #     if columnname == 'total_employment':
+    #         return Industry3dModel.total_employment
+    #     elif columnname == 'hourly_median':
+    #         return Industry3dModel.hourly_median
+    #     elif columnname == 'annual_median':
+    #         return Industry3dModel.annual_median
+    # elif table is StateModel:
+    #     if columnname == 'total_employment':
+    #         return StateModel.total_employment
+    #     elif columnname == 'hourly_median':
+    #         return StateModel.hourly_median
+    #     elif columnname == 'annual_median':
+    #         return StateModel.annual_median
+
+    else:
+        return 0
+
