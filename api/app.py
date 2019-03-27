@@ -6,10 +6,11 @@ import socket
 from flask import Flask, request, jsonify
 import sqlalchemy
 from sqlalchemy.inspection import inspect
+from sqlalchemy import desc
 
 import config
 from config import app, db
-from constants import all_model_switcher, all_schema_switcher, model_switcher, schema_switcher, joined_model_switcher, joined_schema_switcher, primary_key_switcher
+from constants import all_model_switcher, all_schema_switcher, model_switcher, schema_switcher, joined_model_switcher, joined_schema_switcher, primary_key_switcher, column_switcher
 from models.visit import Visit
 from models.occupation import OccupationMajorModel, OccupationDetailedModel, OccupationMajorSchema, OccupationDetailedSchema
 from models.industry import Industry3dModel, Industry4dModel, Industry3dSchema, Industry4dSchema
@@ -58,7 +59,7 @@ def index():
     return output, 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
 
-@app.route('/api/<tablename>')
+@app.route('/api/table/<tablename>')
 def get_table(tablename):
     data = []
     model = all_model_switcher.get(tablename, None)
@@ -69,7 +70,7 @@ def get_table(tablename):
     return jsonify(data)
 
 
-@app.route('/api/<tablename>/<id>')
+@app.route('/api/instance/<tablename>/<id>')
 def get_instance(tablename, id):
     data = {}
     model = model_switcher.get(tablename, None)
@@ -111,6 +112,26 @@ def get_list(tablename):
         for instance in model.query.with_entities(model.id, model.title):
             data.append({'value': instance.id, 'label': instance.title})
     return jsonify(data)
+
+
+@app.route('/api/top_ten/<tablename>/<columnname>')
+def get_top_ten(tablename, columnname):
+    data = []
+    model = model_switcher.get(tablename, None)
+    schema = schema_switcher.get(tablename, None)
+    column = column_switcher(model, columnname)
+    if model != None and schema != None:
+        for instance in model.query.with_entities(model.id, model.title, column).order_by(desc(column)).limit(10):
+            if columnname == 'total_employment':
+                data.append({'id': instance.id, 'title': instance.title, 'total_employment': instance.total_employment})
+            elif columnname == 'hourly_median':
+                data.append({'id': instance.id, 'title': instance.title, 'hourly_median': instance.hourly_median})
+            elif columnname == 'annual_median':
+                data.append({'id': instance.id, 'title': instance.title, 'annual_median': instance.annual_median})
+    return jsonify(data)
+
+
+
 
 
 @app.errorhandler(500)
