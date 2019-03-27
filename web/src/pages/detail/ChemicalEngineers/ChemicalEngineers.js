@@ -1,12 +1,43 @@
 import React, { Component } from 'react';
+import ReactMapboxGL, { Layer, Feature } from 'react-mapbox-gl';
+import MapGL from '@urbica/react-map-gl';
 import { OccupationComponent } from '../../../components/OccupationComponent';
 import './ChemicalEngineers.css';
 
-class ChemicalEngineers extends Component {
-    render() {
-        return <OccupationComponent data={data} />;
+const options = [
+    {
+        name: 'Population',
+        description: 'Estimated total population',
+        property: 'pop_est',
+        stops: [
+            [0, '#f8d5cc'],
+            [1000000, '#f4bfb6'],
+            [5000000, '#f1a8a5'],
+            [10000000, '#ee8f9a'],
+            [50000000, '#ec739b'],
+            [100000000, '#dd5ca8'],
+            [250000000, '#c44cc0'],
+            [500000000, '#9f43d7'],
+            [1000000000, '#6e40e6']
+        ]
+    },
+    {
+        name: 'GDP',
+        description: 'Estimate total GDP in millions of dollars',
+        property: 'gdp_md_est',
+        stops: [
+            [0, '#f8d5cc'],
+            [1000, '#f4bfb6'],
+            [5000, '#f1a8a5'],
+            [10000, '#ee8f9a'],
+            [50000, '#ec739b'],
+            [100000, '#dd5ca8'],
+            [250000, '#c44cc0'],
+            [5000000, '#9f43d7'],
+            [10000000, '#6e40e6']
+        ]
     }
-}
+];
 
 const data = {
     info: {
@@ -52,5 +83,27 @@ const data = {
         ]
     }
 };
+
+class ChemicalEngineers extends Component {
+    render() {
+        return (
+            <div>
+                <MapGL
+                    style={{ width: '100%', height: '400px' }}
+                    mapStyle="mapbox://styles/mapbox/streets-v9"
+                    accessToken="pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw"
+                    latitude={39.83}
+                    longitude={-95.58}
+                    zoom={2.5}
+                />
+                <OccupationComponent data={data} />;
+            </div>
+        );
+    }
+}
+
+const Map = ReactMapboxGL({
+    accessToken: 'pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw'
+});
 
 export default ChemicalEngineers;
