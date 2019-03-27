@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CountryMap from '../../components/CountryMap';
+import axios from 'axios';
 
 class LocationInstance extends Component {
   constructor() {
@@ -7,22 +8,44 @@ class LocationInstance extends Component {
     this.state = {
       state: '',
       showStateInfo: false,
+      stateData: {},
       MSA: '',
       showMSAInfo: false,
+      MSAData: {},
     };
 
     this.handleStateClick = this.handleStateClick.bind(this);
     this.handleMSAClick = this.handleMSAClick.bind(this);
     this.handleReset = this.handleReset.bind(this);
   }
-  handleStateClick(geographyProps) {
+  async handleStateClick(geographyProps) {
+    let stateID = geographyProps.HASC_1.substring(geographyProps.HASC_1.length-2);
+
+    const proxyurl = 'https://cors-anywhere.herokuapp.com/';
+    const url = 'http://www.iodb.info/api/instance/states/'+stateID;
+    
+    // await fetch(`${proxyurl}${url}`)
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     console.log(data);
+    //     this.setState({ stateData: data });
+    //   });
+    // const response = await axios.get(`${url}`);
+
+    const response = await fetch(`${proxyurl}${url}`);
+    const data = await response.json();
+    console.log(data);
+
     this.setState({
       state: {
         name: geographyProps.NAME_1,
-        id: geographyProps.HASC_1.substring(geographyProps.HASC_1.length-2),
+        id: stateID,
       },
       showStateInfo: true,
+      stateData: data,
     });
+
+    console.log(this.state.state.stateData);
   }
   handleMSAClick(geographyProps) {
     this.setState({
@@ -33,7 +56,14 @@ class LocationInstance extends Component {
     })
   }
   handleReset() {
-
+    this.setState({
+      state: '',
+      showStateInfo: false,
+      stateData: {},
+      MSA: '',
+      showMSAInfo: false,
+      MSAData: {},
+    });
   }
 
   render() {
@@ -43,10 +73,11 @@ class LocationInstance extends Component {
         <CountryMap 
           onStateClick={this.handleStateClick} 
           onMSAClick={this.handleMSAClick} 
-          onReset={this.handlReset}
+          onReset={this.handleReset}
         />
         {/* <state info component></state>
         <msa info component></msa> */}
+        {this.state.showStateInfo ? this.state.stateData.annual_10 : null}
       </div>
     );
   }

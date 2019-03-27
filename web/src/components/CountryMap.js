@@ -29,7 +29,10 @@ class CountryMap extends Component {
       center: [-97, 40],
       zoom: 1,
       detail: false,
-      state: '',
+      state: {
+        name: '',
+        id: '',
+      },
       MSA: '',
     };
     this.handleReset = this.handleReset.bind(this);
@@ -122,10 +125,14 @@ class CountryMap extends Component {
                       geography={geography}
                       projection={projection}
                       onClick={
-                        (this.state.detail) ? null : this.handleStateClick
+                        (this.state.detail &&
+                          this.state.state.id === geography.properties.HASC_1.substring(geography.properties.HASC_1.length-2)
+                          ? null : this.handleStateClick)
                       }
                       style={
-                        (this.state.detail) ? {
+                        (this.state.detail &&
+                          this.state.state.id === geography.properties.HASC_1.substring(geography.properties.HASC_1.length-2))
+                          ? {
                         default: {
                           fill: "#ECEFF1",
                           stroke: "#607D8B",
