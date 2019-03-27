@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import ReactMapboxGL, { Layer, Feature } from 'react-mapbox-gl';
-import MapGL from '@urbica/react-map-gl';
+import mapboxgl from 'mapbox-gl';
+import data from '../../../components/data.json';
+// import data from './usa.topo.json';
 import { OccupationComponent } from '../../../components/OccupationComponent';
 import './ChemicalEngineers.css';
+
+mapboxgl.accessToken =
+    'pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw';
 
 const options = [
     {
@@ -39,7 +43,7 @@ const options = [
     }
 ];
 
-const data = {
+const data2 = {
     info: {
         occupation: 'Chemical Engineers',
         naics: '(17-2041)',
@@ -85,25 +89,80 @@ const data = {
 };
 
 class ChemicalEngineers extends Component {
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            active: options[0]
+        };
+    }
+
+    componentDidMount() {
+        this.map = new mapboxgl.Map({
+            container: this.mapContainer,
+            style: 'mapbox://styles/mapbox/streets-v9',
+            center: [-96.5, 40],
+            zoom: 2.5
+        });
+
+        this.map.on('load', () => {
+            this.map.addSource('states', {
+                type: 'geojson',
+                data
+            });
+
+            this.map.addLayer(
+                {
+                    id: 'countries',
+                    type: 'fill',
+                    source: 'states'
+                },
+                'country-label-lg'
+            ); // ID metches `mapbox/streets-v9`
+
+            this.setFill();
+        });
+    }
+
+    componentDidUpdate() {
+        this.setFill();
+    }
+
+    setFill() {
+        const { property, stops } = this.state.active;
+        this.map.setPaintProperty('countries', 'fill-color', {
+            property,
+            stops
+        });
+    }
+
+    map;
+
     render() {
+        const { name, description, stops, property } = this.state.active;
+        const renderLegendKeys = (stop, i) => (
+            <div key={i} className="txt-s">
+                <span
+                    className="mr6 round-full w12 h12 inline-block align-middle"
+                    style={{ backgroundColor: stop[1] }}
+                />
+                <span>{`${stop[0].toLocaleString()}`}</span>
+            </div>
+        );
+
         return (
             <div>
-                <MapGL
-                    style={{ width: '100%', height: '400px' }}
-                    mapStyle="mapbox://styles/mapbox/streets-v9"
-                    accessToken="pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw"
-                    latitude={39.83}
-                    longitude={-95.58}
-                    zoom={2.5}
-                />
-                <OccupationComponent data={data} />;
+                <div ref={el => (this.mapContainer = el)} className="absolute top right left bottom" />
+                <div className="bg-white absolute bottom right mr12 mb24 py12 px12 shadow-darken10 round z1 wmax180">
+                    <div className="mb6">
+                        <h2 className="txt-bold txt-s block">{name}</h2>
+                        <p className="txt-s color-gray">{description}</p>
+                    </div>
+                    {stops.map(renderLegendKeys)}
+                </div>
+                <OccupationComponent data={data2} />;
             </div>
         );
     }
 }
-
-const Map = ReactMapboxGL({
-    accessToken: 'pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw'
-});
 
 export default ChemicalEngineers;
