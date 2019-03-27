@@ -138,9 +138,14 @@ class AboutPage extends Component {
         //     });
         //   });
 
-        const response = await fetch(url);
-        const data = await response.json();
+        // fetch() and json() are asynchronous
+        // we use await to make the main thread wait until the asynchronous thread terminates and returns a value
+        const response = await fetch(url); // make get request to url and wait until response is returned
+        const data = await response.json(); // convert response to a json object and wait until the data is returned
+        // loop through array
         data.forEach(contributor => {
+            // for each element in array (contributor is the variable for the element)
+            // do something
             const username = contributor.author.login;
             this.contributorStats[username].commits = contributor.total;
             commitsTotal += contributor.total;
