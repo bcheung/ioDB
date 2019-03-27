@@ -5,9 +5,12 @@ import socket
 
 from flask import Flask, request, jsonify
 import sqlalchemy
+from sqlalchemy.inspection import inspect
+from sqlalchemy import desc
 
 import config
 from config import app, db
+from constants import all_model_switcher, all_schema_switcher, model_switcher, schema_switcher, joined_model_switcher, joined_schema_switcher, primary_key_switcher
 from models.visit import Visit
 from models.occupation import OccupationMajorModel, OccupationDetailedModel, OccupationMajorSchema, OccupationDetailedSchema
 from models.industry import Industry3dModel, Industry4dModel, Industry3dSchema, Industry4dSchema
@@ -56,60 +59,7 @@ def index():
     return output, 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
 
-all_model_switcher = {
-    'occupations_major': OccupationMajorModel,
-    'occupations_detailed': OccupationDetailedModel,
-    'industries_3d': Industry3dModel,
-    'industries_4d': Industry4dModel,
-    'states': StateModel,
-    'metro_areas': MetroAreaModel,
-    'ind_3d_occ_major': Ind3dOccMajorModel,
-    'ind_4d_occ_major': Ind4dOccMajorModel,
-    'ind_3d_occ_detailed': Ind3dOccDetailedModel,
-    'ind_4d_occ_detailed': Ind4dOccDetailedModel,
-    'state_occ_major': StateOccMajorModel,
-    'metro_area_occ_major': MetroAreaOccMajorModel,
-    'state_occ_detailed': StateOccDetailedModel,
-    'metro_area_occ_detailed': MetroAreaOccDetailedModel
-}
-
-all_schema_switcher = {
-    'occupations_major': OccupationMajorSchema,
-    'occupations_detailed': OccupationDetailedSchema,
-    'industries_3d': Industry3dSchema,
-    'industries_4d': Industry4dSchema,
-    'states': StateSchema,
-    'metro_areas': MetroAreaSchema,
-    'ind_3d_occ_major': Ind3dOccMajorSchema,
-    'ind_4d_occ_major': Ind4dOccMajorSchema,
-    'ind_3d_occ_detailed': Ind3dOccDetailedSchema,
-    'ind_4d_occ_detailed': Ind4dOccDetailedSchema,
-    'state_occ_major': StateOccMajorSchema,
-    'metro_area_occ_major': MetroAreaOccMajorSchema,
-    'state_occ_detailed': StateOccDetailedSchema,
-    'metro_area_occ_detailed': MetroAreaOccDetailedSchema
-}
-
-model_switcher = {
-    'occupations_major': OccupationMajorModel,
-    'occupations_detailed': OccupationDetailedModel,
-    'industries_3d': Industry3dModel,
-    'industries_4d': Industry4dModel,
-    'states': StateModel,
-    'metro_areas': MetroAreaModel
-}
-
-schema_switcher = {
-    'occupations_major': OccupationMajorSchema,
-    'occupations_detailed': OccupationDetailedSchema,
-    'industries_3d': Industry3dSchema,
-    'industries_4d': Industry4dSchema,
-    'states': StateSchema,
-    'metro_areas': MetroAreaSchema
-}
-
-
-@app.route('/api/<tablename>')
+@app.route('/api/table/<tablename>')
 def get_table(tablename):
     data = []
     model = all_model_switcher.get(tablename, None)
@@ -120,13 +70,58 @@ def get_table(tablename):
     return jsonify(data)
 
 
+@app.route('/api/instance/<tablename>/<id>')
+def get_instance(tablename, id):
+    data = {}
+    model = model_switcher.get(tablename, None)
+    schema = schema_switcher.get(tablename, None)
+    if model != None and schema != None:
+        instance = model.query.get(id)
+        data = schema().dump(instance).data
+    return jsonify(data)
+
+
+@app.route('/api/joined_instance/<tablename>/<key_model>/<id>')
+def get_joined_instance(tablename, key_model, id):
+    data = []
+    model = joined_model_switcher.get(tablename, None)
+    schema = joined_schema_switcher.get(tablename, None)
+    key = primary_key_switcher.get(key_model, None)
+    if model != None and schema != None and key != None:
+        for instance in model.query.filter_by(**{key: id}).all():
+            data.append(schema().dump(instance).data)
+    return jsonify(data)
+
+
+@app.route('/api/joined_row/<tablename>/<id_1>/<id_2>')
+def get_joined_row(tablename, id_1, id_2):
+    data = {}
+    model = joined_model_switcher.get(tablename, None)
+    schema = joined_schema_switcher.get(tablename, None)
+    if model != None and schema != None:
+        instance = model.query.get((id_1, id_2))
+        data = schema().dump(instance).data
+    return jsonify(data)
+
+
 @app.route('/api/list/<tablename>')
-def list_table(tablename):
+def get_list(tablename):
     data = []
     model = model_switcher.get(tablename, None)
     if model != None:
         for instance in model.query.with_entities(model.id, model.title):
             data.append({'value': instance.id, 'label': instance.title})
+    return jsonify(data)
+
+
+@app.route('/api/top_ten/<tablename>/<column_name>')
+def get_top_ten(tablename, column_name):
+    data = []
+    model = model_switcher.get(tablename, None)
+    if model != None:
+        for instance in model.query.with_entities(model.id, model.title, column_name).order_by(desc(column_name)).limit(10):
+            data.append({'id': instance.id, 'title': instance.title,
+                         column_name: getattr(instance, column_name)})
     return jsonify(data)
 
 

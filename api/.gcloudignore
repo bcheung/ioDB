@@ -25,5 +25,4 @@ cloud_sql_proxy
 iodb-api-key.json
 
 # sql
-iodb.sql
-iodb_mod.sql
+*.sql

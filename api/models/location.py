@@ -3,7 +3,7 @@ from config import db, ma
 
 class MetroAreaModel(db.Model):
     __tablename__ = 'metro_areas'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(), primary_key=True)
     title = db.Column(db.String())
     total_employment = db.Column(db.Integer)
     hourly_mean = db.Column(db.Float)

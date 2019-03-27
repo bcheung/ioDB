@@ -59,7 +59,7 @@ class StateOccMajorSchema(ma.ModelSchema):
 
 class MetroAreaOccMajorModel(db.Model):
     __tablename__ = 'metro_area_occ_major'
-    metro_area_id = db.Column(db.Integer, db.ForeignKey(
+    metro_area_id = db.Column(db.String(), db.ForeignKey(
         'metro_areas.id'), primary_key=True)
     occupation_major_id = db.Column(db.String(), db.ForeignKey(
         'occupations_major.id'), primary_key=True)
@@ -172,7 +172,7 @@ class StateOccDetailedSchema(ma.ModelSchema):
 
 class MetroAreaOccDetailedModel(db.Model):
     __tablename__ = 'metro_area_occ_detailed'
-    metro_area_id = db.Column(db.Integer, db.ForeignKey(
+    metro_area_id = db.Column(db.String(), db.ForeignKey(
         'metro_areas.id'), primary_key=True)
     occupation_detailed_id = db.Column(db.String(), db.ForeignKey(
         'occupations_detailed.id'), primary_key=True)
