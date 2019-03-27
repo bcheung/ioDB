@@ -53,6 +53,7 @@ class StateModel(db.Model):
     id = db.Column(db.String(2), primary_key=True)
     title = db.Column(db.String())
     total_employment = db.Column(db.Integer)
+    population = db.Column(db.Integer)
     hourly_mean = db.Column(db.Float)
     hourly_10 = db.Column(db.Float)
     hourly_25 = db.Column(db.Float)
@@ -69,10 +70,11 @@ class StateModel(db.Model):
 
     metro_areas = db.relationship('MetroAreaModel', backref='state')
 
-    def __init__(self, id, title, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90, total_population=0):
+    def __init__(self, id, title, total_employment, population, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90, total_population=0):
         self.id = id
         self.title = title
         self.total_employment = total_employment
+        self.population = population
         self.hourly_mean = hourly_mean
         self.hourly_10 = hourly_10
         self.hourly_25 = hourly_25

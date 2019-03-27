@@ -53,7 +53,7 @@ class Industry3dModel(db.Model):
     id = db.Column(db.String(), primary_key=True)
     title = db.Column(db.String())
     description = db.Column(db.String())
-    total_employment = db.Column('total_employment', db.Integer)
+    total_employment = db.Column(db.Integer)
     hourly_mean = db.Column(db.Float)
     hourly_10 = db.Column(db.Float)
     hourly_25 = db.Column(db.Float)
