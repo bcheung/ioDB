@@ -2332,6 +2332,11 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
+classnames@2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
+  integrity sha1-+zgB1FNGdknvNgPH1hoCvRKb3m0=
+
 classnames@^2.2.3, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
@@ -8236,6 +8241,14 @@ react-app-polyfill@^0.2.1:
     raf "3.4.1"
     whatwg-fetch "3.0.0"
 
+react-bootstrap-table-next@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/react-bootstrap-table-next/-/react-bootstrap-table-next-3.0.3.tgz#62124d0ce8975d78bfa61bf2f307d5b3722b5f4a"
+  integrity sha512-ps4CI4kNvDewmHtPVxWzkkmGDMHQ8VC5Z8gHSadzUTRGn6MXN3ckOgfYdqmibLue4045xN9890jlW10gx62kHA==
+  dependencies:
+    classnames "2.2.5"
+    underscore "1.9.1"
+
 react-bootstrap@^1.0.0-beta.6:
   version "1.0.0-beta.6"
   resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-1.0.0-beta.6.tgz#b9b8b01a0fee668ebc2b6148b30fc57e3aa140dc"
@@ -9884,6 +9897,11 @@ uncontrollable@^6.0.0, uncontrollable@^6.1.0:
   integrity sha512-2TzEm0pLKauMBZfAZXsgQvLpZHEp95891frCZdGDrSG7dWYaIQhedwLAzi0X8pR8KHNqlmuYEb2cEgbQzr050A==
   dependencies:
     invariant "^2.2.4"
+
+underscore@1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.1.tgz#06dce34a0e68a7babc29b365b8e74b8925203961"
+  integrity sha512-5/4etnCkd9c8gwgowi5/om/mYO5ajCaOgdzj/oW+0eQV9WxKBDZw5+ycmKmeaTXjInS/W0BzpGLo2xR2aBwZdg==
 
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"

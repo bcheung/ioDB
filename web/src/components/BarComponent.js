@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Bar, Line, Pie } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 
 // Conditionally display Bar or Pie Chart depending on property passed
 // What property is actually passed?
