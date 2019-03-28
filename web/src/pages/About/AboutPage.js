@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './about-page.css';
+import { Card, CardImg, CardText, CardBody, CardTitle, Button, Row, Col, Container } from 'reactstrap';
 import Brian from './brian.jpeg';
 import Brooke from './brooke.jpg';
 import Cooper from './cooper.png';
@@ -20,7 +21,7 @@ class AboutPage extends Component {
     contributorInfo = {
         CooperTravis: {
             name: 'Cooper Travis',
-            image: Cooper,
+            image: Brian, // change to cooper once picture is square
             username: 'CooperTravis',
             major: 'Electrical and Computer Engineering',
             bio:
@@ -127,17 +128,6 @@ class AboutPage extends Component {
         let commitsTotal = 0;
         const url = 'https://api.github.com/repos/bcheung/ioDB/stats/contributors';
 
-        // without async await
-        // fetch(url)
-        //   .then(response => response.json())
-        //   .then(data => {
-        //     data.forEach(contributor => {
-        //       const username = contributor.author.login;
-        //       this.contributorStats[username].commits = contributor.total;
-        //       commitsTotal += contributor.total;
-        //     });
-        //   });
-
         // fetch() and json() are asynchronous
         // we use await to make the main thread wait until the asynchronous thread terminates and returns a value
         const response = await fetch(url); // make get request to url and wait until response is returned
@@ -157,17 +147,6 @@ class AboutPage extends Component {
     async fetchIssues() {
         let issuesTotal = 0;
         const url = 'https://api.github.com/repos/bcheung/ioDB/issues';
-
-        // without async await
-        // fetch(url)
-        //   .then(response => response.json())
-        //   .then(data => {
-        //     data.forEach(issue => {
-        //       const username = issue.user;
-        //       this.contributorStats[username].issues++;
-        //       issuesTotal++;
-        //     });
-        //   });
 
         const response = await fetch(url);
         const data = await response.json();
@@ -194,71 +173,41 @@ class AboutPage extends Component {
         console.log('renderProfile', id, username, contributorStats[username]);
 
         // calculate cell position
-        const rowNum = Math.floor(id / 2);
-        const colNum = id % 2;
+        const rowNum = Math.floor(id / 3);
+        const colNum = id % 3;
         console.log(`cell${rowNum}-${colNum}`);
 
         return (
-            <td id={`cell${rowNum}-${colNum}`}>
-                <h2>{`${this.contributorInfo[username].name}: ${this.contributorInfo[username].github}`}</h2>
-                <img
-                    src={this.contributorInfo[username].image}
-                    id={username}
-                    width="250"
-                    height="250"
-                    alt={this.contributorInfo[username].name}
-                />
-                <ul>
-                    <li>
-                        <b>Major:</b>
-                        {this.contributorInfo[username].major}
-                    </li>
-                </ul>
-                <ul>
-                    <li>
-                        <b>Bio:</b>
-                        {this.contributorInfo[username].bio}
-                    </li>
-                </ul>
-                <ul>
-                    <li>
-                        <b>Responsibilities:</b>
-                        {this.contributorInfo[username].responsibilities}
-                    </li>
-                </ul>
-                <ul>
-                    <li>
-                        <b>Commits: </b>
-                        {contributorStats[username].commits}
-                    </li>
-                </ul>
-                <ul>
-                    <li>
-                        <b>Issues: </b>
-                        {contributorStats[username].issues}
-                    </li>
-                </ul>
-                <ul>
-                    <li>
-                        <b>Unit Tests: </b>
-                        {contributorStats[username].unitTests}
-                    </li>
-                </ul>
-            </td>
+            <Col sm="4" id={`cell${rowNum}-${colNum}`}>
+                <Card body className="text-left">
+                    <CardImg top width="100%" src={this.contributorInfo[username].image} alt="PICTURE" />
+                    <CardText>{this.contributorInfo[username].name}</CardText>
+                    <CardText>Github: {this.contributorInfo[username].username}</CardText>
+                    <CardText>Major: {this.contributorInfo[username].major}</CardText>
+                    <CardText>Bio: {this.contributorInfo[username].bio}</CardText>
+                    <CardText>Responsibilities: {this.contributorInfo[username].responsibilities}</CardText>
+                    <CardText>Commits: {contributorStats[username].commits}</CardText>
+                    <CardText>Issues: {contributorStats[username].issues}</CardText>
+                    <CardText>Unit Tests: {contributorStats[username].unitTests}</CardText>
+                </Card>
+            </Col>
         );
     }
 
     renderProfiles() {
         const profiles = [];
-        for (let id = 0; id < this.contributorKeys.length; id += 2) {
-            const rowNum = Math.floor(id / 2);
+        for (let id = 0; id < this.contributorKeys.length; id += 3) {
+            const rowNum = Math.floor(id / 3);
 
             // render each row
             profiles.push(
-                <tr id={`row${rowNum}`} key={id}>
-                    {this.renderProfile(id)}
-                    {this.renderProfile(id + 1)}
-                </tr>
+                <Container>
+                    <Row id={`row${rowNum}`} key={id}>
+                        {this.renderProfile(id)}
+                        {this.renderProfile(id + 1)}
+                        {this.renderProfile(id + 2)}
+                    </Row>
+                </Container>
             );
         }
         return profiles;
@@ -276,6 +225,7 @@ class AboutPage extends Component {
                     meaningful understanding of all the available information.
                 </p>
                 <h2 id="name">Group Name: Team Amethyst</h2>
+
                 <table id="table.team" align="center">
                     <tbody>{this.renderProfiles()}</tbody>
                 </table>
