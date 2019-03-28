@@ -271,7 +271,8 @@ def populate_states():
         for line in reader:
             if line_cnt > 0:
                 state_data = line
-                state_id = state_data[1]
+                state_id = state_data[0]
+                state_symbol = state_data[1]
                 name = state_data[2]
                 occ_code = state_data[3]
                 occ_group = state_data[5]
@@ -293,7 +294,7 @@ def populate_states():
                 if occ_group == 'total':    # states table
                     total_population = get_state_population(name)
                     state = StateModel(
-                        state_id, name, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90, total_population)
+                        state_id, state_symbol, name, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90, total_population)
                     db.session.add(state)
                     states_cnt += 1
                 elif occ_group == 'major':  # state_occ_major table
@@ -323,7 +324,7 @@ def populate_metro_areas():
         for line in reader:
             if line_cnt > 0:
                 metro_data = line
-                state_id = metro_data[0]
+                state_symbol = metro_data[0]
                 metro_area_id = metro_data[1]
                 name = metro_data[2]
                 occ_code = metro_data[3]
@@ -345,10 +346,11 @@ def populate_metro_areas():
                 annual_90 = parse_int(metro_data[22])
                 if occ_group == 'total':    # metro_areas table
                     metro_area = MetroAreaModel(
-                        metro_area_id, name, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
+                        metro_area_id, name, state_symbol, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90)
                     db.session.add(metro_area)
                     # find state and link metro_area
-                    state = StateModel.query.filter_by(id=(state_id)).first()
+                    state = StateModel.query.filter_by(
+                        state_symbol=(state_symbol)).first()
                     state.metro_areas.append(metro_area)
                     metro_areas_cnt += 1
                 elif occ_group == 'major':  # metro_area_occ_major table
