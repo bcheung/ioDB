@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl';
+import { Bar } from 'react-chartjs-2';
 import { Table, Container, Row, Col } from 'reactstrap';
 import { OccupationComponent } from '../../../components/OccupationComponent';
 import './ChemicalEngineers.css';
@@ -967,6 +968,514 @@ const statesData = [
     }
 ];
 
+const wage = {
+    annual_10: 62230,
+    annual_25: 79030,
+    annual_75: 131030,
+    annual_90: 169080,
+    annual_mean: 112430,
+    annual_median: 102160,
+    description:
+        'Design chemical plant equipment and devise processes for manufacturing chemicals and products, such as gasoline, synthetic rubber, plastics, detergents, cement, paper, and pulp, by applying principles and technology of chemistry, physics, and engineering.',
+    hourly_10: 29.92,
+    hourly_25: 37.99,
+    hourly_75: 63.0,
+    hourly_90: 81.29,
+    hourly_mean: 54.05,
+    hourly_median: 49.12,
+    id: '17-2041',
+    occupation_major: { id: '17-0000', title: 'Architecture and Engineering Occupations' },
+    title: 'Chemical Engineers',
+    total_employment: 33500
+};
+
+const data = {
+    labels: ['10%', '25%', '50%', '75%', '90%'],
+    datasets: [
+        {
+            label: 'Wage (Dollar Amount)',
+            backgroundColor: 'rgba(255,99,132,1)',
+            borderColor: 'rgba(255,99,132,1)',
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+            hoverBorderColor: 'rgba(255,99,132,1)',
+            data: [wage.annual_10, wage.annual_25, wage.annual_mean, wage.annual_75, wage.annual_90, 62230]
+        }
+    ]
+};
+
+const industryData = [
+    {
+        annual_10: 86780,
+        annual_25: 103870,
+        annual_75: 175130,
+        annual_90: 205390,
+        annual_mean: 145060,
+        annual_median: 137430,
+        hourly_10: 41.72,
+        hourly_25: 49.94,
+        hourly_75: 84.2,
+        hourly_90: 98.75,
+        hourly_mean: 69.74,
+        hourly_median: 66.07,
+        industry_3d: { id: '211000', title: 'Oil and Gas Extraction' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 170
+    },
+    {
+        annual_10: 69360,
+        annual_25: 79780,
+        annual_75: 103710,
+        annual_90: 128110,
+        annual_mean: 95050,
+        annual_median: 92250,
+        hourly_10: 33.35,
+        hourly_25: 38.36,
+        hourly_75: 49.86,
+        hourly_90: 61.59,
+        hourly_mean: 45.7,
+        hourly_median: 44.35,
+        industry_3d: { id: '213000', title: 'Support Activities for Mining' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 40
+    },
+    {
+        annual_10: 68480,
+        annual_25: 75400,
+        annual_75: 114710,
+        annual_90: 140370,
+        annual_mean: 100520,
+        annual_median: 90050,
+        hourly_10: 32.93,
+        hourly_25: 36.25,
+        hourly_75: 55.15,
+        hourly_90: 67.49,
+        hourly_mean: 48.33,
+        hourly_median: 43.3,
+        industry_3d: { id: '221000', title: 'Utilities' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 450
+    },
+    {
+        annual_10: 68970,
+        annual_25: 78980,
+        annual_75: 134940,
+        annual_90: 161060,
+        annual_mean: 109210,
+        annual_median: 104320,
+        hourly_10: 33.16,
+        hourly_25: 37.97,
+        hourly_75: 64.88,
+        hourly_90: 77.43,
+        hourly_mean: 52.5,
+        hourly_median: 50.15,
+        industry_3d: { id: '236000', title: 'Construction of Buildings' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 130
+    },
+    {
+        annual_10: -1,
+        annual_25: -1,
+        annual_75: -1,
+        annual_90: -1,
+        annual_mean: -1,
+        annual_median: -1,
+        hourly_10: -1.0,
+        hourly_25: -1.0,
+        hourly_75: -1.0,
+        hourly_90: -1.0,
+        hourly_mean: -1.0,
+        hourly_median: -1.0,
+        industry_3d: { id: '311000', title: 'Food Manufacturing' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 60
+    },
+    {
+        annual_10: 64530,
+        annual_25: 72280,
+        annual_75: 112100,
+        annual_90: 143450,
+        annual_mean: 95340,
+        annual_median: 88650,
+        hourly_10: 31.02,
+        hourly_25: 34.75,
+        hourly_75: 53.89,
+        hourly_90: 68.97,
+        hourly_mean: 45.84,
+        hourly_median: 42.62,
+        industry_3d: { id: '322000', title: 'Paper Manufacturing' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 100
+    },
+    {
+        annual_10: 64590,
+        annual_25: 83330,
+        annual_75: 136990,
+        annual_90: 175580,
+        annual_mean: 115740,
+        annual_median: 107050,
+        hourly_10: 31.05,
+        hourly_25: 40.06,
+        hourly_75: 65.86,
+        hourly_90: 84.42,
+        hourly_mean: 55.64,
+        hourly_median: 51.47,
+        industry_3d: { id: '324000', title: 'Petroleum and Coal Products Manufacturing' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 1970
+    },
+    {
+        annual_10: 65820,
+        annual_25: 81920,
+        annual_75: 129720,
+        annual_90: 165610,
+        annual_mean: 112310,
+        annual_median: 102460,
+        hourly_10: 31.64,
+        hourly_25: 39.39,
+        hourly_75: 62.37,
+        hourly_90: 79.62,
+        hourly_mean: 54.0,
+        hourly_median: 49.26,
+        industry_3d: { id: '325000', title: 'Chemical Manufacturing' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 12950
+    },
+    {
+        annual_10: 57990,
+        annual_25: 71760,
+        annual_75: 113730,
+        annual_90: 146390,
+        annual_mean: 94650,
+        annual_median: 89650,
+        hourly_10: 27.88,
+        hourly_25: 34.5,
+        hourly_75: 54.68,
+        hourly_90: 70.38,
+        hourly_mean: 45.5,
+        hourly_median: 43.1,
+        industry_3d: { id: '326000', title: 'Plastics and Rubber Products Manufacturing' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 780
+    },
+    {
+        annual_10: 63990,
+        annual_25: 74510,
+        annual_75: 110720,
+        annual_90: 127050,
+        annual_mean: 91860,
+        annual_median: 90750,
+        hourly_10: 30.77,
+        hourly_25: 35.82,
+        hourly_75: 53.23,
+        hourly_90: 61.08,
+        hourly_mean: 44.17,
+        hourly_median: 43.63,
+        industry_3d: { id: '327000', title: 'Nonmetallic Mineral Product Manufacturing' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 80
+    },
+    {
+        annual_10: 50000,
+        annual_25: 68900,
+        annual_75: 101950,
+        annual_90: 127380,
+        annual_mean: 87430,
+        annual_median: 80100,
+        hourly_10: 24.04,
+        hourly_25: 33.12,
+        hourly_75: 49.02,
+        hourly_90: 61.24,
+        hourly_mean: 42.04,
+        hourly_median: 38.51,
+        industry_3d: { id: '331000', title: 'Primary Metal Manufacturing' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 90
+    },
+    {
+        annual_10: 55420,
+        annual_25: 68730,
+        annual_75: 114730,
+        annual_90: 130150,
+        annual_mean: 91070,
+        annual_median: 89670,
+        hourly_10: 26.64,
+        hourly_25: 33.04,
+        hourly_75: 55.16,
+        hourly_90: 62.57,
+        hourly_mean: 43.78,
+        hourly_median: 43.11,
+        industry_3d: { id: '332000', title: 'Fabricated Metal Product Manufacturing' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 240
+    },
+    {
+        annual_10: 60000,
+        annual_25: 73470,
+        annual_75: 118990,
+        annual_90: 137450,
+        annual_mean: 96840,
+        annual_median: 94410,
+        hourly_10: 28.85,
+        hourly_25: 35.32,
+        hourly_75: 57.21,
+        hourly_90: 66.08,
+        hourly_mean: 46.56,
+        hourly_median: 45.39,
+        industry_3d: { id: '333000', title: 'Machinery Manufacturing' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 510
+    },
+    {
+        annual_10: 65830,
+        annual_25: 80150,
+        annual_75: 122840,
+        annual_90: 148450,
+        annual_mean: 102060,
+        annual_median: 98600,
+        hourly_10: 31.65,
+        hourly_25: 38.53,
+        hourly_75: 59.06,
+        hourly_90: 71.37,
+        hourly_mean: 49.07,
+        hourly_median: 47.41,
+        industry_3d: { id: '334000', title: 'Computer and Electronic Product Manufacturing' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 610
+    },
+    {
+        annual_10: 66650,
+        annual_25: 73440,
+        annual_75: 102970,
+        annual_90: 129880,
+        annual_mean: 93020,
+        annual_median: 86760,
+        hourly_10: 32.04,
+        hourly_25: 35.31,
+        hourly_75: 49.51,
+        hourly_90: 62.44,
+        hourly_mean: 44.72,
+        hourly_median: 41.71,
+        industry_3d: { id: '335000', title: 'Electrical Equipment, Appliance, and Component Manufacturing' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 160
+    },
+    {
+        annual_10: 60020,
+        annual_25: 72520,
+        annual_75: 124100,
+        annual_90: 139100,
+        annual_mean: 101050,
+        annual_median: 106160,
+        hourly_10: 28.86,
+        hourly_25: 34.87,
+        hourly_75: 59.66,
+        hourly_90: 66.88,
+        hourly_mean: 48.58,
+        hourly_median: 51.04,
+        industry_3d: { id: '336000', title: 'Transportation Equipment Manufacturing' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 200
+    },
+    {
+        annual_10: 64270,
+        annual_25: 73200,
+        annual_75: 114580,
+        annual_90: 139850,
+        annual_mean: 95730,
+        annual_median: 90040,
+        hourly_10: 30.9,
+        hourly_25: 35.19,
+        hourly_75: 55.09,
+        hourly_90: 67.24,
+        hourly_mean: 46.02,
+        hourly_median: 43.29,
+        industry_3d: { id: '339000', title: 'Miscellaneous Manufacturing' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 360
+    },
+    {
+        annual_10: 78500,
+        annual_25: 90870,
+        annual_75: 127430,
+        annual_90: 163910,
+        annual_mean: 113910,
+        annual_median: 106560,
+        hourly_10: 37.74,
+        hourly_25: 43.69,
+        hourly_75: 61.27,
+        hourly_90: 78.81,
+        hourly_mean: 54.77,
+        hourly_median: 51.23,
+        industry_3d: { id: '423000', title: 'Merchant Wholesalers, Durable Goods' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 70
+    },
+    {
+        annual_10: 49600,
+        annual_25: 69220,
+        annual_75: 126840,
+        annual_90: 166440,
+        annual_mean: 107100,
+        annual_median: 96830,
+        hourly_10: 23.84,
+        hourly_25: 33.28,
+        hourly_75: 60.98,
+        hourly_90: 80.02,
+        hourly_mean: 51.49,
+        hourly_median: 46.55,
+        industry_3d: { id: '424000', title: 'Merchant Wholesalers, Nondurable Goods' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 1150
+    },
+    {
+        annual_10: 57510,
+        annual_25: 67780,
+        annual_75: 86780,
+        annual_90: 101990,
+        annual_mean: 77410,
+        annual_median: 75580,
+        hourly_10: 27.65,
+        hourly_25: 32.59,
+        hourly_75: 41.72,
+        hourly_90: 49.03,
+        hourly_mean: 37.22,
+        hourly_median: 36.34,
+        industry_3d: { id: '425000', title: 'Wholesale Electronic Markets and Agents and Brokers' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 230
+    },
+    {
+        annual_10: 63760,
+        annual_25: 81660,
+        annual_75: 139760,
+        annual_90: 184880,
+        annual_mean: 117840,
+        annual_median: 105980,
+        hourly_10: 30.65,
+        hourly_25: 39.26,
+        hourly_75: 67.19,
+        hourly_90: 88.89,
+        hourly_mean: 56.65,
+        hourly_median: 50.95,
+        industry_3d: { id: '541000', title: 'Professional, Scientific, and Technical Services' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 8590
+    },
+    {
+        annual_10: 76390,
+        annual_25: 100740,
+        annual_75: 188010,
+        annual_90: 208000,
+        annual_mean: 153870,
+        annual_median: 133780,
+        hourly_10: 36.73,
+        hourly_25: 48.44,
+        hourly_75: 90.39,
+        hourly_90: 100.0,
+        hourly_mean: 73.98,
+        hourly_median: 64.32,
+        industry_3d: { id: '551000', title: 'Management of Companies and Enterprises' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 1680
+    },
+    {
+        annual_10: 61000,
+        annual_25: 78600,
+        annual_75: 138450,
+        annual_90: 164440,
+        annual_mean: 111110,
+        annual_median: 106220,
+        hourly_10: 29.33,
+        hourly_25: 37.79,
+        hourly_75: 66.56,
+        hourly_90: 79.06,
+        hourly_mean: 53.42,
+        hourly_median: 51.07,
+        industry_3d: { id: '561000', title: 'Administrative and Support Services' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 470
+    },
+    {
+        annual_10: 66920,
+        annual_25: 70660,
+        annual_75: 85000,
+        annual_90: 102480,
+        annual_mean: 83670,
+        annual_median: 76900,
+        hourly_10: 32.17,
+        hourly_25: 33.97,
+        hourly_75: 40.86,
+        hourly_90: 49.27,
+        hourly_mean: 40.23,
+        hourly_median: 36.97,
+        industry_3d: { id: '562000', title: 'Waste Management and Remediation Services' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 260
+    },
+    {
+        annual_10: 39800,
+        annual_25: 44560,
+        annual_75: 68990,
+        annual_90: 97540,
+        annual_mean: 60630,
+        annual_median: 51610,
+        hourly_10: 19.14,
+        hourly_25: 21.43,
+        hourly_75: 33.17,
+        hourly_90: 46.89,
+        hourly_mean: 29.15,
+        hourly_median: 24.81,
+        industry_3d: { id: '611000', title: 'Educational Services' },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 800
+    },
+    {
+        annual_10: 68580,
+        annual_25: 90360,
+        annual_75: 123230,
+        annual_90: 144100,
+        annual_mean: 107390,
+        annual_median: 109330,
+        hourly_10: 32.97,
+        hourly_25: 43.44,
+        hourly_75: 59.25,
+        hourly_90: 69.28,
+        hourly_mean: 51.63,
+        hourly_median: 52.56,
+        industry_3d: {
+            id: '999000',
+            title:
+                'Federal, State, and Local Government, excluding state and local schools and hospitals and the U.S. Postal Service (OES Designation)'
+        },
+        occupation_detailed: { id: '17-2041', title: 'Chemical Engineers' },
+        total_employment: 1170
+    }
+];
+const labelArray = [];
+const dataArray = [];
+
+// Populating labels for industries from API data
+industryData.forEach(industry => {
+    labelArray.push(industry.industry_3d.title);
+    dataArray.push(industry.total_employment);
+});
+
+const industries = {
+    labels: labelArray,
+    datasets: [
+        {
+            label: 'Wage (Dollar Amount)',
+            backgroundColor: 'rgba(255,99,132,1)',
+            borderColor: 'rgba(255,99,132,1)',
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+            hoverBorderColor: 'rgba(255,99,132,1)',
+            data: dataArray
+        }
+    ]
+};
+
 const expression = ['match', ['get', 'STATE_ID']];
 
 class ChemicalEngineers extends Component {
@@ -994,7 +1503,7 @@ class ChemicalEngineers extends Component {
                     expression.push(stateData.state.id, color);
                 } else {
                     const green = 255 - ((stateData.loc_quotient / maxValue) * 255);
-                    const color = `rgba(${0}, ${green}, ${0}, 0.75)`;
+                    const color = `rgba(${255}, ${green}, ${132}, 0.75)`;
                     expression.push(stateData.state.id, color);
                 }
             });
@@ -1024,21 +1533,41 @@ class ChemicalEngineers extends Component {
         return (
             <Container>
                 <Row>
+                    <h1>Where are {wage.title} located?</h1>
                     <div ref={el => (this.mapContainer = el)} className="absolute top right left bottom" />
                 </Row>
-                <Row>
-                    <OccupationComponent data={info} className="absolute top right left bottom" />;
-                </Row>
-                {/* <Table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Chemical Engineers</th>
-                            <th>Last Name</th>
-                            <th>User</th>
-                        </tr>
-                    </thead>
-                </Table> */}
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <div>
+                    <h2>Annual Percentile Wages for {wage.title}</h2>
+                    <Bar
+                        data={data}
+                        width={100}
+                        height={50}
+                        options={{
+                            maintainAspectRatio: false
+                        }}
+                    />
+                </div>
+                <div>
+                    <h2>Wage by Industry</h2>
+                    <Bar
+                        data={industries}
+                        width={100}
+                        height={50}
+                        options={{
+                            maintainAspectRatio: false
+                        }}
+                    />
+                </div>
             </Container>
         );
     }
