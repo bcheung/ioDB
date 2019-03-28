@@ -1,11 +1,28 @@
 import React, { Component } from 'react';
 import './about-page.css';
-import { Card, CardImg, CardText, CardBody, CardTitle, Button, Row, Col, Container } from 'reactstrap';
+import {
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
+    CardTitle,
+    Button,
+    Row,
+    Col,
+    Container,
+    CardDeck,
+    CardHeader,
+    Jumbotron,
+    ListGroup,
+    ListGroupItem,
+    ListGroupItemHeading,
+    ListGroupItemText
+} from 'reactstrap';
 import Brian from './brian.jpeg';
 import Brooke from './brooke.jpg';
 import Cooper from './cooper.png';
 import David from './david.jpeg';
-import Johnny from './johnny.jpg';
+import John from './johnny.jpg';
 import Sean from './sean.jpeg';
 
 class AboutPage extends Component {
@@ -23,7 +40,7 @@ class AboutPage extends Component {
             name: 'Cooper Travis',
             image: Brian, // change to cooper once picture is square
             username: 'CooperTravis',
-            major: 'Electrical and Computer Engineering',
+            major: 'Electrical & Computer Eng.',
             bio:
                 'Cooper is in his fourth year at the University of Texas at Austin studying Electrical and Computer Engineering with a focus in Software Engineering and Design. With an interest in business and a desire to one day open his own gym he plans on working in the industry for a few years before pursuing his MBA. In his spare time, you can find him in the gym or out on the river kayaking.',
             responsibilities:
@@ -33,7 +50,7 @@ class AboutPage extends Component {
             name: 'Brian Cheung',
             image: Brian,
             username: 'bcheung',
-            major: 'Electrical and Computer Engineering',
+            major: 'Electrical & Computer Eng.',
             bio:
                 'Brian is a second year student at the University of Texas at Austin. He is currently pursuing an Electrical and Computer Engineering degree with a focus in software engineering. At the moment, Brian is looking to gain some industry experience in order to narrow down his area of interest in software engineering. Some of Brian’s hobbies include learning piano, playing basketball, weightlifting, and of course, eating.',
             responsibilities:
@@ -43,7 +60,7 @@ class AboutPage extends Component {
             name: 'Brooke Paxman',
             image: Brooke,
             username: 'brookepaxman',
-            major: 'Electrical and Computer Engineering',
+            major: 'Electrical & Computer Eng.',
             bio:
                 'Brooke is in her third year at the University of Texas at Austin studying Electrical and Computer Engineering. She also has a secondary focus in Psychology and is interested in learning about how the psychology of human behavior and cognition overlaps with software engineering. She enjoys riding her bike around Austin and soaking up the sun outdoors.',
             responsibilities:
@@ -53,7 +70,7 @@ class AboutPage extends Component {
             name: 'Sean Wang',
             image: Sean,
             username: 'wang-sz',
-            major: 'Electrical and Computer Engineering',
+            major: 'Electrical & Computer Eng.',
             bio:
                 'Sean is a second year Electrical and Computer Engineering student at the University of Texas at Austin. He has completed a minor in business, but would like to pursue a career and gain experience in software engineering before making a decision on obtaining a higher degree, such as an MBA. In his free time, he enjoys playing piano or taking a nice and relaxing nap.',
             responsibilities:
@@ -63,17 +80,17 @@ class AboutPage extends Component {
             name: 'David Terral',
             image: David,
             username: 'dterral504',
-            major: 'Electrical and Computer Engineering',
+            major: 'Electrical & Computer Eng.',
             bio:
                 'David is a third year student at the University of Texas from New Orleans, LA. He is pursuing a degree in Electrical and Computer Engineering with a focus in Software Engineering and Design. His main interests are application development as well as database management and analysis. In his free time he plays and watches football and soccer. His favorite teams are the New Orleans Saints and Arsenal.',
             responsibilities:
                 'Create 3 static pages with location data using React.js and deploy onto GCP, configure backend framework for data using Python.'
         },
         jmgabriel96: {
-            name: 'Johnny Gabriel',
-            image: Johnny,
+            name: 'John Gabriel',
+            image: John,
             username: 'jmgabriel96',
-            major: 'Electrical and Computer Engineering',
+            major: 'Electrical & Computer Eng.',
             bio:
                 'John is studying Electrical and Computer Engineering with a focus in Software Engineering and Design. His interests lie in startups and his plans after graduation is to start his own company.',
             responsibilities: 'Create 3 static web pages for 3 different industry instances and deploy onto GCP.'
@@ -172,41 +189,48 @@ class AboutPage extends Component {
         const { contributorStats } = this.state;
         console.log('renderProfile', id, username, contributorStats[username]);
 
-        // calculate cell position
-        const rowNum = Math.floor(id / 3);
-        const colNum = id % 3;
-        console.log(`cell${rowNum}-${colNum}`);
-
         return (
-            <Col sm="4" id={`cell${rowNum}-${colNum}`}>
-                <Card body className="text-left">
-                    <CardImg top width="100%" src={this.contributorInfo[username].image} alt="PICTURE" />
-                    <CardText>{this.contributorInfo[username].name}</CardText>
-                    <CardText>Github: {this.contributorInfo[username].username}</CardText>
-                    <CardText>Major: {this.contributorInfo[username].major}</CardText>
-                    <CardText>Bio: {this.contributorInfo[username].bio}</CardText>
-                    <CardText>Responsibilities: {this.contributorInfo[username].responsibilities}</CardText>
-                    <CardText>Commits: {contributorStats[username].commits}</CardText>
-                    <CardText>Issues: {contributorStats[username].issues}</CardText>
-                    <CardText>Unit Tests: {contributorStats[username].unitTests}</CardText>
-                </Card>
-            </Col>
+            <Card body style={{ borderColor: '#333' }} className="text-left">
+                <CardHeader className="text-center" tag="b">
+                    {this.contributorInfo[username].name} ({this.contributorInfo[username].username})
+                </CardHeader>
+                <CardImg top width="100%" src={this.contributorInfo[username].image} alt="Error" />
+                <CardText>
+                    <CardText tag="b">Major: </CardText>
+                    {this.contributorInfo[username].major}
+                </CardText>
+                <CardText>
+                    <CardText tag="b">Bio: </CardText>
+                    {this.contributorInfo[username].bio}
+                </CardText>
+                <CardText>
+                    <CardText tag="b">Responsibilities: </CardText>
+                    {this.contributorInfo[username].responsibilities}
+                </CardText>
+                <CardText>
+                    <CardText tag="b">Commits:</CardText> {contributorStats[username].commits}
+                </CardText>
+                <CardText>
+                    <CardText tag="b">Issues:</CardText> {contributorStats[username].issues}
+                </CardText>
+                <CardText>
+                    <CardText tag="b">Unit Tests:</CardText> {contributorStats[username].unitTests}
+                </CardText>
+            </Card>
         );
     }
 
     renderProfiles() {
         const profiles = [];
         for (let id = 0; id < this.contributorKeys.length; id += 3) {
-            const rowNum = Math.floor(id / 3);
-
             // render each row
             profiles.push(
                 <Container>
-                    <Row id={`row${rowNum}`} key={id}>
+                    <CardDeck>
                         {this.renderProfile(id)}
                         {this.renderProfile(id + 1)}
                         {this.renderProfile(id + 2)}
-                    </Row>
+                    </CardDeck>
                 </Container>
             );
         }
@@ -216,66 +240,74 @@ class AboutPage extends Component {
     render() {
         const { commitsTotal, issuesTotal, unitTestsTotal } = this.state;
         return (
-            <div>
-                <h1>About ioDB</h1>
-                <p>
-                    We seek to provide an interface that neatly organizes key metrics of US occupations such as
-                    location, occupation category,and industry that people look for while researching occupations and
-                    industries in the US. ioDB provides its users with an easy to navigate UI to help users gain a more
-                    meaningful understanding of all the available information.
-                </p>
-                <h2 id="name">Group Name: Team Amethyst</h2>
+            <Container>
+                <Jumbotron fluid>
+                    <Container fluid>
+                        <h1 className="display-3">About ioDB</h1>
+                        <p className="lead">
+                            We seek to provide an interface that neatly organizes key metrics of US occupations such as
+                            location, occupation category,and industry that people look for while researching
+                            occupations and industries in the US. ioDB provides its users with an easy to navigate UI to
+                            help users gain a more meaningful understanding of all the available information.
+                        </p>
+                        <p>
+                            The following is a link to our Github:
+                            <a href="https://github.com/bcheung/ioDB/">Github Repo</a>
+                        </p>
+                    </Container>
+                </Jumbotron>
+                <h2 id="name">Team Amethyst</h2>
 
-                <table id="table.team" align="center">
-                    <tbody>{this.renderProfiles()}</tbody>
-                </table>
-                <h3>Total Stats:</h3>
-                <ul>
-                    <li>Total Commits: {commitsTotal}</li>
-                    <li>Issues: {issuesTotal}</li>
-                    <li>Unit Tests: {unitTestsTotal} </li>
-                </ul>
-                <h3>Data:</h3>
-                <ul>
-                    Data was scraped using our own scraper written in Python that parses through the CSV files holding
-                    our data, equating about 30,000 lines of information.
-                    <li>
-                        <a href="https://www.bls.gov/oes/tables.htm">BLS OES Data</a>
-                    </li>
-                    <li>
-                        <a href="https://www.bls.gov/ooh/">US Occupational Data</a>
-                        <ul>
-                            <li>
-                                Left column of this page contains each major industry category. Clicking on the category
-                                brings up a table with a description for each occupation in that industry
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="https://simplemaps.com/data/us-cities">US Census Cities Data</a>
-                        <ul>
-                            <li>Provides info for each US city, such as:</li>
-                            <ul>
-                                <li>Population</li>
-                                <li>City</li>
-                                <li>County</li>
-                            </ul>
-                        </ul>
-                    </li>
-                </ul>
-                <h3>Tools:</h3>
-                <ul>
-                    <li>Google App Engine (GCP): Used to set up our PostgreSQL database.</li>
-                    <li>PyCharm: Python IDE used to write and develop data scraper.</li>
-                    <li>Postman: Used to design our RESTful API and to test HTTP GET requests from GitHub API.</li>
-                    <li>PostgreSQL: Used to create our database for each of our models and instances.</li>
-                    <li>React: Used to write 14 static webpages and dynamic about page to deploy to GCP.</li>
-                </ul>
-                <p>
-                    The following is a link to our Github:
-                    <a href="https://github.com/bcheung/ioDB/">Github Repo</a>
-                </p>
-            </div>
+                <div>{this.renderProfiles()}</div>
+
+                <Container>
+                    <ListGroup>
+                        <ListGroupItem>
+                            <ListGroupItemHeading>Team Statistics:</ListGroupItemHeading>
+                            <ListGroupItemText tag="li">Total Commits: {commitsTotal}</ListGroupItemText>
+                            <ListGroupItemText tag="li">Issues: {issuesTotal}</ListGroupItemText>
+                            <ListGroupItemText tag="li">Unit Tests: {unitTestsTotal}</ListGroupItemText>
+                        </ListGroupItem>
+                        <ListGroupItem>
+                            <ListGroupItemHeading>Data Sources:</ListGroupItemHeading>
+                            <ListGroupItemText>
+                                Data was scraped using our own scraper written in Python that parses through the CSV
+                                files holding our data, equating about 30,000 lines of information.
+                            </ListGroupItemText>
+                            <ListGroupItemText tag="li">
+                                <a href="https://www.bls.gov/oes/tables.htm">BLS OES Data</a>
+                            </ListGroupItemText>
+                            <ListGroupItemText tag="li">
+                                <a href="https://www.bls.gov/ooh/">US Occupational Data</a>- Left column of this page
+                                contains each major industry category. Clicking on the category category brings up a
+                                table with a description for each occupation in that industry
+                            </ListGroupItemText>
+                            <ListGroupItemText tag="li">
+                                <a href="https://simplemaps.com/data/us-cities">US Census Cities Data</a>- Provides
+                                info, such as population, for each US city
+                            </ListGroupItemText>
+                        </ListGroupItem>
+                        <ListGroupItem>
+                            <ListGroupItemHeading>Tools:</ListGroupItemHeading>
+                            <ListGroupItemText tag="li">
+                                Google App Engine (GCP): Used to set up our PostgreSQL database
+                            </ListGroupItemText>
+                            <ListGroupItemText tag="li">
+                                PyCharm: Python IDE used to write and develop data scraper
+                            </ListGroupItemText>
+                            <ListGroupItemText tag="li">
+                                Postman: Used to design our RESTful API and to test HTTP GET requests from GitHub API
+                            </ListGroupItemText>
+                            <ListGroupItemText tag="li">
+                                PostgreSQL: Used to create our database for each of our models and instances
+                            </ListGroupItemText>
+                            <ListGroupItemText tag="li">
+                                React: Used to write 14 static webpages and dynamic about page to deploy to GCP
+                            </ListGroupItemText>
+                        </ListGroupItem>
+                    </ListGroup>
+                </Container>
+            </Container>
         );
     }
 }

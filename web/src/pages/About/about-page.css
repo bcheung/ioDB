@@ -34,13 +34,6 @@ h3 {
   text-align: center;
 }
 
-td {
-  width: 375px;
-  word-wrap: break-word;
-  text-align: center;
-  vertical-align: top;
-  border: 1px solid black;
-}
 ul {
   text-align: left;
 }
@@ -61,4 +54,8 @@ a {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.bold {
+  font-weight: bold;
 }
