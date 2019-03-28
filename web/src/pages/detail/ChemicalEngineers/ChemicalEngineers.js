@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl';
+import { Container, Row, Col } from 'reactstrap';
 import data from '../../../components/data.json';
 // import data from './usa.topo.json';
 import { OccupationComponent } from '../../../components/OccupationComponent';
@@ -8,42 +9,7 @@ import './ChemicalEngineers.css';
 mapboxgl.accessToken =
     'pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw';
 
-const options = [
-    {
-        name: 'Population',
-        description: 'Estimated total population',
-        property: 'pop_est',
-        stops: [
-            [0, '#f8d5cc'],
-            [1000000, '#f4bfb6'],
-            [5000000, '#f1a8a5'],
-            [10000000, '#ee8f9a'],
-            [50000000, '#ec739b'],
-            [100000000, '#dd5ca8'],
-            [250000000, '#c44cc0'],
-            [500000000, '#9f43d7'],
-            [1000000000, '#6e40e6']
-        ]
-    },
-    {
-        name: 'GDP',
-        description: 'Estimate total GDP in millions of dollars',
-        property: 'gdp_md_est',
-        stops: [
-            [0, '#f8d5cc'],
-            [1000, '#f4bfb6'],
-            [5000, '#f1a8a5'],
-            [10000, '#ee8f9a'],
-            [50000, '#ec739b'],
-            [100000, '#dd5ca8'],
-            [250000, '#c44cc0'],
-            [5000000, '#9f43d7'],
-            [10000000, '#6e40e6']
-        ]
-    }
-];
-
-const data2 = {
+const info = {
     info: {
         occupation: 'Chemical Engineers',
         naics: '(17-2041)',
@@ -199,13 +165,6 @@ const states = [
 const expression = ['match', ['get', 'STATE_ID']];
 
 class ChemicalEngineers extends Component {
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            active: options[0]
-        };
-    }
-
     componentDidMount() {
         this.map = new mapboxgl.Map({
             container: this.mapContainer,
@@ -228,6 +187,7 @@ class ChemicalEngineers extends Component {
                 expression.push(row.STATE_ID, color);
             });
 
+            // Last value is the default
             expression.push('rgba(0,0,0,0)');
 
             // Add layer from the vector tile source with data-driven style
@@ -244,76 +204,23 @@ class ChemicalEngineers extends Component {
                 'waterway-label'
             );
         });
-        console.log(this.map);
     }
-
-    componentDidUpdate() {
-        this.setFill();
-    }
-
-    setFill() {
-        const { property, stops } = this.state.active;
-        this.map.setPaintProperty('countries', 'fill-color', {
-            property,
-            stops
-        });
-    }
-
-    // async fetchOccupationData() {
-    //     let issuesTotal = 0;
-    //     const proxyurl = 'https://cors-anywhere.herokuapp.com/';
-    //     const url = `${proxyurl}http://www.iodb.info/api/joined_instance/state_occ_major/occupations_major/11-000`;
-    //     // ${11-000}`;
-    //     // this.props.id
-
-    //     // without async await
-    //     // fetch(url)
-    //     //   .then(response => response.json())
-    //     //   .then(data => {
-    //     //     data.forEach(issue => {
-    //     //       const username = issue.user;
-    //     //       this.contributorStats[username].issues++;
-    //     //       issuesTotal++;
-    //     //     });
-    //     //   });
-
-    //     const response = await fetch(url);
-    //     const format = await response.json();
-    //     format.forEach(state => {
-    //         console.log(format);
-    //         const statequotient = state.loc_quotient;
-    //         issuesTotal++;
-    //     });
-    // }
 
     map;
 
     render() {
-        const { name, description, stops, property } = this.state.active;
-        const renderLegendKeys = (stop, i) => (
-            <div key={i} className="txt-s">
-                <span
-                    className="mr6 round-full w12 h12 inline-block align-middle"
-                    style={{ backgroundColor: stop[1] }}
-                />
-                <span>{`${stop[0].toLocaleString()}`}</span>
-            </div>
-        );
-
         return (
-            <div>
-                <div ref={el => (this.mapContainer = el)} className="absolute top right left bottom" />
-                <div className="bg-white absolute bottom right mr12 mb24 py12 px12 shadow-darken10 round z1 wmax180">
-                    <div className="mb6">
-                        <h2 className="txt-bold txt-s block">{name}</h2>
-                        <p className="txt-s color-gray">{description}</p>
-                    </div>
-                    {stops.map(renderLegendKeys)}
-                </div>
-                <OccupationComponent data={data2} />;
-            </div>
+            <Container>
+                <Row>
+                    <div ref={el => (this.mapContainer = el)} className="absolute top right left bottom" />
+                </Row>
+                <Row>
+                    <OccupationComponent data={info} className="absolute top right left bottom" />;
+                </Row>
+            </Container>
         );
     }
 }
 
+// {stops.map(renderLegendKeys)}
 export default ChemicalEngineers;
