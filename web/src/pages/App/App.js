@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import AboutPage from '../About/AboutPage';
 import Austin from '../detail/Austin/Austin';
@@ -17,17 +18,43 @@ import OccupationPage from '../main/OccupationMain/OccupationPage';
 import './App.css';
 
 class App extends Component {
+    constructor(props) {
+        super(props);
+
+        this.toggle = this.toggle.bind(this);
+        this.state = {
+            isOpen: false
+        };
+    }
+
+    toggle() {
+        this.setState({ isOpen: !this.state.isOpen });
+    }
+
     render() {
         return (
             <Router>
                 <div>
-                    <div className="Links">
-                        <Link to="/">Home</Link>
-                        <Link to="/about">About</Link>
-                        <Link to="/industry">Industry</Link>
-                        <Link to="/occupation">Occupation</Link>
-                        <Link to="/location">Location</Link>
-                    </div>
+                    <Navbar color="light" light expand="md">
+                        <NavbarBrand href="/">ioDB</NavbarBrand>
+                        <Nav className="ml-auto" navbar>
+                            <NavItem>
+                                <NavLink href="/">Home</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="/about">About Us</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="/industry">Industry</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="/occupation">Occupation</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="/location">Location</NavLink>
+                            </NavItem>
+                        </Nav>
+                    </Navbar>
 
                     <Route exact path="/" component={HomePage} />
                     <Route path="/about" component={AboutPage} />
