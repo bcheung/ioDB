@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Container, Row, Col } from 'reactstrap';
-import data from '../../../components/data.json';
-// import data from './usa.topo.json';
 import { OccupationComponent } from '../../../components/OccupationComponent';
 import './ChemicalEngineers.css';
 
@@ -181,7 +179,7 @@ class ChemicalEngineers extends Component {
 
             const maxValue = 13;
             // Calculate color
-            states.forEach(function(row) {
+            states.forEach(function (row) {
                 const green = (row.unemployment / maxValue) * 255;
                 const color = `rgba(${0}, ${green}, ${0}, 1)`;
                 expression.push(row.STATE_ID, color);
