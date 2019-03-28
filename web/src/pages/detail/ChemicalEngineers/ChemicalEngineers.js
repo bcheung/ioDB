@@ -8,7 +8,7 @@ import './ChemicalEngineers.css';
 mapboxgl.accessToken =
     'pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw';
 
-// Hardcoded data from Phase 1
+// Hardcoded data from Phase 1 (data in OccupationComponent)
 const data = {
     info: {
         occupation: 'Chemical Engineers',
