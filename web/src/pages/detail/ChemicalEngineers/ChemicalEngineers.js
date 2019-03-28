@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl';
-import { Container, Row, Col } from 'reactstrap';
+import { Table, Container, Row, Col } from 'reactstrap';
 import { OccupationComponent } from '../../../components/OccupationComponent';
 import './ChemicalEngineers.css';
 
@@ -1029,6 +1029,16 @@ class ChemicalEngineers extends Component {
                 <Row>
                     <OccupationComponent data={info} className="absolute top right left bottom" />;
                 </Row>
+                {/* <Table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Chemical Engineers</th>
+                            <th>Last Name</th>
+                            <th>User</th>
+                        </tr>
+                    </thead>
+                </Table> */}
             </Container>
         );
     }
