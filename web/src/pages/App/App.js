@@ -26,7 +26,7 @@ class App extends Component {
                     <div className="Links">
                         <Link to="/">Home</Link>
                         <Link to="/about">About</Link>
-                        <Link to="/industry">Industry</Link>
+                        <Link to="/industry/IndustryInstances">Industry</Link>
                         <Link to="/occupation">Occupation</Link>
                         <Link to="/location">Location</Link>
                     </div>
