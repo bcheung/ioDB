@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Bar } from 'react-chartjs-2';
-import { Table, Container, Row, Col } from 'reactstrap';
-import { OccupationComponent } from '../../../components/OccupationComponent';
+import { Container, Row } from 'reactstrap';
+// import { OccupationComponent } from '../../../components/OccupationComponent';
 import './ChemicalEngineers.css';
 
 mapboxgl.accessToken =
     'pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw';
 
-const info = {
+// Hardcoded data from Phase 1
+const data = {
     info: {
         occupation: 'Chemical Engineers',
         naics: '(17-2041)',
@@ -53,6 +54,7 @@ const info = {
     }
 };
 
+// http://www.iodb.info/api/joined_instance/state_occ_detailed/occupations_detailed/17-2041
 const statesData = [
     {
         annual_10: 70880,
@@ -968,7 +970,8 @@ const statesData = [
     }
 ];
 
-const wage = {
+// http://www.iodb.info/api/instance/occupations_detailed/17-2041
+const wageData = {
     annual_10: 62230,
     annual_25: 79030,
     annual_75: 131030,
@@ -989,7 +992,8 @@ const wage = {
     total_employment: 33500
 };
 
-const data = {
+// For Bar graph use, calls wage data from const wage
+const barData = {
     labels: ['10%', '25%', '50%', '75%', '90%'],
     datasets: [
         {
@@ -999,11 +1003,12 @@ const data = {
             borderWidth: 1,
             hoverBackgroundColor: 'rgba(255,99,132,0.4)',
             hoverBorderColor: 'rgba(255,99,132,1)',
-            data: [wage.annual_10, wage.annual_25, wage.annual_mean, wage.annual_75, wage.annual_90, 62230]
+            data: [wageData.annual_10, wageData.annual_25, wageData.annual_mean, wageData.annual_75, wageData.annual_90]
         }
     ]
 };
 
+// http://www.iodb.info/api/joined_instance/ind_3d_occ_detailed/occupations_detailed/17-2041
 const industryData = [
     {
         annual_10: 86780,
@@ -1452,6 +1457,8 @@ const industryData = [
         total_employment: 1170
     }
 ];
+
+// For Bar graph use
 const labelArray = [];
 const dataArray = [];
 
@@ -1461,6 +1468,7 @@ industryData.forEach(industry => {
     dataArray.push(industry.total_employment);
 });
 
+// Setting Bar data from arrays populated with industries
 const industries = {
     labels: labelArray,
     datasets: [
@@ -1476,6 +1484,7 @@ const industries = {
     ]
 };
 
+// For use to calculate state fill shade color
 const expression = ['match', ['get', 'STATE_ID']];
 
 class ChemicalEngineers extends Component {
@@ -1533,7 +1542,7 @@ class ChemicalEngineers extends Component {
         return (
             <Container>
                 <Row>
-                    <h1>Where are {wage.title} located?</h1>
+                    <h1>Where are {wageData.title} located?</h1>
                     <div ref={el => (this.mapContainer = el)} className="absolute top right left bottom" />
                 </Row>
                 <br />
@@ -1547,9 +1556,9 @@ class ChemicalEngineers extends Component {
                 <br />
                 <br />
                 <div>
-                    <h2>Annual Percentile Wages for {wage.title}</h2>
+                    <h2>Annual Percentile Wages for {wageData.title}</h2>
                     <Bar
-                        data={data}
+                        data={barData}
                         width={100}
                         height={50}
                         options={{
