@@ -1,40 +1,35 @@
 import React, { Component } from 'react';
-import './Home-page.css';
+// import './Home-page.css';
 import Select from 'react-select';
 import AutoSuggest from 'react-autosuggest';
 import axios from 'axios';
 import { Button } from 'reactstrap';
 
 const options = [
-    { label: 'Industries', value: 'industries_3d' },
-    { label: 'States', value: 'states' },
-    { label: 'Occupations', value: 'occupations_major' }
+    { label: 'Industries', id: 'industries_3d' },
+    { label: 'States', id: 'states' },
+    { label: 'Occupations', id: 'occupations_major' }
 ];
 
-class HomePage extends Component {
-    constructor() {
-        super();
-        this.state = {
-            selectedOption: '',
-            value: '',
-            library: [],
-            suggestions: []
-        };
-    }
+const proxyurl = 'https://cors-anywhere.herokuapp.com/';
 
-    // also get id
-    getSuggestionValue = suggestion => {
-        console.log(suggestion.id);
-        return suggestion.title;
+class HomePage extends Component {
+    state = {
+        instance: {},
+        selectedOption: options[0],
+        searchInput: '',
+        library: [],
+        suggestions: []
     };
 
-    renderSuggestion = suggestion => <div>{suggestion.title}</div>;
+    componentDidMount() {
+        const { selectedOption } = this.state;
+        const tablename = selectedOption.id;
+        // this.fetchLibrary(tablename);
+    }
 
     onChange = (event, { newValue }) => {
-        this.setState({
-            value: newValue
-        });
-        // console.log(this.state.value);
+        this.setState({ searchInput: newValue });
     };
 
     onSuggestionsFetchRequested = ({ value }) => {
@@ -58,50 +53,57 @@ class HomePage extends Component {
         this.setState({ suggestions: [] });
     };
 
+    getSuggestionValue = suggestion => {
+        console.log('getSuggestionValue', suggestion);
+        this.setState({ instance: suggestion });
+        return suggestion.title;
+    };
+
+    handleSelectChange = option => {
+        this.setState({
+            instance: {},
+            selectedOption: option
+        });
+        const tablename = option.id;
+        this.fetchLibrary(tablename);
+    };
+
     onSearchRequest = async () => {
-        const { selectedOption } = this.state;
+        const { instance, selectedOption } = this.state;
         const tablename = selectedOption.id;
-        const url = `http://iodb.info/instance/${tablename}/`;
+        const url = `${proxyurl}http://iodb.info/api/instance/${tablename}/${instance.id}`;
+        console.log('onSearchRequest', instance);
 
         const response = await fetch(url);
         const data = await response.json();
-        data.forEach(issue => {
-            // const username = issue.user.login;
-        });
+        console.log('onSearchRequest', data);
+        // data.forEach(issue => {
+        // const username = issue.user.login;
+        // });
 
         // this.setState({ issuesTotal });
     };
 
-    handleSelectChange = option => {
-        const proxyurl = 'https://cors-anywhere.herokuapp.com/';
-        const tablename = option.value;
+    fetchLibrary(tablename) {
         axios
             .get(`${proxyurl}http://www.iodb.info/api/list/${tablename}`)
             .then(res => {
                 console.log('fetch request', res.data);
-                this.setState(
-                    {
-                        library: res.data
-                    }
-                    // function() {
-                    //     console.log(this.state.library);
-                    // }.bind(this)
-                );
+                this.setState({ library: res.data });
             })
             .catch(error => {
                 console.log(error.message);
             });
-        this.setState({
-            selectedOption: option
-        });
-    };
+    }
+
+    renderSuggestion = suggestion => <div>{suggestion.title}</div>;
 
     render() {
-        const { selectedOption, value, suggestions } = this.state;
+        const { selectedOption, searchInput, suggestions } = this.state;
 
         const inputProps = {
             placeholder: 'Search ...',
-            value,
+            value: searchInput,
             onChange: this.onChange
         };
 
@@ -124,7 +126,7 @@ class HomePage extends Component {
                         value={selectedOption}
                         onChange={this.handleSelectChange}
                     />
-                    <Button color="primary" oonClick={this.onSearchRequest}>
+                    <Button color="primary" onClick={this.onSearchRequest}>
                         Search
                     </Button>
                 </div>
