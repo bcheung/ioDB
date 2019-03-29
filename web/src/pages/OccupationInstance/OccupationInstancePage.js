@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Bar } from 'react-chartjs-2';
 import { Container, Row, Jumbotron, Badge } from 'reactstrap';
-import './ChemicalEngineers.css';
+import './occupation-instance-page.css';
 
 mapboxgl.accessToken =
     'pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw';
@@ -1539,7 +1539,7 @@ class ChemicalEngineers extends Component {
                     const color = `rgba(${102}, ${102}, ${121}, 0.75)`;
                     expression.push(stateData.state.id, color);
                 } else {
-                    const green = 255 - ((stateData.loc_quotient / maxValue) * 255);
+                    const green = 255 - (stateData.loc_quotient / maxValue) * 255;
                     const color = `rgba(${255}, ${green}, ${132}, 0.75)`;
                     expression.push(stateData.state.id, color);
                 }
@@ -1568,17 +1568,15 @@ class ChemicalEngineers extends Component {
 
     render() {
         const { name, description, stops } = this.state.legend;
-        const renderLegend = (stop, i) => {
-            return (
-                <div key={i} className="txt-s">
-                    <span
-                        className="mr6 round-full w12 h12 inline-block align-middle"
-                        style={{ backgroundColor: stop[1] }}
-                    />
-                    <span>{`${stop[0].toLocaleString()}`}</span>
-                </div>
-            );
-        };
+        const renderLegend = (stop, i) => (
+            <div key={i} className="txt-s">
+                <span
+                    className="mr6 round-full w12 h12 inline-block align-middle"
+                    style={{ backgroundColor: stop[1] }}
+                />
+                <span>{`${stop[0].toLocaleString()}`}</span>
+            </div>
+        );
         console.log('props', this.props);
         return (
             <Container>

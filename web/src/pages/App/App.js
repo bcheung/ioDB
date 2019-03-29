@@ -1,23 +1,12 @@
 import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
-import AboutPage from '../About/AboutPage';
-import Austin from '../detail/Austin/Austin';
-import CEManufacturing from '../detail/CEManufacturing/CEManufacturing';
-import ChemicalEngineers from '../detail/ChemicalEngineers/ChemicalEngineers';
-import Dentists from '../detail/Dentists/Dentists';
-import DentistsGen from '../detail/DentistsGen/DentistsGen';
-import NewYork from '../detail/NewYork/NewYork';
-import Research from '../detail/Research/Research';
-import SanJose from '../detail/SanJose/SanJose';
-import SoftwareDevSystems from '../detail/SoftwareDevSystems/SoftwareDevSystems';
 import HomePage from '../Home/HomePage';
-import IndustryPage from '../main/IndustryMain/IndustryPage';
-import LocationPage from '../main/LocationMain/LocationPage';
-import OccupationPage from '../main/OccupationMain/OccupationPage';
+import AboutPage from '../About/AboutPage';
 import LocationInstance from '../LocationInstance/LocationInstance';
-import './App.css';
+import OccupationInstancePage from '../OccupationInstance/OccupationInstancePage';
 import ExampleInstance from '../ExampleInstance';
+import './App.css';
 
 class App extends Component {
     constructor(props) {
@@ -68,7 +57,7 @@ class App extends Component {
 
                     <Route path="/industry/:tablename/:id" component={IndustryPage} />
 
-                    <Route path="/occupation/:tablename/:id" component={OccupationPage} />
+                    <Route path="/occupation/:tablename/:id" component={OccupationInstancePage} />
 
                     <Route path="/location/:tablename/:id" component={LocationInstance} />
                 </div>
