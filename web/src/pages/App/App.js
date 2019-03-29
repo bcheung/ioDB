@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
-import { HashRouter as Router, Link, Route } from 'react-router-dom';
+import { HashRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import HomePage from '../Home/HomePage';
 import AboutPage from '../About/AboutPage';
 import IndustryInstancePage from '../IndustryInstance/IndustryInstancePage';
@@ -60,10 +60,10 @@ class App extends Component {
                     <Route path="/industry/:tablename/:id" component={IndustryInstancePage} />
 
                     <Route path="/occupation/:tablename/:id" component={OccupationInstancePage} />
-
-                    <Route path="/location/:tablename/:id" component={LocationInstance} />
-
-                    {/* <Route path="/location" component={LocationInstance} /> */}
+                    <Switch>
+                        <Route path="/location/:tablename/:id" component={LocationInstance} />
+                        <Route path="/location" component={LocationInstance} />
+                    </Switch>
                 </div>
             </Router>
         );
