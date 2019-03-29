@@ -36,16 +36,6 @@ class App extends Component {
         return (
             <Router>
                 <div>
-<<<<<<< HEAD
-                    <div className="Links">
-                        <Link to="/">Home</Link>
-                        <Link to="/about">About</Link>
-                        <Link to="/industry">Industry</Link>
-                        <Link to="/occupation">Occupation</Link>
-                        <Link to="/location">Location</Link>
-                        <Link to="/location/location-instance">Location Instance</Link>
-                    </div>
-=======
                     <Navbar color="light" light expand="md">
                         <NavbarBrand href="/">ioDB</NavbarBrand>
                         <Nav className="ml-auto" navbar>
@@ -66,26 +56,15 @@ class App extends Component {
                             </NavItem>
                         </Nav>
                     </Navbar>
->>>>>>> searchbar
 
                     <Route exact path="/" component={HomePage} />
                     <Route path="/about" component={AboutPage} />
 
-                    <Route path="/industry" component={IndustryPage} />
-                    <Route path="/industry/Dentists" component={Dentists} />
-                    <Route path="/industry/CEManufacturing" component={CEManufacturing} />
-                    <Route path="/industry/Research" component={Research} />
+                    <Route path="/industry/:tablename/:id" component={IndustryPage} />
 
-                    <Route path="/occupation" component={OccupationPage} />
-                    <Route path="/occupation/ChemicalEngineers" component={ChemicalEngineers} />
-                    <Route path="/occupation/DentistsGen" component={DentistsGen} />
-                    <Route path="/occupation/SoftwareDevSystems" component={SoftwareDevSystems} />
+                    <Route path="/occupation/:tablename/:id" component={OccupationPage} />
 
-                    <Route path="/location" component={LocationPage} />
-                    <Route path="/location/Austin" component={Austin} />
-                    <Route path="/location/SanJose" component={SanJose} />
-                    <Route path="/location/NewYork" component={NewYork} />
-                    <Route path="/location/location-instance" component={LocationInstance} />
+                    <Route path="/location/:tablename/:id" component={LocationInstance} />
                 </div>
             </Router>
         );
