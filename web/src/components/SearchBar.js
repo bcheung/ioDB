@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 // import './Home-page.css';
 import Select from 'react-select';
 import axios from 'axios';
@@ -31,17 +31,17 @@ class SearchBar extends Component {
     };
 
     handleModelChange = selectedModel => {
-        this.setState({ selectedModel });
+        this.setState({ selectedModel, selectedInstance: null });
         const { tablename } = selectedModel;
         this.fetchInstances(tablename);
     };
 
-    onSearchRequest = history => {
+    onSearchRequest = () => {
         const { selectedInstance, selectedModel } = this.state;
         if (selectedInstance !== null) {
             const { id } = selectedInstance;
             const { tablename, route } = selectedModel;
-            history.push(`/${route}/${tablename}/${id}`);
+            this.props.history.push(`/${route}/${tablename}/${id}`);
         }
     };
 
@@ -77,17 +77,14 @@ class SearchBar extends Component {
                         getOptionLabel={option => option.title}
                         getOptionValue={option => option.tablename}
                     />
-                    <Route
-                        render={({ history }) => (
-                            <Button color="primary" onClick={this.onSearchRequest(history)}>
-                                Search
-                            </Button>
-                        )}
-                    />
+                    <Button color="primary" onClick={this.onSearchRequest}>
+                        Search
+                    </Button>
                 </div>
             </div>
         );
     }
 }
 
-export { SearchBar };
+const RoutingSearchBar = withRouter(SearchBar);
+export { RoutingSearchBar };

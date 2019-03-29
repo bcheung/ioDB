@@ -8,7 +8,7 @@ import OccupationInstancePage from '../OccupationInstance/OccupationInstancePage
 import LocationInstance from '../LocationInstance/LocationInstance';
 import ExampleInstance from '../ExampleInstance';
 import './App.css';
-import { SearchBar } from '../../components/SearchBar';
+import { RoutingSearchBar } from '../../components/SearchBar';
 
 class App extends Component {
     constructor(props) {
@@ -51,7 +51,7 @@ class App extends Component {
                             </NavItem>
                         </Nav>
                     </Navbar>
-
+                    <RoutingSearchBar />
                     <Route exact path="/" component={HomePage} />
                     <Route path="/about" component={AboutPage} />
 
