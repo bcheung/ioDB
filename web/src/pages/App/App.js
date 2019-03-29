@@ -8,6 +8,7 @@ import OccupationInstancePage from '../OccupationInstance/OccupationInstancePage
 import LocationInstance from '../LocationInstance/LocationInstance';
 import ExampleInstance from '../ExampleInstance';
 import './App.css';
+import { SearchBar } from '../../components/SearchBar';
 
 class App extends Component {
     constructor(props) {
@@ -34,19 +35,19 @@ class App extends Component {
                                 <NavLink href="/">Home</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/about">About Us</NavLink>
+                                <NavLink href="#/about">About Us</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/industry">Industry</NavLink>
+                                <NavLink href="#/industry">Industry</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/occupation">Occupation</NavLink>
+                                <NavLink href="#/occupation">Occupation</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/location">Location</NavLink>
+                                <NavLink href="#/location">Location</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/example/industries_3d/113000">Example</NavLink>
+                                <NavLink href="#/example/industries_3d/113000">Example</NavLink>
                             </NavItem>
                         </Nav>
                     </Navbar>

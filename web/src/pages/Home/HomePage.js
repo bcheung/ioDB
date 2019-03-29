@@ -12,8 +12,6 @@ const modelOptions = [
     { title: 'Occupations', tablename: 'occupations_major', route: 'occupation' }
 ];
 
-const proxyurl = 'https://cors-anywhere.herokuapp.com/';
-
 class HomePage extends Component {
     state = {
         instanceOptions: [],
