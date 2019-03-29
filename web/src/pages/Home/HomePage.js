@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 // import './Home-page.css';
 import Select from 'react-select';
-import AutoSuggest from 'react-autosuggest';
 import axios from 'axios';
 import { Button } from 'reactstrap';
 
