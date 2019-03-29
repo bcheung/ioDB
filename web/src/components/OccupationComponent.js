@@ -1,4 +1,5 @@
 import React from 'react';
+import BootstrapTable from 'react-bootstrap-table-next';
 
 const OccupationComponent = ({ data: { info, percentile, industries, states, metropolitan } }) => {
     const percentileHeaders = percentile.headers.map(percent => <th>{percent}%</th>);

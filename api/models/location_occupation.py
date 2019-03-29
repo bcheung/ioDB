@@ -1,4 +1,5 @@
 from config import db, ma
+from marshmallow import fields
 
 
 class StateOccMajorModel(db.Model):
@@ -48,13 +49,14 @@ class StateOccMajorModel(db.Model):
 
 
 class StateOccMajorSchema(ma.ModelSchema):
+    state = fields.Nested(
+        'self', only=["id", "title"])
+    occupation_major = fields.Nested(
+        'self', only=["id", "title"])
+
     class Meta:
         model = StateOccMajorModel
         sqla_session = db.session
-        include_fk = True
-        exclude = tuple(prop.key
-                        for prop in StateOccMajorModel.__mapper__.iterate_properties
-                        if hasattr(prop, 'direction'))
 
 
 class MetroAreaOccMajorModel(db.Model):
@@ -104,13 +106,14 @@ class MetroAreaOccMajorModel(db.Model):
 
 
 class MetroAreaOccMajorSchema(ma.ModelSchema):
+    metro_area = fields.Nested(
+        'self', only=["id", "title"])
+    occupation_detailed = fields.Nested(
+        'self', only=["id", "title"])
+
     class Meta:
         model = MetroAreaOccMajorModel
         sqla_session = db.session
-        include_fk = True
-        exclude = tuple(prop.key
-                        for prop in MetroAreaOccMajorModel.__mapper__.iterate_properties
-                        if hasattr(prop, 'direction'))
 
 
 class StateOccDetailedModel(db.Model):
@@ -161,13 +164,14 @@ class StateOccDetailedModel(db.Model):
 
 
 class StateOccDetailedSchema(ma.ModelSchema):
+    state = fields.Nested(
+        'self', only=["id", "title"])
+    occupation_detailed = fields.Nested(
+        'self', only=["id", "title"])
+
     class Meta:
         model = StateOccDetailedModel
         sqla_session = db.session
-        include_fk = True
-        exclude = tuple(prop.key
-                        for prop in StateOccDetailedModel.__mapper__.iterate_properties
-                        if hasattr(prop, 'direction'))
 
 
 class MetroAreaOccDetailedModel(db.Model):
@@ -217,10 +221,11 @@ class MetroAreaOccDetailedModel(db.Model):
 
 
 class MetroAreaOccDetailedSchema(ma.ModelSchema):
+    metro_area = fields.Nested(
+        'self', only=["id", "title"])
+    occupation_detailed = fields.Nested(
+        'self', only=["id", "title"])
+
     class Meta:
         model = MetroAreaOccDetailedModel
         sqla_session = db.session
-        include_fk = True
-        exclude = tuple(prop.key
-                        for prop in MetroAreaOccDetailedModel.__mapper__.iterate_properties
-                        if hasattr(prop, 'direction'))
