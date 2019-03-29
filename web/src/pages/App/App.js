@@ -2,10 +2,18 @@ import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import HomePage from '../Home/HomePage';
+<<<<<<< HEAD
 import AboutPage from '../About/AboutPage';
 import LocationInstance from '../LocationInstance/LocationInstance';
 import OccupationInstancePage from '../OccupationInstance/OccupationInstancePage';
 import ExampleInstance from '../ExampleInstance';
+=======
+import IndustryPage from '../main/IndustryMain/IndustryPage';
+import LocationPage from '../main/LocationMain/LocationPage';
+import OccupationPage from '../main/OccupationMain/OccupationPage';
+import IndustryInstances from '../IndustryInstances/IndustryInstances';
+
+>>>>>>> industryUI
 import './App.css';
 
 class App extends Component {

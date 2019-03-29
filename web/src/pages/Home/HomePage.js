@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 // import './Home-page.css';
 import Select from 'react-select';
 import axios from 'axios';
@@ -11,6 +12,11 @@ const modelOptions = [
 ];
 
 const proxyurl = 'https://cors-anywhere.herokuapp.com/';
+=======
+import { Link } from 'react-router-dom';
+import { Jumbotron, Container, Row, Col, Image, Button } from 'react-bootstrap';
+import './Home-page.css';
+>>>>>>> industryUI
 
 class HomePage extends Component {
     state = {
@@ -66,6 +72,7 @@ class HomePage extends Component {
     }
 
     render() {
+<<<<<<< HEAD
         const { instanceOptions, selectedInstance, selectedModel } = this.state;
 
         return (
@@ -96,6 +103,14 @@ class HomePage extends Component {
                     </Button>
                 </div>
             </div>
+=======
+        return (
+            <Container>
+                <Jumbotron>
+                    <h2>Welcome to the Home page</h2>
+                </Jumbotron>
+            </Container>
+>>>>>>> industryUI
         );
     }
 }
