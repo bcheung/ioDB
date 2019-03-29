@@ -6,16 +6,17 @@ import axios from 'axios';
 import { Button } from 'reactstrap';
 
 const options = [
-    { label: 'Industries', id: 'industries_3d' },
-    { label: 'States', id: 'states' },
-    { label: 'Occupations', id: 'occupations_major' }
+    { label: 'Industries', value: 'industries_3d' },
+    { label: 'States', value: 'states' },
+    { label: 'Occupations', value: 'occupations_major' }
 ];
 
 const proxyurl = 'https://cors-anywhere.herokuapp.com/';
 
 class HomePage extends Component {
     state = {
-        instance: {},
+        searchBtnDisabled: true,
+        instance: null,
         selectedOption: options[0],
         searchInput: '',
         library: [],
@@ -24,12 +25,18 @@ class HomePage extends Component {
 
     componentDidMount() {
         const { selectedOption } = this.state;
-        const tablename = selectedOption.id;
-        // this.fetchLibrary(tablename);
+        console.log(selectedOption);
+        const tablename = selectedOption.value;
+        this.fetchLibrary(tablename);
     }
 
-    onChange = (event, { newValue }) => {
-        this.setState({ searchInput: newValue });
+    onChange = (event, { newValue, method }) => {
+        console.log('onChange', method);
+        if (method === 'type') {
+            this.setState({ searchBtnDisabled: true, instance: null, searchInput: newValue });
+        } else {
+            this.setState({ searchInput: newValue });
+        }
     };
 
     onSuggestionsFetchRequested = ({ value }) => {
@@ -55,33 +62,35 @@ class HomePage extends Component {
 
     getSuggestionValue = suggestion => {
         console.log('getSuggestionValue', suggestion);
-        this.setState({ instance: suggestion });
+        this.setState({ searchBtnDisabled: false, instance: suggestion });
         return suggestion.title;
     };
 
-    handleSelectChange = option => {
+    handleSelectChange = selectedOption => {
         this.setState({
             instance: {},
-            selectedOption: option
+            selectedOption
         });
-        const tablename = option.id;
+        const tablename = selectedOption.value;
         this.fetchLibrary(tablename);
     };
 
     onSearchRequest = async () => {
-        const { instance, selectedOption } = this.state;
-        const tablename = selectedOption.id;
-        const url = `${proxyurl}http://iodb.info/api/instance/${tablename}/${instance.id}`;
-        console.log('onSearchRequest', instance);
+        const { searchBtnDisabled } = this.state;
+        if (!searchBtnDisabled) {
+            const { instance, selectedOption } = this.state;
+            const tablename = selectedOption.value;
+            const url = `${proxyurl}http://iodb.info/api/instance/${tablename}/${instance.id}`;
 
-        const response = await fetch(url);
-        const data = await response.json();
-        console.log('onSearchRequest', data);
-        // data.forEach(issue => {
-        // const username = issue.user.login;
-        // });
+            const response = await fetch(url);
+            const data = await response.json();
+            console.log('onSearchRequest', data);
+            // data.forEach(issue => {
+            // const username = issue.user.login;
+            // });
 
-        // this.setState({ issuesTotal });
+            // this.setState({ issuesTotal });
+        }
     };
 
     fetchLibrary(tablename) {
@@ -99,7 +108,7 @@ class HomePage extends Component {
     renderSuggestion = suggestion => <div>{suggestion.title}</div>;
 
     render() {
-        const { selectedOption, searchInput, suggestions } = this.state;
+        const { selectedOption, searchInput, suggestions, searchBtnDisabled } = this.state;
 
         const inputProps = {
             placeholder: 'Search ...',
@@ -125,8 +134,9 @@ class HomePage extends Component {
                         options={options}
                         value={selectedOption}
                         onChange={this.handleSelectChange}
+                        isSearchable={false}
                     />
-                    <Button color="primary" onClick={this.onSearchRequest}>
+                    <Button color="primary" onClick={this.onSearchRequest} disabled={searchBtnDisabled}>
                         Search
                     </Button>
                 </div>
