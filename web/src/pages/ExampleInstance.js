@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { fetchInstanceData } from '../../../fetchAPI';
+import { fetchInstanceData } from '../fetchAPI';
 
-class IndustryPage extends Component {
+class ExampleInstance extends Component {
     state = {
         instanceData: null
     };
 
-    componentDidMount() {
-        const { tablename, id } = this.props.match.params;
+    constructor(props) {
+        super(props);
+        const { tablename, id } = props.match.params;
         console.log('constructor', tablename, id);
 
         fetchInstanceData(tablename, id).then(instanceData => {
@@ -17,8 +18,8 @@ class IndustryPage extends Component {
     }
 
     render() {
-        return <div>this is the industry main page</div>;
+        return <div>this is the example page</div>;
     }
 }
 
-export default IndustryPage;
+export default ExampleInstance;

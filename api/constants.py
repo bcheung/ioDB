@@ -88,6 +88,41 @@ primary_key_switcher = {
     'metro_areas': 'metro_area_id'
 }
 
+joined_primary_key_switcher = {
+    'ind_3d_occ_major': {
+        'id_1': 'industry_3d_id',
+        'id_2': 'occupation_major_id'
+    },
+    'ind_4d_occ_major': {
+        'id_1': 'industry_4d_id',
+        'id_2': 'occupation_major_id'
+    },
+    'ind_3d_occ_detailed': {
+        'id_1': 'industry_3d_id',
+        'id_2': 'occupation_detailed_id'
+    },
+    'ind_4d_occ_detailed': {
+        'id_1': 'industry_4d_id',
+        'id_2': 'occupation_detailed_id'
+    },
+    'state_occ_major': {
+        'id_1': 'state_id',
+        'id_2': 'occupation_major_id'
+    },
+    'metro_area_occ_major': {
+        'id_1': 'metro_area_id',
+        'id_2': 'occupation_major_id'
+    },
+    'state_occ_detailed': {
+        'id_1': 'state_id',
+        'id_2': 'occupation_detailed_id'
+    },
+    'metro_area_occ_detailed': {
+        'id_1': 'metro_area_id',
+        'id_2': 'occupation_detailed_id'
+    }
+}
+
 # def column_switcher(table, columnname):
 #     if columnname == 'total_employment':
 #         return table.total_employment

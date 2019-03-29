@@ -12,7 +12,7 @@ const modelOptions = [
 
 const proxyurl = 'https://cors-anywhere.herokuapp.com/';
 
-class HomePage extends Component {
+class SearchBar extends Component {
     state = {
         instanceOptions: [],
         selectedInstance: null,
@@ -100,4 +100,4 @@ class HomePage extends Component {
     }
 }
 
-export default HomePage;
+export { SearchBar };
