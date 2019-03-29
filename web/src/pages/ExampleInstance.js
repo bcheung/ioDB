@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { fetchInstanceData } from '../fetchAPI';
+import { fetchInstanceData, fetchJoinedTopTenData } from '../fetchAPI';
 
 class ExampleInstance extends Component {
     state = {
@@ -13,6 +13,10 @@ class ExampleInstance extends Component {
         fetchInstanceData(tablename, id).then(instanceData => {
             this.setState({ instanceData });
             console.log('constructor', instanceData);
+        });
+
+        fetchJoinedTopTenData(tablename, 'occupations_major', tablename, id, 'total_employment').then(data => {
+            console.log('constructor', data);
         });
     }
 
