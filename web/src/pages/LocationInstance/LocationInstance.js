@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import CountryMap from '../../components/CountryMap';
 import axios from 'axios';
+import LocationData from '../../components/LocationData';
 
 class LocationInstance extends Component {
   constructor() {
     super();
     this.state = {
-      state: '',
+      state: {
+        name: '',
+        initial: '',
+        id: '',
+      },
       showStateInfo: false,
       stateData: {},
-      MSA: '',
+      MSA: {},
       showMSAInfo: false,
       MSAData: {},
     };
@@ -19,10 +24,10 @@ class LocationInstance extends Component {
     this.handleReset = this.handleReset.bind(this);
   }
   async handleStateClick(geographyProps) {
-    let stateID = geographyProps.HASC_1.substring(geographyProps.HASC_1.length-2);
+    let stateInitial = geographyProps.HASC_1.substring(geographyProps.HASC_1.length-2);
 
     const proxyurl = 'https://cors-anywhere.herokuapp.com/';
-    const url = 'http://www.iodb.info/api/instance/states/'+stateID;
+    const url = 'http://www.iodb.info/api/instance/states/'+geographyProps.ID;
     
     // await fetch(`${proxyurl}${url}`)
     //   .then(response => response.json())
@@ -32,20 +37,66 @@ class LocationInstance extends Component {
     //   });
     // const response = await axios.get(`${url}`);
 
-    const response = await fetch(`${proxyurl}${url}`);
-    const data = await response.json();
-    console.log(data);
+    const response = await axios.get(`${proxyurl}${url}`);
+    const data = response.data;
+    // console.log(response);
+    // console.log(data);
+    const table = {
+      title: data.title,
+      total_population: data.total_population,
+      total_employment: data.total_employment,
+      columns: [{
+        dataField: 'type',
+        text: 'Type',
+      },{
+        dataField: 'mean',
+        text: 'Mean',
+      },{
+        dataField: 'median',
+        text: 'Median',
+      },{
+        dataField: '10',
+        text: '10th Percentile',
+      },{
+        dataField: '25',
+        text: '25th Percentile',
+      },{
+        dataField: '75',
+        text: '75th Percentile',
+      },{
+        dataField: '90',
+        text: '90th Percentile',
+      }],
+      rows: [{
+        type: 'Annual Salary',
+        mean: data.annual_mean,
+        median: data.annual_median,
+        '10': data.annual_10,
+        '25': data.annual_25,
+        '75': data.annual_75,
+        '90': data.annual_90,
+      },{
+        type: 'Hourly Wage',
+        mean: data.hourly_mean,
+        median: data.hourly_median,
+        '10': data.hourly_10,
+        '25': data.hourly_25,
+        '75': data.hourly_75,
+        '90': data.hourly_90,
+      }]
+    };
 
     this.setState({
       state: {
         name: geographyProps.NAME_1,
-        id: stateID,
+        initial: stateInitial,
+        id: geographyProps.ID,
       },
       showStateInfo: true,
-      stateData: data,
+      stateData: table,
     });
 
-    console.log(this.state.state.stateData);
+    // console.log(this.state.state.stateData);
   }
   handleMSAClick(geographyProps) {
     this.setState({
@@ -57,10 +108,10 @@ class LocationInstance extends Component {
   }
   handleReset() {
     this.setState({
-      state: '',
+      state: {},
       showStateInfo: false,
       stateData: {},
-      MSA: '',
+      MSA: {},
       showMSAInfo: false,
       MSAData: {},
     });
@@ -77,7 +128,8 @@ class LocationInstance extends Component {
         />
         {/* <state info component></state>
         <msa info component></msa> */}
-        {this.state.showStateInfo ? this.state.stateData.annual_10 : null}
+        <br/>
+        {this.state.showStateInfo ? <LocationData data={this.state.stateData} /> : null}
       </div>
     );
   }

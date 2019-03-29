@@ -31,6 +31,7 @@ class CountryMap extends Component {
       detail: false,
       state: {
         name: '',
+        initial: '',
         id: '',
       },
       MSA: '',
@@ -71,9 +72,10 @@ class CountryMap extends Component {
       detail: true,
       state: {
         name: geography.properties.NAME_1,
-        id: geography.properties.HASC_1.substring(geography.properties.HASC_1.length-2),
+        initial: geography.properties.HASC_1.substring(geography.properties.HASC_1.length-2),
+        id: geography.properties.ID,
       },
-      MSA: '',
+      MSA: {},
     });
     this.props.onStateClick(geography.properties);
   }
@@ -126,12 +128,12 @@ class CountryMap extends Component {
                       projection={projection}
                       onClick={
                         (this.state.detail &&
-                          this.state.state.id === geography.properties.HASC_1.substring(geography.properties.HASC_1.length-2)
+                          this.state.state.id === geography.properties.ID
                           ? null : this.handleStateClick)
                       }
                       style={
                         (this.state.detail &&
-                          this.state.state.id === geography.properties.HASC_1.substring(geography.properties.HASC_1.length-2))
+                          this.state.state.id === geography.properties.ID)
                           ? {
                         default: {
                           fill: "#ECEFF1",
@@ -165,10 +167,7 @@ class CountryMap extends Component {
                 <Geographies geography={msaData} disableOptimization>
                   {(geographies, projection) =>
                     geographies.map((geography, i) => {
-                    {/* let x = geography.properties.NAME; */}
-                    let stateID = geography.properties.NAME.substring(geography.properties.NAME.length-2);
-                    {/* console.log(x.substring(x.length-2)); */}
-                    if(stateID !== this.state.state.id) {
+                    if(geography.properties.NAME.substring(geography.properties.NAME.length - 2) !== this.state.state.initial) {
                       return null;
                     }
                     return (
