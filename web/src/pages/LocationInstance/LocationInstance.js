@@ -4,8 +4,9 @@ import axios from 'axios';
 import LocationData from '../../components/LocationData';
 
 class LocationInstance extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const { tablename, id } = props.match.params;
     this.state = {
       state: {
         name: '',
@@ -14,7 +15,11 @@ class LocationInstance extends Component {
       },
       showStateInfo: false,
       stateData: {},
-      MSA: {},
+      MSA: {
+        name: '',
+        initial: '',
+        id: '',
+      },
       showMSAInfo: false,
       MSAData: {},
     };
@@ -28,20 +33,15 @@ class LocationInstance extends Component {
 
     const proxyurl = 'https://cors-anywhere.herokuapp.com/';
     const url = 'http://www.iodb.info/api/instance/states/'+geographyProps.ID;
-    
-    // await fetch(`${proxyurl}${url}`)
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     console.log(data);
-    //     this.setState({ stateData: data });
-    //   });
-    // const response = await axios.get(`${url}`);
 
+    // const response = await axios.get(`${url}`);
     const response = await axios.get(`${proxyurl}${url}`);
     const data = response.data;
+
+
     // console.log(response);
     // console.log(data);
-    const table = {
+    const stateData = {
       title: data.title,
       total_population: data.total_population,
       total_employment: data.total_employment,
@@ -93,17 +93,81 @@ class LocationInstance extends Component {
         id: geographyProps.ID,
       },
       showStateInfo: true,
-      stateData: table,
+      stateData: stateData,
+      showMSAInfo: false,
     });
 
     // console.log(this.state.state.stateData);
   }
-  handleMSAClick(geographyProps) {
+  async handleMSAClick(geographyProps) {
+    let stateInitial = geographyProps.NAME.substring(geographyProps.NAME.length-2);
+
+    const proxyurl = 'https://cors-anywhere.herokuapp.com/';
+    const url = 'http://www.iodb.info/api/instance/metro_areas/'+geographyProps.GEOID;
+
+    // const response = await axios.get(`${url}`);
+    const response = await axios.get(`${proxyurl}${url}`);
+    const data = response.data;
+
+    if(Object.keys(data).length === 0) {
+      return null;
+    }
+
+    const MSAData = {
+      title: data.title,
+      total_population: data.total_population,
+      total_employment: data.total_employment,
+      columns: [{
+        dataField: 'type',
+        text: 'Type',
+      },{
+        dataField: 'mean',
+        text: 'Mean',
+      },{
+        dataField: 'median',
+        text: 'Median',
+      },{
+        dataField: '10',
+        text: '10th Percentile',
+      },{
+        dataField: '25',
+        text: '25th Percentile',
+      },{
+        dataField: '75',
+        text: '75th Percentile',
+      },{
+        dataField: '90',
+        text: '90th Percentile',
+      }],
+      rows: [{
+        type: 'Annual Salary',
+        mean: data.annual_mean,
+        median: data.annual_median,
+        '10': data.annual_10,
+        '25': data.annual_25,
+        '75': data.annual_75,
+        '90': data.annual_90,
+      },{
+        type: 'Hourly Wage',
+        mean: data.hourly_mean,
+        median: data.hourly_median,
+        '10': data.hourly_10,
+        '25': data.hourly_25,
+        '75': data.hourly_75,
+        '90': data.hourly_90,
+      }]
+    };
+
+    // console.log(response);
+    // console.log(data);
     this.setState({
       MSA: {
-
+        name: geographyProps.NAME,
+        initial: stateInitial,
+        id: geographyProps.GEOID,
       },
       showMSAInfo: true,
+      MSAData: MSAData,
     })
   }
   handleReset() {
@@ -125,11 +189,14 @@ class LocationInstance extends Component {
           onStateClick={this.handleStateClick} 
           onMSAClick={this.handleMSAClick} 
           onReset={this.handleReset}
+          tablename={this.props.tablename}
+          id={this.props.id}
         />
         {/* <state info component></state>
         <msa info component></msa> */}
         <br/>
         {this.state.showStateInfo ? <LocationData data={this.state.stateData} /> : null}
+        {this.state.showMSAInfo ? <LocationData data={this.state.MSAData} /> : null}
       </div>
     );
   }
