@@ -110,7 +110,7 @@ def get_list(tablename):
     model = model_switcher.get(tablename, None)
     if model != None:
         for instance in model.query.with_entities(model.id, model.title):
-            data.append({'value': instance.id, 'label': instance.title})
+            data.append({'id': instance.id, 'title': instance.title})
     return jsonify(data)
 
 
