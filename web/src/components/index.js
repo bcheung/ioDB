@@ -1,2 +1,2 @@
 export * from './NewComponent';
-export * from './SearchBar';
+export * from './RoutingSearchBar';
