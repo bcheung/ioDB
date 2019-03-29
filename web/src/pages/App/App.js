@@ -15,6 +15,7 @@ import HomePage from '../Home/HomePage';
 import IndustryPage from '../main/IndustryMain/IndustryPage';
 import LocationPage from '../main/LocationMain/LocationPage';
 import OccupationPage from '../main/OccupationMain/OccupationPage';
+import LocationInstance from '../LocationInstance/LocationInstance';
 import './App.css';
 
 class App extends Component {
@@ -59,20 +60,11 @@ class App extends Component {
                     <Route exact path="/" component={HomePage} />
                     <Route path="/about" component={AboutPage} />
 
-                    <Route path="/industry" component={IndustryPage} />
-                    <Route path="/industry/Dentists" component={Dentists} />
-                    <Route path="/industry/CEManufacturing" component={CEManufacturing} />
-                    <Route path="/industry/Research" component={Research} />
+                    <Route path="/industry/:tablename/:id" component={IndustryPage} />
 
-                    <Route path="/occupation" component={OccupationPage} />
-                    <Route path="/occupation/ChemicalEngineers" component={ChemicalEngineers} />
-                    <Route path="/occupation/DentistsGen" component={DentistsGen} />
-                    <Route path="/occupation/SoftwareDevSystems" component={SoftwareDevSystems} />
+                    <Route path="/occupation/:tablename/:id" component={OccupationPage} />
 
-                    <Route path="/location" component={LocationPage} />
-                    <Route path="/location/Austin" component={Austin} />
-                    <Route path="/location/SanJose" component={SanJose} />
-                    <Route path="/location/NewYork" component={NewYork} />
+                    <Route path="/location/:tablename/:id" component={LocationInstance} />
                 </div>
             </Router>
         );
