@@ -48,3 +48,20 @@ const joinedTablePrimaryKeys = {
         id_2: 'occupation_detailed_id'
     }
 };
+
+export const stats = [
+    { label: 'Hourly Wage Median', value: 'hourly_median' },
+    { label: 'Hourly Wage Mean', value: 'hourly_mean' },
+    { label: 'Annual Wage Median', value: 'annual_median' },
+    { label: 'Annual Wage Mean', value: 'annual_mean' },
+    { label: 'Total Employment', value: 'total_employment' }
+];
+
+export const statsWithPop = [
+    { label: 'Hourly Wage Median', value: 'hourly_median' },
+    { label: 'Hourly Wage Mean', value: 'hourly_mean' },
+    { label: 'Annual Wage Median', value: 'annual_median' },
+    { label: 'Annual Wage Mean', value: 'annual_mean' },
+    { label: 'Total Employment', value: 'total_employment' },
+    { label: 'Total Population', value: 'total_population' }
+];

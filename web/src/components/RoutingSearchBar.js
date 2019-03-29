@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Route, withRouter } from 'react-router-dom';
 // import './Home-page.css';
 import Select from 'react-select';
-import axios from 'axios';
 import { Button } from 'reactstrap';
 import { fetchListData } from '../fetchAPI';
 
