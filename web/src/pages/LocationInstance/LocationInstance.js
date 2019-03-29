@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import CountryMap from '../../components/CountryMap';
 import axios from 'axios';
+import CountryMap from '../../components/CountryMap';
 import LocationData from '../../components/LocationData';
 
 class LocationInstance extends Component {
@@ -24,12 +24,13 @@ class LocationInstance extends Component {
       MSAData: {},
     };
 
-    this.handleStateClick = this.handleStateClick.bind(this);
-    this.handleMSAClick = this.handleMSAClick.bind(this);
-    this.handleReset = this.handleReset.bind(this);
-  }
-  async handleStateClick(geographyProps) {
-    let stateInitial = geographyProps.HASC_1.substring(geographyProps.HASC_1.length-2);
+        // await fetch(`${proxyurl}${url}`)
+        //   .then(response => response.json())
+        //   .then(data => {
+        //     console.log(data);
+        //     this.setState({ stateData: data });
+        //   });
+        // const response = await axios.get(`${url}`);
 
     const proxyurl = 'https://cors-anywhere.herokuapp.com/';
     const url = 'http://www.iodb.info/api/instance/states/'+geographyProps.ID;

@@ -1,4 +1,5 @@
 from config import db, ma
+from marshmallow import fields
 
 
 class Industry4dModel(db.Model):
@@ -42,10 +43,12 @@ class Industry4dModel(db.Model):
 
 
 class Industry4dSchema(ma.ModelSchema):
+    industry_3d = fields.Nested(
+        'self', only=["id", "title"])
+
     class Meta:
         model = Industry4dModel
         sqla_session = db.session
-        include_fk = True
 
 
 class Industry3dModel(db.Model):
@@ -89,6 +92,9 @@ class Industry3dModel(db.Model):
 
 
 class Industry3dSchema(ma.ModelSchema):
+    industries_4d = fields.Nested(
+        'self', only=["id", "title"], many=True)
+
     class Meta:
         model = Industry3dModel
         sqla_session = db.session

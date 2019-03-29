@@ -1,0 +1,17 @@
+.Links {
+    display: inline;
+}
+
+.Links:link {
+    color: blue;
+    background-color: transparent;
+}
+.Links:active {
+    color: blueviolet;
+    background-color: transparent;
+}
+
+.main {
+    color: blue;
+    background-color: whitesmoke;
+}
