@@ -10,7 +10,7 @@ from sqlalchemy import desc
 
 import config
 from config import app, db
-from constants import all_model_switcher, all_schema_switcher, model_switcher, schema_switcher, joined_model_switcher, joined_schema_switcher, primary_key_switcher
+from constants import all_model_switcher, all_schema_switcher, model_switcher, schema_switcher, joined_model_switcher, joined_schema_switcher, primary_key_switcher, joined_primary_key_switcher
 from models.visit import Visit
 from models.occupation import OccupationMajorModel, OccupationDetailedModel, OccupationMajorSchema, OccupationDetailedSchema
 from models.industry import Industry3dModel, Industry4dModel, Industry3dSchema, Industry4dSchema
@@ -110,7 +110,7 @@ def get_list(tablename):
     model = model_switcher.get(tablename, None)
     if model != None:
         for instance in model.query.with_entities(model.id, model.title):
-            data.append({'value': instance.id, 'label': instance.title})
+            data.append({'id': instance.id, 'title': instance.title})
     return jsonify(data)
 
 
@@ -122,6 +122,18 @@ def get_top_ten(tablename, column_name):
         for instance in model.query.with_entities(model.id, model.title, column_name).order_by(desc(column_name)).limit(10):
             data.append({'id': instance.id, 'title': instance.title,
                          column_name: getattr(instance, column_name)})
+    return jsonify(data)
+
+
+@app.route('/api/joined_top_ten/<tablename>/<key_model>/<id>/<column_name>')
+def get_joined_top_ten(tablename, key_model, id, column_name):
+    data = []
+    model = joined_model_switcher.get(tablename, None)
+    schema = joined_schema_switcher.get(tablename, None)
+    key = primary_key_switcher.get(key_model, None)
+    if model != None and schema != None:
+        for instance in model.query.filter_by(**{key: id}).order_by(desc(column_name)).limit(10):
+            data.append(schema().dump(instance).data)
     return jsonify(data)
 
 

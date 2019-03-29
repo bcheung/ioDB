@@ -6,7 +6,14 @@ const IndustryComponent = ({ data: { info, industries } }) => {
         <tr>
             <td>{row[0]}</td>
             <td>{row[1]}</td>
-            <td>{row[2]}</td>
+            <td>
+                {new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(row[2])}
+            </td>
             <td>
                 {new Intl.NumberFormat('en-US', {
                     style: 'currency',
@@ -27,7 +34,12 @@ const IndustryComponent = ({ data: { info, industries } }) => {
             <body>{info.meanWage}</body>
             <br />
             <br />
-            <table>
+            <table
+                id="dtBasicExample"
+                className="table table-striped table-bordered table-sm"
+                cellSpacing="0"
+                width="100%"
+            >
                 <tr>{industryHeaders}</tr>
                 {industryData}
             </table>
