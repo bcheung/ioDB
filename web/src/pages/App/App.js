@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import { HashRouter as Router, Link, Route } from 'react-router-dom';
 import HomePage from '../Home/HomePage';
 import AboutPage from '../About/AboutPage';
 import IndustryInstancePage from '../IndustryInstance/IndustryInstancePage';
