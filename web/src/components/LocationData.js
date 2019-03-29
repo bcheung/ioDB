@@ -13,16 +13,14 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 // picture of flag?
 
 class LocationData extends Component {
-  
   render() {
-    console.log(this.props.data);
     return (
       <Card className="container wage-data">
         <CardHeader>
           <h1>{this.props.data.title}</h1>
           <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-            <Col style={{ paddingLeft: '1em', margin: 'auto' }}>Total Population: {this.props.data.total_population}</Col>
-            <Col style={{ paddingLeft: '1em', margin: 'auto' }}>Total Employment: {this.props.data.total_employment}</Col>
+            <Col className="text-center">Total Population: {this.props.data.total_population}</Col>
+            <Col className="text-center">Total Employment: {this.props.data.total_employment}</Col>
           </Row>
         </CardHeader>
         <br/>
@@ -35,6 +33,16 @@ class LocationData extends Component {
             columns={ this.props.data.columns }
           />
         </Row>
+        <br/>
+        {/* <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
+          <h5 style={{ margin: 'auto' }}>Top 10 Occupations</h5>
+          <BootstrapTable
+            hover
+            keyField='type'
+            data={ this.props.data.occ.rows }
+            columns={ this.props.data.occ.columns }
+          />
+        </Row> */}
       </Card>
     );
   }

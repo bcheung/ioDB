@@ -26,6 +26,10 @@ class CountryMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      initial: {
+        tablename: '',
+        id: '',
+      },
       center: [-97, 40],
       zoom: 1,
       detail: false,
@@ -40,6 +44,16 @@ class CountryMap extends Component {
     this.handleMSAClick = this.handleMSAClick.bind(this);
     this.handleStateClick = this.handleStateClick.bind(this);
     this.projection = this.projection.bind(this);
+  }
+  componentDidUpdate(prevProps) {
+    if(this.props.id !== undefined && this.props.id !== prevProps.initial.id) {
+      this.setState({
+        initial: {
+          tablename: this.props.tablename,
+          id: this.props.id,
+        },
+      });
+    }
   }
   handleReset() {
     this.setState({
@@ -82,9 +96,13 @@ class CountryMap extends Component {
   handleMSAClick(geography) {
     console.log("MSA data: ", geography);
     this.setState({
-      MSA: geography,
+      MSA: {
+        name: geography.properties.NAME,
+        initial: geography.properties.NAME.substring(geography.properties.NAME.length-2),
+        id: geography.properties.GEOID,
+      }
     });
-    this.props.onMSAClick(geography);
+    this.props.onMSAClick(geography.properties);
   }
   projection() {
     return geoTimes()
@@ -121,62 +139,29 @@ class CountryMap extends Component {
               <ZoomableGroup center={[x,y]} zoom={zoom}>
                 <Geographies geography={stateData} disableOptimization>
                   {(geographies, projection) =>
-                    geographies.map((geography, i) =>
-                    <Geography
-                      key={i}
-                      geography={geography}
-                      projection={projection}
-                      onClick={
-                        (this.state.detail &&
-                          this.state.state.id === geography.properties.ID
-                          ? null : this.handleStateClick)
-                      }
-                      style={
-                        (this.state.detail &&
-                          this.state.state.id === geography.properties.ID)
-                          ? {
-                        default: {
-                          fill: "#ECEFF1",
-                          stroke: "#607D8B",
-                          strokeWidth: 0.75,
-                          outline: "none",
-                        },
-                        } : {
-                        default: {
-                          fill: "#ECEFF1",
-                          stroke: "#607D8B",
-                          strokeWidth: 0.75,
-                          outline: "none",
-                        },
-                        hover: {
-                          fill: "#CFD8DC",
-                          stroke: "#607D8B",
-                          strokeWidth: 0.75,
-                          outline: "none",
-                        },
-                        pressed: {
-                          fill: "#FF5722",
-                          stroke: "#607D8B",
-                          strokeWidth: 0.75,
-                          outline: "none",
-                        },
-                      }}
-                    />
-                  )}
-                </Geographies>
-                <Geographies geography={msaData} disableOptimization>
-                  {(geographies, projection) =>
                     geographies.map((geography, i) => {
-                    if(geography.properties.NAME.substring(geography.properties.NAME.length - 2) !== this.state.state.initial) {
-                      return null;
-                    }
-                    return (
+                    if(this.state.initial.tablename === '') {
+                      return (
                       <Geography
                         key={i}
                         geography={geography}
                         projection={projection}
-                        onClick={this.handleMSAClick}
-                        style={{
+                        onClick={
+                          (this.state.detail &&
+                            this.state.state.id === geography.properties.ID
+                            ? null : this.handleStateClick)
+                        }
+                        style={
+                          (this.state.detail &&
+                            this.state.state.id === geography.properties.ID)
+                            ? {
+                          default: {
+                            fill: "#ECEFF1",
+                            stroke: "#607D8B",
+                            strokeWidth: 0.75,
+                            outline: "none",
+                          },
+                          } : {
                           default: {
                             fill: "#ECEFF1",
                             stroke: "#607D8B",
@@ -196,9 +181,50 @@ class CountryMap extends Component {
                             outline: "none",
                           },
                         }}
-                      />
-                    )}
-                  )}
+                      />);
+                    } else if(this.state.initial.id === geography.properties.ID) {
+                      this.handleStateClick(geography);
+                    }
+                  })}
+                </Geographies>
+                <Geographies geography={msaData} disableOptimization>
+                  {(geographies, projection) =>
+                    geographies.map((geography, i) => {
+                    if(geography.properties.NAME.substring(geography.properties.NAME.length - 2) !== this.state.state.initial) {
+                      return null;
+                    }
+                    if(this.state.initial.tablename === '') {
+                      return (
+                        <Geography
+                          key={i}
+                          geography={geography}
+                          projection={projection}
+                          onClick={this.handleMSAClick}
+                          style={{
+                            default: {
+                              fill: "#ECEFF1",
+                              stroke: "#607D8B",
+                              strokeWidth: 0.75,
+                              outline: "none",
+                            },
+                            hover: {
+                              fill: "#CFD8DC",
+                              stroke: "#607D8B",
+                              strokeWidth: 0.75,
+                              outline: "none",
+                            },
+                            pressed: {
+                              fill: "#FF5722",
+                              stroke: "#607D8B",
+                              strokeWidth: 0.75,
+                              outline: "none",
+                            },
+                          }}
+                      />);
+                    } else if(this.state.initial.id === geography.properties.GEOID) {
+                      this.handleMSAClick(geography);
+                    }
+                  })}
                 </Geographies>
               </ZoomableGroup>
             </ComposableMap>
