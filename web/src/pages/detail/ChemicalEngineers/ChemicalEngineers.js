@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Bar } from 'react-chartjs-2';
-import { Container, Row } from 'reactstrap';
+import { Container, Row, Jumbotron, Badge } from 'reactstrap';
 // import { OccupationComponent } from '../../../components/OccupationComponent';
 import './ChemicalEngineers.css';
 
@@ -971,7 +971,7 @@ const statesData = [
 ];
 
 // http://www.iodb.info/api/instance/occupations_detailed/17-2041
-const wageData = {
+const titleAndWageData = {
     annual_10: 62230,
     annual_25: 79030,
     annual_75: 131030,
@@ -992,7 +992,7 @@ const wageData = {
     total_employment: 33500
 };
 
-// For Bar graph use, calls wage data from const wage
+// For Bar graph use, populated by wageData
 const barData = {
     labels: ['10%', '25%', '50%', '75%', '90%'],
     datasets: [
@@ -1003,7 +1003,7 @@ const barData = {
             borderWidth: 1,
             hoverBackgroundColor: 'rgba(255,99,132,0.4)',
             hoverBorderColor: 'rgba(255,99,132,1)',
-            data: [wageData.annual_10, wageData.annual_25, wageData.annual_mean, wageData.annual_75, wageData.annual_90]
+            data: [titleAndWageData.annual_10, titleAndWageData.annual_25, titleAndWageData.annual_mean, titleAndWageData.annual_75, titleAndWageData.annual_90]
         }
     ]
 };
@@ -1487,7 +1487,30 @@ const industries = {
 // For use to calculate state fill shade color
 const expression = ['match', ['get', 'STATE_ID']];
 
+const legendData = {
+    name: 'Employment',
+    description: 'Total employment in US States',
+    stops: [
+        [0, '#f8d5cc'],
+        [1000000, '#f4bfb6'],
+        [5000000, '#f1a8a5'],
+        [10000000, '#ee8f9a'],
+        [50000000, '#ec739b'],
+        [100000000, '#dd5ca8'],
+        [250000000, '#c44cc0'],
+        [500000000, '#9f43d7'],
+        [1000000000, '#6e40e6']
+    ]
+};
+
 class ChemicalEngineers extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            legend: legendData
+        };
+    }
+
     componentDidMount() {
         this.map = new mapboxgl.Map({
             container: this.mapContainer,
@@ -1539,24 +1562,63 @@ class ChemicalEngineers extends Component {
     map;
 
     render() {
+        const { name, description, stops } = this.state.legend;
+        const renderLegend = (stop, i) => {
+            return (
+                <div key={i} className="txt-s">
+                    <span
+                        className="mr6 round-full w12 h12 inline-block align-middle"
+                        style={{ backgroundColor: stop[1] }}
+                    />
+                    <span>{`${stop[0].toLocaleString()}`}</span>
+                </div>
+            );
+        };
+        console.log('props', this.props);
         return (
             <Container>
+                <Jumbotron>
+                    <h1 className="display-3">{titleAndWageData.title}</h1>
+                    <p>NAICS: {titleAndWageData.id} </p>
+                    <hr className="my-2" />
+                    <p className="lead">{titleAndWageData.description}</p>
+                    <p>
+                        Annual Mean Wage:
+                        {new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0
+                        }).format(titleAndWageData.annual_mean)}
+                    </p>
+                </Jumbotron>
                 <Row>
-                    <h1>Where are {wageData.title} located?</h1>
+                    <h1>Where are {titleAndWageData.title} located?</h1>
                     <div ref={el => (this.mapContainer = el)} className="absolute top right left bottom" />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <div className="bg-white absolute bottom right mr12 mb24 py12 px12 shadow-darken10 round z1 wmax180">
+                        <div className="mb6">
+                            <br />
+                            <br />
+                            <br />
+                            <Badge color="primary">{name}</Badge>
+                            <br />
+                            <Badge color="primary">{description}</Badge>
+                        </div>
+                        {stops.map(renderLegend)}
+                    </div>
                 </Row>
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <div>
-                    <h2>Annual Percentile Wages for {wageData.title}</h2>
+                <div className="container">
+                    <h2>Annual Percentile Wages for {titleAndWageData.title}</h2>
                     <Bar
                         data={barData}
                         width={100}
@@ -1582,5 +1644,4 @@ class ChemicalEngineers extends Component {
     }
 }
 
-// {stops.map(renderLegendKeys)}
 export default ChemicalEngineers;
