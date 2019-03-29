@@ -10,21 +10,34 @@ import ExampleInstance from '../ExampleInstance';
 import './App.css';
 import { RoutingSearchBar } from '../../components/RoutingSearchBar';
 
+const modelOptions = [
+    { title: 'Industries', tablename: 'industries_3d', route: 'industry' },
+    { title: 'States', tablename: 'states', route: 'location' },
+    { title: 'Occupations', tablename: 'occupations_major', route: 'occupation' }
+];
+
 class App extends Component {
     constructor(props) {
         super(props);
 
         this.toggle = this.toggle.bind(this);
         this.state = {
-            isOpen: false
+            isOpen: false,
+            selectedModel: modelOptions[0]
         };
     }
+
+    setSelectedModel = selectedModel => {
+        this.setState({ selectedModel });
+    };
 
     toggle() {
         this.setState({ isOpen: !this.state.isOpen });
     }
 
     render() {
+        const { selectedModel } = this.state;
+        console.log('App render', selectedModel);
         return (
             <Router>
                 <div>
@@ -51,7 +64,12 @@ class App extends Component {
                             </NavItem>
                         </Nav>
                     </Navbar>
-                    <RoutingSearchBar />
+                    <RoutingSearchBar
+                        modelOptions={modelOptions}
+                        selectedModel={selectedModel}
+                        setSelectedModel={this.setSelectedModel}
+                    />
+
                     <Route exact path="/" component={HomePage} />
                     <Route path="/about" component={AboutPage} />
 

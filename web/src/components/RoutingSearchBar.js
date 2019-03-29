@@ -5,17 +5,11 @@ import Select from 'react-select';
 import { Button } from 'reactstrap';
 import { fetchListData } from '../fetchAPI';
 
-const modelOptions = [
-    { title: 'Industries', tablename: 'industries_3d', route: 'industry' },
-    { title: 'States', tablename: 'states', route: 'location' },
-    { title: 'Occupations', tablename: 'occupations_major', route: 'occupation' }
-];
-
 class SearchBar extends Component {
     state = {
         instanceOptions: [],
         selectedInstance: null,
-        selectedModel: modelOptions[0]
+        selectedModel: this.props.selectedModel
     };
 
     componentDidMount() {
@@ -33,6 +27,7 @@ class SearchBar extends Component {
         this.setState({ selectedModel, selectedInstance: null });
         const { tablename } = selectedModel;
         this.fetchInstances(tablename);
+        this.props.setSelectedModel(selectedModel);
     };
 
     onSearchRequest = () => {
@@ -52,34 +47,30 @@ class SearchBar extends Component {
 
     render() {
         const { instanceOptions, selectedInstance, selectedModel } = this.state;
-
+        const { modelOptions } = this.props;
         return (
             <div>
-                <div>
-                    <Select
-                        className="dropDown"
-                        options={instanceOptions}
-                        value={selectedInstance}
-                        onChange={this.handleInstanceChange}
-                        getOptionLabel={option => option.title}
-                        getOptionValue={option => option.id}
-                        placeholder={`Search ${selectedModel.title}`}
-                    />
-                </div>
-                <div>
-                    <Select
-                        className="dropDown"
-                        options={modelOptions}
-                        value={selectedModel}
-                        onChange={this.handleModelChange}
-                        isSearchable={false}
-                        getOptionLabel={option => option.title}
-                        getOptionValue={option => option.tablename}
-                    />
-                    <Button color="primary" onClick={this.onSearchRequest}>
-                        Search
-                    </Button>
-                </div>
+                <Select
+                    className="dropDown"
+                    options={instanceOptions}
+                    value={selectedInstance}
+                    onChange={this.handleInstanceChange}
+                    getOptionLabel={option => option.title}
+                    getOptionValue={option => option.id}
+                    placeholder={`Search ${selectedModel.title}`}
+                />
+                <Select
+                    className="dropDown"
+                    options={modelOptions}
+                    value={selectedModel}
+                    onChange={this.handleModelChange}
+                    isSearchable={false}
+                    getOptionLabel={option => option.title}
+                    getOptionValue={option => option.tablename}
+                />
+                <Button color="primary" onClick={this.onSearchRequest}>
+                    Search
+                </Button>
             </div>
         );
     }

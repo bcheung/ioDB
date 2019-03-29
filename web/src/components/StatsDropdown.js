@@ -13,7 +13,7 @@ const StatsDropdown = ({ value = stats[0], onChange, population = false }) => {
             <Select
                 className="dropDown"
                 options={options}
-                defaultValue={options[0]}
+                // defaultValue={options[0]}
                 value={value}
                 onChange={onChange}
                 isSearchable={false}
