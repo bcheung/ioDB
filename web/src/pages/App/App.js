@@ -17,6 +17,7 @@ import LocationPage from '../main/LocationMain/LocationPage';
 import OccupationPage from '../main/OccupationMain/OccupationPage';
 import LocationInstance from '../LocationInstance/LocationInstance';
 import './App.css';
+import ExampleInstance from '../ExampleInstance';
 
 class App extends Component {
     constructor(props) {
@@ -54,11 +55,16 @@ class App extends Component {
                             <NavItem>
                                 <NavLink href="/location">Location</NavLink>
                             </NavItem>
+                            <NavItem>
+                                <NavLink href="/example/industries_3d/113000">Location</NavLink>
+                            </NavItem>
                         </Nav>
                     </Navbar>
 
                     <Route exact path="/" component={HomePage} />
                     <Route path="/about" component={AboutPage} />
+
+                    <Route path="/example/:tablename/:id" component={ExampleInstance} />
 
                     <Route path="/industry/:tablename/:id" component={IndustryPage} />
 
