@@ -56,7 +56,7 @@ class App extends Component {
                                 <NavLink href="/location">Location</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="/example/industries_3d/113000">Location</NavLink>
+                                <NavLink href="/example/industries_3d/113000">Example</NavLink>
                             </NavItem>
                         </Nav>
                     </Navbar>
