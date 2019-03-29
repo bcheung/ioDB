@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import CountryMap from '../../components/CountryMap';
 import LocationData from '../../components/LocationData';
+import { fetchInstanceData } from '../../fetchAPI';
 
 class LocationInstance extends Component {
   constructor(props) {
     super(props);
     const { tablename, id } = props.match.params;
     this.state = {
+      initial: {
+        tablename,
+        id,
+      },
       state: {
         name: '',
         initial: '',
@@ -24,7 +28,14 @@ class LocationInstance extends Component {
       MSAData: {},
     };
 
-        // await fetch(`${proxyurl}${url}`)
+    this.handleStateClick = this.handleStateClick.bind(this);
+    this.handleMSAClick = this.handleMSAClick.bind(this);
+    this.handleReset = this.handleReset.bind(this);
+  }
+  async handleStateClick(geographyProps) {
+
+    const stateInitial = geographyProps.HASC_1.substring(geographyProps.HASC_1.length-2);
+        // await fetch(`${proxyurl}${urlNAME}`)
         //   .then(response => response.json())
         //   .then(data => {
         //     console.log(data);
@@ -32,13 +43,14 @@ class LocationInstance extends Component {
         //   });
         // const response = await axios.get(`${url}`);
 
-    const proxyurl = 'https://cors-anywhere.herokuapp.com/';
-    const url = 'http://www.iodb.info/api/instance/states/'+geographyProps.ID;
+    const data = await fetchInstanceData('states', geographyProps.ID);
+
+    // const proxyurl = 'https://cors-anywhere.herokuapp.com/';
+    // const url = 'http://www.iodb.info/api/instance/states/'+geographyProps.ID;
 
     // const response = await axios.get(`${url}`);
-    const response = await axios.get(`${proxyurl}${url}`);
-    const data = response.data;
-
+    // const response = await axios.get(`${proxyurl}${url}`);
+    // const data = response.data;
 
     // console.log(response);
     // console.log(data);
@@ -103,12 +115,13 @@ class LocationInstance extends Component {
   async handleMSAClick(geographyProps) {
     let stateInitial = geographyProps.NAME.substring(geographyProps.NAME.length-2);
 
-    const proxyurl = 'https://cors-anywhere.herokuapp.com/';
-    const url = 'http://www.iodb.info/api/instance/metro_areas/'+geographyProps.GEOID;
+    const data = await fetchInstanceData('metro_areas', geographyProps.GEOID);
+    // const proxyurl = 'https://cors-anywhere.herokuapp.com/';
+    // const url = 'http://www.iodb.info/api/instance/metro_areas/'+geographyProps.GEOID;
 
     // const response = await axios.get(`${url}`);
-    const response = await axios.get(`${proxyurl}${url}`);
-    const data = response.data;
+    // const response = await axios.get(`${proxyurl}${url}`);
+    // const data = response.data;
 
     if(Object.keys(data).length === 0) {
       return null;
@@ -185,13 +198,13 @@ class LocationInstance extends Component {
   render() {
     return (
       <div>
-        {/* <some title/header component/> */}
+        {console.log(this.state.initial.tablename, this.state.initial.id)}
         <CountryMap 
           onStateClick={this.handleStateClick} 
           onMSAClick={this.handleMSAClick} 
           onReset={this.handleReset}
-          tablename={this.props.tablename}
-          id={this.props.id}
+          tablename={this.state.initial.tablename}
+          id={this.state.initial.id}
         />
         {/* <state info component></state>
         <msa info component></msa> */}

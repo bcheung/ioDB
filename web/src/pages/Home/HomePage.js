@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import { Route } from 'react-router-dom';
+=======
+>>>>>>> 3d3518f5580d7e6f336fafc3dcf154956a347a07
 // import './Home-page.css';
 import Select from 'react-select';
 import axios from 'axios';
@@ -12,6 +15,11 @@ const modelOptions = [
     { title: 'Occupations', tablename: 'occupations_major', route: 'occupation' }
 ];
 
+<<<<<<< HEAD
+=======
+const proxyurl = 'https://cors-anywhere.herokuapp.com/';
+
+>>>>>>> 3d3518f5580d7e6f336fafc3dcf154956a347a07
 class HomePage extends Component {
     state = {
         instanceOptions: [],
