@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Bar } from 'react-chartjs-2';
 import { Container, Row, Jumbotron, Badge } from 'reactstrap';
-// import { OccupationComponent } from '../../../components/OccupationComponent';
 import './ChemicalEngineers.css';
 
 mapboxgl.accessToken =
@@ -1003,7 +1002,13 @@ const barData = {
             borderWidth: 1,
             hoverBackgroundColor: 'rgba(255,99,132,0.4)',
             hoverBorderColor: 'rgba(255,99,132,1)',
-            data: [titleAndWageData.annual_10, titleAndWageData.annual_25, titleAndWageData.annual_mean, titleAndWageData.annual_75, titleAndWageData.annual_90]
+            data: [
+                titleAndWageData.annual_10,
+                titleAndWageData.annual_25,
+                titleAndWageData.annual_mean,
+                titleAndWageData.annual_75,
+                titleAndWageData.annual_90
+            ]
         }
     ]
 };
@@ -1465,7 +1470,7 @@ const dataArray = [];
 // Populating labels for industries from API data
 industryData.forEach(industry => {
     labelArray.push(industry.industry_3d.title);
-    dataArray.push(industry.total_employment);
+    dataArray.push(industry.annual_mean);
 });
 
 // Setting Bar data from arrays populated with industries
@@ -1594,7 +1599,11 @@ class ChemicalEngineers extends Component {
                 </Jumbotron>
                 <Row>
                     <h1>Where are {titleAndWageData.title} located?</h1>
-                    <div ref={el => (this.mapContainer = el)} className="absolute top right left bottom" />
+                    <div ref={el => (this.mapContainer = el)} />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
                     <br />
                     <br />
                     <br />
@@ -1610,11 +1619,7 @@ class ChemicalEngineers extends Component {
                             <br />
                             <br />
                             <br />
-                            <Badge color="primary">{name}</Badge>
-                            <br />
-                            <Badge color="primary">{description}</Badge>
                         </div>
-                        {stops.map(renderLegend)}
                     </div>
                 </Row>
                 <div className="container">
