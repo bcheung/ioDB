@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import IndustryInstances from './IndustryInstances';
+import IndustryInstancePage from './IndustryInstancePage';
 
 it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<IndustryInstances />, div);
+    ReactDOM.render(<IndustryInstancePage />, div);
     ReactDOM.unmountComponentAtNode(div);
 });

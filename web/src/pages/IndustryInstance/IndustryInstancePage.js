@@ -9,7 +9,7 @@ import { IndustryTableComponent } from '../../components/IndustryTableComponent'
 import { IndustryWageTableComponent } from '../../components/IndustryWageTableComponent';
 // es6
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import './IndustryInstances.css';
+import './industry-instance-page.css';
 
 // http://www.iodb.info/api/instance/industries_3d/113000
 

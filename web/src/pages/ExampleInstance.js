@@ -6,9 +6,8 @@ class ExampleInstance extends Component {
         instanceData: null
     };
 
-    constructor(props) {
-        super(props);
-        const { tablename, id } = props.match.params;
+    componentDidMount() {
+        const { tablename, id } = this.props.match.params;
         console.log('constructor', tablename, id);
 
         fetchInstanceData(tablename, id).then(instanceData => {
