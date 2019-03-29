@@ -8,7 +8,7 @@ import OccupationInstancePage from '../OccupationInstance/OccupationInstancePage
 import LocationInstance from '../LocationInstance/LocationInstance';
 import ExampleInstance from '../ExampleInstance';
 import './App.css';
-import { RoutingSearchBar } from '../../components/SearchBar';
+import { RoutingSearchBar } from '../../components/RoutingSearchBar';
 
 class App extends Component {
     constructor(props) {
