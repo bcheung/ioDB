@@ -5,82 +5,43 @@ import AutoSuggest from 'react-autosuggest';
 import axios from 'axios';
 import { Button } from 'reactstrap';
 
-const options = [
-    { label: 'Industries', value: 'industries_3d' },
-    { label: 'States', value: 'states' },
-    { label: 'Occupations', value: 'occupations_major' }
+const modelOptions = [
+    { title: 'Industries', id: 'industries_3d' },
+    { title: 'States', id: 'states' },
+    { title: 'Occupations', id: 'occupations_major' }
 ];
 
 const proxyurl = 'https://cors-anywhere.herokuapp.com/';
 
 class HomePage extends Component {
     state = {
-        searchBtnDisabled: true,
-        instance: null,
-        selectedOption: options[0],
-        searchInput: '',
-        library: [],
-        suggestions: []
+        instanceOptions: [],
+        selectedInstance: null,
+        selectedModel: modelOptions[0]
     };
 
     componentDidMount() {
-        const { selectedOption } = this.state;
-        console.log(selectedOption);
-        const tablename = selectedOption.value;
-        this.fetchLibrary(tablename);
+        const { selectedModel } = this.state;
+        console.log(selectedModel);
+        const tablename = selectedModel.id;
+        this.fetchInstances(tablename);
     }
 
-    onChange = (event, { newValue, method }) => {
-        console.log('onChange', method);
-        if (method === 'type') {
-            this.setState({ searchBtnDisabled: true, instance: null, searchInput: newValue });
-        } else {
-            this.setState({ searchInput: newValue });
-        }
+    handleInstanceChange = selectedInstance => {
+        this.setState({ selectedInstance });
     };
 
-    onSuggestionsFetchRequested = ({ value }) => {
-        const { library } = this.state;
-        console.log(value);
-        const inputValue = value
-            .toString()
-            .trim()
-            .toLowerCase();
-        const inputLength = inputValue.length;
-
-        const suggestions =
-            inputLength === 0
-                ? []
-                : library.filter(suggestion => suggestion.title.toLowerCase().indexOf(inputValue) > -1);
-
-        this.setState({ suggestions });
-    };
-
-    onSuggestionsClearRequested = () => {
-        this.setState({ suggestions: [] });
-    };
-
-    getSuggestionValue = suggestion => {
-        console.log('getSuggestionValue', suggestion);
-        this.setState({ searchBtnDisabled: false, instance: suggestion });
-        return suggestion.title;
-    };
-
-    handleSelectChange = selectedOption => {
-        this.setState({
-            instance: {},
-            selectedOption
-        });
-        const tablename = selectedOption.value;
-        this.fetchLibrary(tablename);
+    handleModelChange = selectedModel => {
+        this.setState({ selectedModel });
+        const tablename = selectedModel.id;
+        this.fetchInstances(tablename);
     };
 
     onSearchRequest = async () => {
-        const { searchBtnDisabled } = this.state;
-        if (!searchBtnDisabled) {
-            const { instance, selectedOption } = this.state;
-            const tablename = selectedOption.value;
-            const url = `${proxyurl}http://iodb.info/api/instance/${tablename}/${instance.id}`;
+        const { selectedInstance, selectedModel } = this.state;
+        if (selectedInstance !== null) {
+            const tablename = selectedModel.id;
+            const url = `${proxyurl}http://iodb.info/api/instance/${tablename}/${selectedInstance.id}`;
 
             const response = await fetch(url);
             const data = await response.json();
@@ -93,50 +54,45 @@ class HomePage extends Component {
         }
     };
 
-    fetchLibrary(tablename) {
+    fetchInstances(tablename) {
         axios
             .get(`${proxyurl}http://www.iodb.info/api/list/${tablename}`)
             .then(res => {
                 console.log('fetch request', res.data);
-                this.setState({ library: res.data });
+                this.setState({ instanceOptions: res.data });
             })
             .catch(error => {
                 console.log(error.message);
             });
     }
 
-    renderSuggestion = suggestion => <div>{suggestion.title}</div>;
-
     render() {
-        const { selectedOption, searchInput, suggestions, searchBtnDisabled } = this.state;
-
-        const inputProps = {
-            placeholder: 'Search ...',
-            value: searchInput,
-            onChange: this.onChange
-        };
+        const { instanceOptions, selectedInstance, selectedModel } = this.state;
 
         return (
             <div>
                 <div>
-                    <AutoSuggest
-                        suggestions={suggestions}
-                        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                        getSuggestionValue={this.getSuggestionValue}
-                        renderSuggestion={this.renderSuggestion}
-                        inputProps={inputProps}
+                    <Select
+                        className="dropDown"
+                        options={instanceOptions}
+                        value={selectedInstance}
+                        onChange={this.handleInstanceChange}
+                        getOptionLabel={option => option.title}
+                        getOptionValue={option => option.id}
+                        placeholder={`Search ${selectedModel.title}`}
                     />
                 </div>
                 <div>
                     <Select
                         className="dropDown"
-                        options={options}
-                        value={selectedOption}
-                        onChange={this.handleSelectChange}
+                        options={modelOptions}
+                        value={selectedModel}
+                        onChange={this.handleModelChange}
                         isSearchable={false}
+                        getOptionLabel={option => option.title}
+                        getOptionValue={option => option.id}
                     />
-                    <Button color="primary" onClick={this.onSearchRequest} disabled={searchBtnDisabled}>
+                    <Button color="primary" onClick={this.onSearchRequest}>
                         Search
                     </Button>
                 </div>
