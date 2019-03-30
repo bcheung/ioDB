@@ -4,7 +4,7 @@ import './stylesheets/styles.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import { TopTenWidget } from './TopTenWidget';
+import { TopTenWidget, WageSalaryTable } from '.';
 // picture of flag?
 
 class LocationData extends Component {
@@ -14,52 +14,28 @@ class LocationData extends Component {
     }
 
     render() {
+        const { data, primaryTable, id } = this.props;
         return (
             <Card className="container wage-data">
                 <CardHeader>
-                    <h1>{this.props.data.title}</h1>
+                    <h1>{data.title}</h1>
                     <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-                        <Col className="text-center">Total Population: {this.props.data.total_population}</Col>
-                        <Col className="text-center">Total Employment: {this.props.data.total_employment}</Col>
+                        <Col className="text-center">Total Population: {data.total_population}</Col>
+                        <Col className="text-center">Total Employment: {data.total_employment}</Col>
                     </Row>
                 </CardHeader>
                 <br />
-                <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-                    <h5 style={{ margin: 'auto' }}>Salary and Wage Statistics</h5>
-                    <BootstrapTable
-                        hover
-                        keyField="type"
-                        data={this.props.data.rows}
-                        columns={this.props.data.columns}
-                    />
-                </Row>
+                <WageSalaryTable data={data} />
                 <br />
-                <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-                    <div style={{ margin: 'auto' }}>
-                        <Row>
-                            <Col className="align-middle">
-                                <h5>Top 10 Occupations by</h5>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <h6>
-                                <TopTenWidget
-                                    joined
-                                    primaryTable={this.props.keyModel}
-                                    secondaryTable="occupations_major"
-                                    id={this.props.id}
-                                    total_employment={this.props.data.total_employment}
-                                />
-                            </h6>
-                        </Row>
-                    </div>
-                    {/* <BootstrapTable
-            hover
-            keyField='type'
-            data={ this.props.data.occ.rows }
-            columns={ this.props.data.occ.columns }
-          /> */}
-                </Row>
+
+                <TopTenWidget
+                    joined
+                    title="Top 10 Occupations by"
+                    primaryTable={primaryTable}
+                    secondaryTable="occupations_major"
+                    id={id}
+                    total_employment={data.total_employment}
+                />
             </Card>
         );
     }
