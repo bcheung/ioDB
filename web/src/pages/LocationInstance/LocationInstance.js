@@ -125,7 +125,7 @@ class LocationInstance extends Component {
     }
 
     async handleMSAClick(geographyProps) {
-        let stateInitial = geographyProps.NAME.substring(geographyProps.NAME.length - 2);
+        const stateInitial = geographyProps.NAME.substring(geographyProps.NAME.length - 2);
 
         const data = await fetchInstanceData('metro_areas', geographyProps.GEOID);
         // const proxyurl = 'https://cors-anywhere.herokuapp.com/';
@@ -204,7 +204,7 @@ class LocationInstance extends Component {
                 id: geographyProps.GEOID
             },
             showMSAInfo: true,
-      MSAData,
+            MSAData
         });
     }
 
@@ -231,10 +231,10 @@ class LocationInstance extends Component {
                 />
                 <br />
                 {this.state.showStateInfo ? (
-                    <LocationData data={this.state.stateData} keyModel={'states'} id={this.state.state.id} />
+                    <LocationData data={this.state.stateData} primaryTable="states" id={this.state.state.id} />
                 ) : null}
                 {this.state.showMSAInfo ? (
-                    <LocationData data={this.state.MSAData} keyModel={'metro_areas'} id={this.state.MSA.id} />
+                    <LocationData data={this.state.MSAData} primaryTable="metro_areas" id={this.state.MSA.id} />
                 ) : null}
             </div>
         );

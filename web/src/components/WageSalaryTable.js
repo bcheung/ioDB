@@ -2,6 +2,23 @@ import React, { Component } from 'react';
 import { Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 
+const WageSalaryTable = ({ data }) => {
+    const tableData = getTableData(data);
+
+    return (
+        <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
+            <h5 style={{ margin: 'auto' }}>Wage and Salary Statistics</h5>
+            <BootstrapTable hover keyField="type" data={tableData.rows} columns={tableData.columns} />
+        </Row>
+    );
+};
+
+const styles = {
+    style: {}
+};
+
+export { WageSalaryTable };
+
 function getTableData(data) {
     return {
         title: data.title,
@@ -58,20 +75,3 @@ function getTableData(data) {
         ]
     };
 }
-
-const WageSalaryTable = ({ data }) => {
-    const tableData = getTableData(data);
-
-    return (
-        <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-            <h5 style={{ margin: 'auto' }}>Wage and Salary Statistics</h5>
-            <BootstrapTable hover keyField="type" data={tableData.rows} columns={tableData.columns} />
-        </Row>
-    );
-};
-
-const styles = {
-    style: {}
-};
-
-export { WageSalaryTable };

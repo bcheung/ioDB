@@ -259,7 +259,7 @@ class OccupationInstancePage extends Component {
                         <br />
                         <Card className="container wage-data">
                             <br />
-                            <Row>{occupationData ? <WageSalaryTable data={occupationData} /> : null}</Row>
+                            {occupationData ? <WageSalaryTable data={occupationData} /> : null}
                             <br />
 
                             <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
