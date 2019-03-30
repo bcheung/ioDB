@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Route, withRouter } from 'react-router-dom';
 // import './Home-page.css';
 import Select from 'react-select';
-import { Button } from 'reactstrap';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Button, Container, Row, Col } from 'reactstrap';
 import { fetchListData } from '../fetchAPI';
 
 class SearchBar extends Component {

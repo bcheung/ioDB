@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import { Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import { HashRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import HomePage from '../Home/HomePage';
 import AboutPage from '../About/AboutPage';
@@ -9,13 +9,7 @@ import LocationInstance from '../LocationInstance/LocationInstance';
 import ExampleInstance from '../ExampleInstance';
 import './App.css';
 import { RoutingSearchBar, TopTenWidget } from '../../components';
-import { Container } from 'react-bootstrap';
-
-const modelOptions = [
-    { title: 'Industries', tablename: 'industries_3d', route: 'industry' },
-    { title: 'States', tablename: 'states', route: 'location' },
-    { title: 'Occupations', tablename: 'occupations_major', route: 'occupation' }
-];
+import { modelOptions } from '../../constants';
 
 class App extends Component {
     constructor(props) {
@@ -46,7 +40,7 @@ class App extends Component {
                         <NavbarBrand href="/">ioDB</NavbarBrand>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink href="/">Home</NavLink>
+                                <NavLink href="#/">Home</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink href="#/about">About Us</NavLink>
@@ -67,15 +61,15 @@ class App extends Component {
                         />
                     </Container>
 
-                    <Route exact path="/" render={props => <HomePage tablename={selectedModel.tablename} />} />
-                    <Route path="/about" component={AboutPage} />
-
-                    <Route path="/example/:tablename/:id" component={ExampleInstance} />
-
-                    <Route path="/industry/:tablename/:id" component={IndustryInstancePage} />
-
-                    <Route path="/occupation/:tablename/:id" component={OccupationInstancePage} />
                     <Switch>
+                        <Route exact path="/" render={props => <HomePage tablename={selectedModel.tablename} />} />
+                        <Route path="/about" component={AboutPage} />
+
+                        <Route path="/example/:tablename/:id" component={ExampleInstance} />
+
+                        <Route path="/industry/:tablename/:id" component={IndustryInstancePage} />
+
+                        <Route path="/occupation/:tablename/:id" component={OccupationInstancePage} />
                         <Route path="/location/:tablename/:id" component={LocationInstance} />
                         <Route path="/location" component={LocationInstance} />
                     </Switch>

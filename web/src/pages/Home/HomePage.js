@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container } from 'reactstrap';
 import { TopTenWidget } from '../../components/TopTenWidget';
 
 class HomePage extends Component {
