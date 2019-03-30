@@ -6,7 +6,7 @@ class Ind3dOccMajorModel(db.Model):
     __tablename__ = 'ind_3d_occ_major'
     industry_3d_id = db.Column(db.String(), db.ForeignKey(
         'industries_3d.id'), primary_key=True)
-    occupation_major_id = db.Column(db.String(), db.ForeignKey(
+    occupations_major_id = db.Column(db.String(), db.ForeignKey(
         'occupations_major.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)
@@ -23,9 +23,9 @@ class Ind3dOccMajorModel(db.Model):
     annual_75 = db.Column(db.Integer)
     annual_90 = db.Column(db.Integer)
 
-    industry_3d = db.relationship(
+    industries_3d = db.relationship(
         'Industry3dModel', backref='occupations_major')
-    occupation_major = db.relationship(
+    occupations_major = db.relationship(
         'OccupationMajorModel', backref='industries_3d')
 
     def __init__(self, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90):
@@ -45,9 +45,9 @@ class Ind3dOccMajorModel(db.Model):
 
 
 class Ind3dOccMajorSchema(ma.ModelSchema):
-    industry_3d = fields.Nested(
+    industries_3d = fields.Nested(
         'self', only=["id", "title"])
-    occupation_major = fields.Nested(
+    occupations_major = fields.Nested(
         'self', only=["id", "title"])
 
     class Meta:
@@ -76,7 +76,7 @@ class Ind4dOccMajorModel(db.Model):
     annual_75 = db.Column(db.Integer)
     annual_90 = db.Column(db.Integer)
 
-    industry_4d = db.relationship(
+    industries_4d = db.relationship(
         'Industry4dModel', backref='occupations_major')
     occupation_major = db.relationship(
         'OccupationMajorModel', backref='industries_4d')
@@ -98,9 +98,9 @@ class Ind4dOccMajorModel(db.Model):
 
 
 class Ind4dOccMajorSchema(ma.ModelSchema):
-    industry_4d = fields.Nested(
+    industries_4d = fields.Nested(
         'self', only=["id", "title"])
-    occupation_major = fields.Nested(
+    occupations_major = fields.Nested(
         'self', only=["id", "title"])
 
     class Meta:
@@ -129,9 +129,9 @@ class Ind3dOccDetailedModel(db.Model):
     annual_75 = db.Column(db.Integer)
     annual_90 = db.Column(db.Integer)
 
-    industry_3d = db.relationship(
+    industries_3d = db.relationship(
         'Industry3dModel', backref='occupations_detailed')
-    occupation_detailed = db.relationship(
+    occupations_detailed = db.relationship(
         'OccupationDetailedModel', backref='industries_3d')
 
     def __init__(self, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90):
@@ -151,9 +151,9 @@ class Ind3dOccDetailedModel(db.Model):
 
 
 class Ind3dOccDetailedSchema(ma.ModelSchema):
-    industry_3d = fields.Nested(
+    industries_3d = fields.Nested(
         'self', only=["id", "title"])
-    occupation_detailed = fields.Nested(
+    occupations_detailed = fields.Nested(
         'self', only=["id", "title"])
 
     class Meta:
@@ -182,9 +182,9 @@ class Ind4dOccDetailedModel(db.Model):
     annual_75 = db.Column(db.Integer)
     annual_90 = db.Column(db.Integer)
 
-    industry_4d = db.relationship(
+    industries_4d = db.relationship(
         'Industry4dModel', backref='occupations_detailed')
-    occupation_detailed = db.relationship(
+    occupations_detailed = db.relationship(
         'OccupationDetailedModel', backref='industries_4d')
 
     def __init__(self, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90):
@@ -204,9 +204,9 @@ class Ind4dOccDetailedModel(db.Model):
 
 
 class Ind4dOccDetailedSchema(ma.ModelSchema):
-    industry_4d = fields.Nested(
+    industries_4d = fields.Nested(
         'self', only=["id", "title"])
-    occupation_detailed = fields.Nested(
+    occupations_detailed = fields.Nested(
         'self', only=["id", "title"])
 
     class Meta:
