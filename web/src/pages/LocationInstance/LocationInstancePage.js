@@ -3,7 +3,7 @@ import CountryMap from '../../components/CountryMap';
 import LocationData from '../../components/LocationData';
 import { fetchInstanceData, fetchJoinedTopTenData } from '../../fetchAPI';
 
-class LocationInstance extends Component {
+class LocationInstancePage extends Component {
     constructor(props) {
         super(props);
         const { tablename, id } = props.match.params;
@@ -241,4 +241,4 @@ class LocationInstance extends Component {
     }
 }
 
-export default LocationInstance;
+export default LocationInstancePage;

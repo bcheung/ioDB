@@ -160,17 +160,6 @@ class OccupationInstancePage extends Component {
         });
     };
 
-    renderLocationData = () => {
-        const { mapLoaded, occupationData, locationData } = this.state;
-        if (mapLoaded && occupationData && locationData) {
-            return (
-                <div>
-                    <h1>Where are {occupationData.title} located?</h1>
-                </div>
-            );
-        }
-    };
-
     renderGraphs = () => {
         const { tablename, id } = this.props.match.params;
 
