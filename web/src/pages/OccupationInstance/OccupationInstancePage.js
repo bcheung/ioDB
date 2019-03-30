@@ -165,6 +165,7 @@ class OccupationInstancePage extends Component {
         });
     };
 
+    // Handles toggle button for collapsible detailed occupations list
     toggle() {
         this.setState(state => ({ collapse: !state.collapse }));
     }
@@ -338,7 +339,7 @@ class OccupationInstancePage extends Component {
         return (
             <Container>
                 <Row>
-                    <Button color="secondary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>
+                    <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>
                         Show Detailed Occupations List
                     </Button>
                     <Collapse isOpen={collapse}>
