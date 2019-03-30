@@ -8,7 +8,7 @@ import OccupationInstancePage from '../OccupationInstance/OccupationInstancePage
 import LocationInstance from '../LocationInstance/LocationInstance';
 import ExampleInstance from '../ExampleInstance';
 import './App.css';
-import { RoutingSearchBar } from '../../components/RoutingSearchBar';
+import { RoutingSearchBar, TopTenWidget } from '../../components';
 
 const modelOptions = [
     { title: 'Industries', tablename: 'industries_3d', route: 'industry' },
@@ -69,6 +69,8 @@ class App extends Component {
                         selectedModel={selectedModel}
                         setSelectedModel={this.setSelectedModel}
                     />
+
+                    <TopTenWidget tablename1={selectedModel.tablename} />
 
                     <Route exact path="/" component={HomePage} />
                     <Route path="/about" component={AboutPage} />

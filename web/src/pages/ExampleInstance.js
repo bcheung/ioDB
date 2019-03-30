@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { fetchInstanceData, fetchJoinedTopTenData } from '../fetchAPI';
-import { StatsDropdown } from '../components';
+import { TopTenWidget } from '../components/TopTenWidget';
 
 class ExampleInstance extends Component {
     state = {
@@ -33,7 +33,14 @@ class ExampleInstance extends Component {
         return (
             <div>
                 this is the example page
-                <StatsDropdown value={selectedOption} onChange={this.onChange} population />
+                <TopTenWidget
+                    joined
+                    population
+                    tablename1="states"
+                    tablename2="occupations_major"
+                    keyModel="occupations_major"
+                    id="11-0000"
+                />
             </div>
         );
     }
