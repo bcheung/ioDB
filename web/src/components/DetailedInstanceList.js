@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Nav, NavItem, NavLink, Col } from 'reactstrap';
+import { NavbarToggler, Collapse, NavbarBrand, Nav, Navbar, NavItem, NavLink, Col } from 'reactstrap';
 import { getDetailedModel, getInstanceNames, getModelRoutes } from '../constants';
 
 function renderInstanceLinks(detailedModel, data) {
@@ -16,12 +16,19 @@ const DetailedInstanceList = ({ majorModel, data }) => {
     const detailedModel = getDetailedModel[majorModel];
     const detailedInstanceName = getInstanceNames[detailedModel];
     return (
-        <Col className="col-md-3 sidebar">
-            <Nav>
-                <p>{detailedInstanceName}:</p>
-                {renderInstanceLinks(detailedModel, data)}
-            </Nav>
-        </Col>
+        <div>
+            <Navbar color="light" light expand="md">
+                <div className="navbar-header">
+                    <NavbarBrand>Detailed Occupations List</NavbarBrand>
+                </div>
+                <Nav className="align-items-md-center">
+                    <Col>
+                        <p>{detailedInstanceName}:</p>
+                        {renderInstanceLinks(detailedModel, data)}
+                    </Col>
+                </Nav>
+            </Navbar>
+        </div>
     );
 };
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Bar } from 'react-chartjs-2';
-import { Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
+import { Button, Collapse, Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { fetchInstanceData, fetchJoinedInstanceData } from '../../fetchAPI';
 import './occupation-instance-page.css';
@@ -49,13 +49,18 @@ function createHeatMapping(locationData) {
 let map;
 
 class OccupationInstancePage extends Component {
-    state = {
-        occupationData: null,
-        industryData: null,
-        locationData: null,
-        mapLoaded: false,
-        isDataLoaded: false
-    };
+    constructor(props) {
+        super(props);
+        this.toggle = this.toggle.bind(this);
+        this.state = {
+            occupationData: null,
+            industryData: null,
+            locationData: null,
+            mapLoaded: false,
+            isDataLoaded: false,
+            collapse: false
+        };
+    }
 
     componentDidMount() {
         const { tablename, id } = this.props.match.params;
@@ -159,6 +164,10 @@ class OccupationInstancePage extends Component {
             isDataLoaded: true
         });
     };
+
+    toggle() {
+        this.setState(state => ({ collapse: !state.collapse }));
+    }
 
     renderOccupation = () => {
         const { tablename } = this.props.match.params;
@@ -315,7 +324,7 @@ class OccupationInstancePage extends Component {
     render() {
         console.log('render');
         const { tablename, id } = this.props.match.params;
-        const { occupationData, locationData } = this.state;
+        const { occupationData, locationData, collapse } = this.state;
 
         const renderLegend = (stop, i) => (
             <div key={i} className="txt-s">
@@ -329,14 +338,18 @@ class OccupationInstancePage extends Component {
         return (
             <Container>
                 <Row>
-                    {isMajorModel[tablename] ? this.renderDetailedInstanceList() : null}
-
+                    <Button color="secondary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>
+                        Show Detailed Occupations List
+                    </Button>
+                    <Collapse isOpen={collapse}>
+                        <div>{isMajorModel[tablename] ? this.renderDetailedInstanceList() : null}</div>
+                    </Collapse>
                     <Col>
                         <Row>{this.renderOccupation()}</Row>
                         <br />
                         <Card className="container wage-data">
                             <br />
-                            <Row>{this.renderOccupationData()}</Row>
+                            <Row className="align-items-md-center">{this.renderOccupationData()}</Row>
                             <br />
 
                             <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
