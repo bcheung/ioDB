@@ -28,7 +28,7 @@ class TopTenWidget extends Component {
         }
     }
 
-    updateGraph = data => {
+    updateGraph = (data, joined) => {
         const labelArray = [];
         const dataArray = [];
         let instanceData = {};
@@ -37,13 +37,23 @@ class TopTenWidget extends Component {
         console.log('updateGraph selectedColumn', selectedColumn, data);
         const isPieGraph = graphType[selectedColumn.value].graph === 'pie';
         let sum = 0;
-        data.forEach(instance => {
-            labelArray.push(instance[secondaryTable].title);
-            dataArray.push(instance[selectedColumn.value]);
-            if (isPieGraph) {
-                sum += instance[selectedColumn.value];
-            }
-        });
+        if (joined) {
+            data.forEach(instance => {
+                labelArray.push(instance[secondaryTable].title);
+                dataArray.push(instance[selectedColumn.value]);
+                if (isPieGraph) {
+                    sum += instance[selectedColumn.value];
+                }
+            });
+        } else {
+            data.forEach(instance => {
+                labelArray.push(instance.title);
+                dataArray.push(instance[selectedColumn.value]);
+                if (isPieGraph) {
+                    sum += instance[selectedColumn.value];
+                }
+            });
+        }
 
         if (isPieGraph) {
             labelArray.push('Other');
@@ -103,12 +113,12 @@ class TopTenWidget extends Component {
         if (joined) {
             const { secondaryTable, id } = this.props;
             fetchJoinedTopTenData(primaryTable, secondaryTable, id, selectedColumn.value).then(data => {
-                this.updateGraph(data);
+                this.updateGraph(data, joined);
                 // this.setState({ data });
             });
         } else {
             fetchTopTenData(primaryTable, selectedColumn.value).then(data => {
-                this.updateGraph(data);
+                this.updateGraph(data, joined);
                 // this.setState({ data });
             });
         }

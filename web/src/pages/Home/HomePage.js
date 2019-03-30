@@ -4,7 +4,7 @@ import { TopTenWidget } from '../../components/TopTenWidget';
 
 class HomePage extends Component {
     render() {
-        return <Container>{/* <TopTenWidget tablename1={this.props.tablename} /> */}</Container>;
+        return <Container>{<TopTenWidget primaryTable={this.props.tablename} />}</Container>;
     }
 }
 
