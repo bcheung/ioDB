@@ -73,166 +73,52 @@ const legendData = {
     ]
 };
 
+// Finding the maximum loc_quotient value for this locationData set
+function getMaxLocQuotient(locationData) {
+    let maxLocQuotient = 0;
+    console.log('locationData array quotient calculation', locationData);
+    locationData.forEach(stateData => {
+        if (stateData.loc_quotient > maxLocQuotient) {
+            maxLocQuotient = stateData.loc_quotient;
+        }
+    });
+    return maxLocQuotient;
+}
+
 class ChemicalEngineers extends Component {
     state = {
         occupationData: null,
         industryData: null,
-        mapData: null
+        locationData: null
     };
 
     componentDidMount() {
-        const { tablename, id } = this.props.match.params;
-        fetchInstanceData(tablename, id).then(occupationData => {
-            this.setState({ occupationData });
-            console.log('fetchOccupationData', occupationData);
-        });
-        fetchJoinedInstanceData('industries_3d', tablename, tablename, id).then(industryData => {
-            this.setState({
-                industryData
-            });
-            console.log('fetchIndustryData', industryData);
-        });
-
-        fetchJoinedInstanceData('states', tablename, tablename, id).then(mapData => {
-            this.setState({
-                mapData
-            });
-            console.log('fetchMapData', mapData);
-        });
-
-        this.map = new mapboxgl.Map({
-            container: this.mapContainer,
-            style: 'mapbox://styles/mapbox/light-v10',
-            center: [-96, 40],
-            zoom: 2.25
-        });
-
-        this.map.on('load', () => {
-            this.map.addSource('states', {
-                type: 'vector',
-                url: 'mapbox://mapbox.us_census_states_2015'
-            });
-
-            // Add layer from the vector tile source with data-driven style
-            this.map.addLayer(
-                {
-                    id: 'states-join',
-                    type: 'fill',
-                    source: 'states',
-                    'source-layer': 'states',
-                    paint: {
-                        'fill-color': expression
-                    }
-                },
-                'waterway-label'
-            );
-        });
+        this.fetchData();
     }
 
-    // Finding the maximum loc_quotient value for this mapData set
-    // setMaxLocQuotient = mapDataArray => {
-    //     let maxValue = 0;
-    //     console.log('mapdata array quotient calculation', mapDataArray);
-    //     mapDataArray.forEach(state => {
-    //         if (state.loc_quotient >= maxValue) {
-    //             maxValue = state.loc_quotient;
-    //         }
-    //     });
-    //     // this.setState({
-    //     //     locquotientMaxValue: maxValue
-    //     // });
-    // };
+    fetchData = async () => {
+        const { tablename, id } = this.props.match.params;
 
-    map;
+        const occupationData = await fetchInstanceData(tablename, id);
+        const industryData = await fetchJoinedInstanceData('industries_3d', tablename, tablename, id);
+        const locationData = await fetchJoinedInstanceData('states', tablename, tablename, id);
 
-    render() {
-        const { occupationData, industryData, mapData } = this.state;
-        let name = '';
-        if (mapData != null) {
-            // Maximum location quotient
-            // this.setMaxLocQuotient(mapData);
-            const max = 5.3;
-            // Calculate color
-            mapData.forEach(stateData => {
-                name = stateData.occupation_major.title;
-                if (stateData.loc_quotient === -1.0) {
-                    // grey color if no location quotient for state
-                    const color = `rgba(${102}, ${102}, ${121}, 0.75)`;
-                    expression.push(stateData.state.id, color);
-                } else {
-                    const green = 255 - (stateData.loc_quotient / max) * 255;
-                    const color = `rgba(${255}, ${green}, ${132}, 0.75)`;
-                    expression.push(stateData.state.id, color);
-                }
-            });
-            // Last value is the default
-            expression.push('rgba(0,0,0,0)');
-        }
-        // for Bar graph use
-        const tempBarData = [];
-        // populated by instanceData
-        const barData = {
-            labels: ['10%', '25%', '50%', '75%', '90%'],
-            datasets: [
-                {
-                    label: 'Wage (Dollar Amount)',
-                    backgroundColor: 'rgba(255,99,132,1)',
-                    borderColor: 'rgba(255,99,132,1)',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                    hoverBorderColor: 'rgba(255,99,132,1)',
-                    data: tempBarData
-                }
-            ]
-        };
-        // once instance data is fetched
-        // For bar graph use
-        const tempLabel = [];
-        const tempData = [];
+        this.setState({
+            occupationData,
+            industryData,
+            locationData
+        });
+    };
 
-        const industryBarData = {
-            labels: tempLabel,
-            datasets: [
-                {
-                    label: 'Wage (Dollar Amount)',
-                    backgroundColor: 'rgba(255,99,132,1)',
-                    borderColor: 'rgba(255,99,132,1)',
-                    borderWidth: 1,
-                    hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                    hoverBorderColor: 'rgba(255,99,132,1)',
-                    data: tempData
-                }
-            ]
-        };
-        // Once the API fetch request is received
-        if (industryData != null) {
-            // Populating Bar graph labels for industries from API data
-            industryData.forEach(industry => {
-                tempLabel.push(industry.industry_3d.title);
-                tempData.push(industry.annual_mean);
-            });
-            // setting Bar data from industries
-            industryBarData.labels = tempLabel;
-            industryBarData.datasets.data = tempData;
-        }
-
-        const renderLegend = (stop, i) => (
-            <div key={i} className="txt-s">
-                <span
-                    className="mr6 round-full w12 h12 inline-block align-middle"
-                    style={{ backgroundColor: stop[1] }}
-                />
-                <span>{`${stop[0].toLocaleString()}`}</span>
-            </div>
-        );
-        console.log('props', this.props);
-        return (
-            <Container>
+    renderOccupationData = () => {
+        const { occupationData } = this.state;
+        if (occupationData) {
+            return (
                 <Jumbotron>
-                    <h1 className="display-3">{name}</h1>
+                    <h1 className="display-3">{occupationData.title}</h1>
                     <p>Occupation Code: {occupationData.id}</p>
                     <hr className="my-2" />
-                    <p className="lead">{occupationData.description}</p>
+                    <p className="lead">Description:{occupationData.description}</p>
                     <p>
                         Annual Mean Wage:
                         {new Intl.NumberFormat('en-US', {
@@ -243,33 +129,88 @@ class ChemicalEngineers extends Component {
                         }).format()}
                     </p>
                 </Jumbotron>
-                <Row>
-                    <h1>Where are {name} located?</h1>
-                    <div ref={el => (this.mapContainer = el)} />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <div className="bg-white absolute bottom right mr12 mb24 py12 px12 shadow-darken10 round z1 wmax180">
-                        <div className="mb6">
-                            <br />
-                            <br />
-                            <br />
-                        </div>
-                    </div>
-                </Row>
+            );
+        }
+    };
+
+    renderLocationData = () => {
+        const { occupationData, locationData } = this.state;
+        if (locationData && occupationData) {
+            // Maximum location quotient
+            const maxLocQuotient = getMaxLocQuotient(locationData);
+            // Calculate color
+            locationData.forEach(stateData => {
+                if (stateData.loc_quotient === -1.0) {
+                    // grey color if no location quotient for state
+                    const color = `rgba(${102}, ${102}, ${121}, 0.75)`;
+                    expression.push(stateData.states.id, color);
+                } else {
+                    const green = 255 - (stateData.loc_quotient / maxLocQuotient) * 255;
+                    const color = `rgba(${255}, ${green}, ${132}, 0.75)`;
+                    expression.push(stateData.states.id, color);
+                }
+            });
+            // Last value is the default
+            expression.push('rgba(0,0,0,0)');
+            const map = new mapboxgl.Map({
+                container: this.mapContainer,
+                style: 'mapbox://styles/mapbox/light-v10',
+                center: [-96, 40],
+                zoom: 2.25
+            });
+
+            map.on('load', () => {
+                map.addSource('states', {
+                    type: 'vector',
+                    url: 'mapbox://mapbox.us_census_states_2015'
+                });
+
+                // Add layer from the vector tile source with data-driven style
+                map.addLayer(
+                    {
+                        id: 'states-join',
+                        type: 'fill',
+                        source: 'states',
+                        'source-layer': 'states',
+                        paint: {
+                            'fill-color': expression
+                        }
+                    },
+                    'waterway-label'
+                );
+            });
+            return (
+                <div>
+                    <h1>Where are {occupationData.title} located?</h1>
+                </div>
+            );
+        }
+    };
+
+    renderPie = () => {
+        const { occupationData, locationData } = this.state;
+
+        if (occupationData) {
+            // for Bar graph use
+            const tempBarData = [];
+            // populated by instanceData
+            const barData = {
+                labels: ['10%', '25%', '50%', '75%', '90%'],
+                datasets: [
+                    {
+                        label: 'Wage (Dollar Amount)',
+                        backgroundColor: 'rgba(255,99,132,1)',
+                        borderColor: 'rgba(255,99,132,1)',
+                        borderWidth: 1,
+                        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                        hoverBorderColor: 'rgba(255,99,132,1)',
+                        data: tempBarData
+                    }
+                ]
+            };
+            return (
                 <div className="container">
-                    <h2>Annual Percentile Wages for {name}</h2>
+                    <h2>Annual Percentile Wages for {occupationData.title}</h2>
                     <Bar
                         data={barData}
                         width={100}
@@ -279,6 +220,42 @@ class ChemicalEngineers extends Component {
                         }}
                     />
                 </div>
+            );
+        }
+    };
+
+    renderBar = () => {
+        const { occupationData, locationData, industryData } = this.state;
+
+        // once instance data is fetched
+        // For bar graph use
+        const tempLabel = [];
+        const tempData = [];
+        // Once the API fetch request is received
+        if (industryData) {
+            // Populating Bar graph labels for industries from API data
+            industryData.forEach(industry => {
+                tempLabel.push(industry.industry_3d.title);
+                tempData.push(industry.annual_mean);
+            });
+            const industryBarData = {
+                labels: tempLabel,
+                datasets: [
+                    {
+                        label: 'Wage (Dollar Amount)',
+                        backgroundColor: 'rgba(255,99,132,1)',
+                        borderColor: 'rgba(255,99,132,1)',
+                        borderWidth: 1,
+                        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                        hoverBorderColor: 'rgba(255,99,132,1)',
+                        data: tempData
+                    }
+                ]
+            };
+            // setting Bar data from industries
+            industryBarData.labels = tempLabel;
+            industryBarData.datasets.data = tempData;
+            return (
                 <div>
                     <h2>Wage by Industry</h2>
                     <Bar
@@ -290,6 +267,29 @@ class ChemicalEngineers extends Component {
                         }}
                     />
                 </div>
+            );
+        }
+    };
+
+    render() {
+        const { occupationData, industryData, locationData } = this.state;
+
+        const renderLegend = (stop, i) => (
+            <div key={i} className="txt-s">
+                <span
+                    className="mr6 round-full w12 h12 inline-block align-middle"
+                    style={{ backgroundColor: stop[1] }}
+                />
+                <span>{`${stop[0].toLocaleString()}`}</span>
+            </div>
+        );
+        return (
+            <Container>
+                <Row>{this.renderOccupationData()}</Row>
+                <Row>{this.renderLocationData()}</Row>
+                <Row>{this.renderPie()}</Row>
+                <Row>{this.renderBar()}</Row>
+                <div ref={el => (this.mapContainer = el)} />
             </Container>
         );
     }
