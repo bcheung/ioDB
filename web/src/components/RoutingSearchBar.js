@@ -2,21 +2,15 @@ import React, { Component } from 'react';
 import { Route, withRouter } from 'react-router-dom';
 // import './Home-page.css';
 import Select from 'react-select';
-import axios from 'axios';
 import { Button } from 'reactstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { fetchListData } from '../fetchAPI';
-
-const modelOptions = [
-    { title: 'Industries', tablename: 'industries_3d', route: 'industry' },
-    { title: 'States', tablename: 'states', route: 'location' },
-    { title: 'Occupations', tablename: 'occupations_major', route: 'occupation' }
-];
 
 class SearchBar extends Component {
     state = {
         instanceOptions: [],
         selectedInstance: null,
-        selectedModel: modelOptions[0]
+        selectedModel: this.props.selectedModel
     };
 
     componentDidMount() {
@@ -34,6 +28,7 @@ class SearchBar extends Component {
         this.setState({ selectedModel, selectedInstance: null });
         const { tablename } = selectedModel;
         this.fetchInstances(tablename);
+        this.props.setSelectedModel(selectedModel);
     };
 
     onSearchRequest = () => {
@@ -53,38 +48,53 @@ class SearchBar extends Component {
 
     render() {
         const { instanceOptions, selectedInstance, selectedModel } = this.state;
-
+        const { modelOptions } = this.props;
         return (
-            <div>
-                <div>
-                    <Select
-                        className="dropDown"
-                        options={instanceOptions}
-                        value={selectedInstance}
-                        onChange={this.handleInstanceChange}
-                        getOptionLabel={option => option.title}
-                        getOptionValue={option => option.id}
-                        placeholder={`Search ${selectedModel.title}`}
-                    />
-                </div>
-                <div>
-                    <Select
-                        className="dropDown"
-                        options={modelOptions}
-                        value={selectedModel}
-                        onChange={this.handleModelChange}
-                        isSearchable={false}
-                        getOptionLabel={option => option.title}
-                        getOptionValue={option => option.tablename}
-                    />
-                    <Button color="primary" onClick={this.onSearchRequest}>
-                        Search
-                    </Button>
-                </div>
-            </div>
+            <Container style={styles.containerStyle}>
+                <Row>
+                    <Col>
+                        <Select
+                            className="dropDown"
+                            options={instanceOptions}
+                            value={selectedInstance}
+                            onChange={this.handleInstanceChange}
+                            getOptionLabel={option => option.title}
+                            getOptionValue={option => option.id}
+                            placeholder={`Search ${selectedModel.title}`}
+                        />
+                    </Col>
+                    <Col xs="3">
+                        <Select
+                            className="dropDown"
+                            options={modelOptions}
+                            value={selectedModel}
+                            onChange={this.handleModelChange}
+                            isSearchable={false}
+                            getOptionLabel={option => option.title}
+                            getOptionValue={option => option.tablename}
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Button color="primary" onClick={this.onSearchRequest}>
+                            Search
+                        </Button>
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 }
+
+const styles = {
+    dropDown: {
+        width: 150
+    },
+    containerStyle: {
+        margin: 30
+    }
+};
 
 const RoutingSearchBar = withRouter(SearchBar);
 export { RoutingSearchBar };

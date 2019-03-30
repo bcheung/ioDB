@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { fetchInstanceData, fetchJoinedTopTenData } from '../fetchAPI';
+import { TopTenWidget } from '../components/TopTenWidget';
 
 class ExampleInstance extends Component {
     state = {
-        instanceData: null
+        instanceData: null,
+        selectedOption: null
     };
 
     componentDidMount() {
@@ -18,10 +20,29 @@ class ExampleInstance extends Component {
         fetchJoinedTopTenData(tablename, 'occupations_major', tablename, id, 'total_employment').then(data => {
             console.log('constructor', data);
         });
+        console.log('constructor onChange', this.onChange(), this.state.selectedOption);
     }
 
+    onChange = selectedOption => {
+        console.log('onChange', selectedOption);
+        this.setState({ selectedOption });
+    };
+
     render() {
-        return <div>this is the example page</div>;
+        const { selectedOption } = this.state;
+        return (
+            <div>
+                this is the example page
+                <TopTenWidget
+                    joined
+                    population
+                    tablename1="states"
+                    tablename2="occupations_major"
+                    keyModel="occupations_major"
+                    id="11-0000"
+                />
+            </div>
+        );
     }
 }
 

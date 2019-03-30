@@ -8,7 +8,14 @@ import OccupationInstancePage from '../OccupationInstance/OccupationInstancePage
 import LocationInstance from '../LocationInstance/LocationInstance';
 import ExampleInstance from '../ExampleInstance';
 import './App.css';
-import { RoutingSearchBar } from '../../components/RoutingSearchBar';
+import { RoutingSearchBar, TopTenWidget } from '../../components';
+import { Container } from 'react-bootstrap';
+
+const modelOptions = [
+    { title: 'Industries', tablename: 'industries_3d', route: 'industry' },
+    { title: 'States', tablename: 'states', route: 'location' },
+    { title: 'Occupations', tablename: 'occupations_major', route: 'occupation' }
+];
 
 class App extends Component {
     constructor(props) {
@@ -16,15 +23,22 @@ class App extends Component {
 
         this.toggle = this.toggle.bind(this);
         this.state = {
-            isOpen: false
+            isOpen: false,
+            selectedModel: modelOptions[0]
         };
     }
+
+    setSelectedModel = selectedModel => {
+        this.setState({ selectedModel });
+    };
 
     toggle() {
         this.setState({ isOpen: !this.state.isOpen });
     }
 
     render() {
+        const { selectedModel } = this.state;
+        console.log('App render', selectedModel);
         return (
             <Router>
                 <div>
@@ -38,21 +52,22 @@ class App extends Component {
                                 <NavLink href="#/about">About Us</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/industry">Industry</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href="#/occupation">Occupation</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href="#/location">Location</NavLink>
+                                <NavLink href="#/location">Explore</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink href="#/example/industries_3d/113000">Example</NavLink>
                             </NavItem>
                         </Nav>
                     </Navbar>
-                    <RoutingSearchBar />
-                    <Route exact path="/" component={HomePage} />
+                    <Container>
+                        <RoutingSearchBar
+                            modelOptions={modelOptions}
+                            selectedModel={selectedModel}
+                            setSelectedModel={this.setSelectedModel}
+                        />
+                    </Container>
+
+                    <Route exact path="/" render={props => <HomePage tablename={selectedModel.tablename} />} />
                     <Route path="/about" component={AboutPage} />
 
                     <Route path="/example/:tablename/:id" component={ExampleInstance} />

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import { Container } from 'react-bootstrap';
+import { TopTenWidget } from '../../components/TopTenWidget';
 
 class HomePage extends Component {
     render() {
         return (
-            <div className="Page">
-                <header className="Page-header" />
-            </div>
+            <Container>
+                <TopTenWidget tablename1={this.props.tablename} />
+            </Container>
         );
     }
 }
