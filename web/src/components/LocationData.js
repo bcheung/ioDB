@@ -52,6 +52,7 @@ class LocationData extends Component {
                   tablename2="occupations_major"
                   keyModel={this.props.keyModel}
                   id={this.props.id}
+                  total_employment={this.props.data.total_employment}
                   />
               </h6>
             </Row>
