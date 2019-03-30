@@ -6,7 +6,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { fetchInstanceData, fetchJoinedInstanceData } from '../../fetchAPI';
 import './occupation-instance-page.css';
 import { isMajorModel } from '../../constants';
-import { DetailedInstanceList, TopTenWidget } from '../../components';
+import { DetailedInstanceList, TopTenWidget, WageSalaryTable, InstanceInfo } from '../../components';
 
 mapboxgl.accessToken =
     'pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw';
@@ -160,91 +160,6 @@ class OccupationInstancePage extends Component {
         });
     };
 
-    renderOccupation = () => {
-        const { tablename } = this.props.match.params;
-        const { occupationData } = this.state;
-        if (occupationData) {
-            return (
-                <Jumbotron>
-                    <h1 className="display-3">{occupationData.title}</h1>
-                    <p>Occupation Code: {occupationData.id}</p>
-                    {isMajorModel[tablename] ? null : (
-                        <div>
-                            <hr className="my-2" />
-                            <p className="lead">Description: {occupationData.description}</p>
-                        </div>
-                    )}
-                </Jumbotron>
-            );
-        }
-    };
-
-    renderOccupationData = () => {
-        const { occupationData } = this.state;
-        if (occupationData) {
-            const tableData = {
-                title: occupationData.title,
-                total_employment: occupationData.total_employment,
-                columns: [
-                    {
-                        dataField: 'type',
-                        text: 'Type'
-                    },
-                    {
-                        dataField: 'mean',
-                        text: 'Mean'
-                    },
-                    {
-                        dataField: 'median',
-                        text: 'Median'
-                    },
-                    {
-                        dataField: '10',
-                        text: '10th Percentile'
-                    },
-                    {
-                        dataField: '25',
-                        text: '25th Percentile'
-                    },
-                    {
-                        dataField: '75',
-                        text: '75th Percentile'
-                    },
-                    {
-                        dataField: '90',
-                        text: '90th Percentile'
-                    }
-                ],
-                rows: [
-                    {
-                        type: 'Annual Salary',
-                        mean: occupationData.annual_mean,
-                        median: occupationData.annual_median,
-                        '10': occupationData.annual_10,
-                        '25': occupationData.annual_25,
-                        '75': occupationData.annual_75,
-                        '90': occupationData.annual_90
-                    },
-                    {
-                        type: 'Hourly Wage',
-                        mean: occupationData.hourly_mean,
-                        median: occupationData.hourly_median,
-                        '10': occupationData.hourly_10,
-                        '25': occupationData.hourly_25,
-                        '75': occupationData.hourly_75,
-                        '90': occupationData.hourly_90
-                    }
-                ]
-            };
-            return (
-                <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-                    <h5 style={{ margin: 'auto' }}>Salary and Wage Statistics</h5>
-                    <BootstrapTable hover keyField="type" data={tableData.rows} columns={tableData.columns} />
-                </Row>
-            );
-        }
-    };
-
     renderLocationData = () => {
         const { mapLoaded, occupationData, locationData } = this.state;
         if (mapLoaded && occupationData && locationData) {
@@ -332,11 +247,19 @@ class OccupationInstancePage extends Component {
                     {isMajorModel[tablename] ? this.renderDetailedInstanceList() : null}
 
                     <Col>
-                        <Row>{this.renderOccupation()}</Row>
+                        <Row>
+                            {occupationData ? (
+                                <InstanceInfo
+                                    title={occupationData.title}
+                                    idLabel="Occupation Code"
+                                    id={occupationData.id}
+                                />
+                            ) : null}
+                        </Row>
                         <br />
                         <Card className="container wage-data">
                             <br />
-                            <Row>{this.renderOccupationData()}</Row>
+                            <Row>{occupationData ? <WageSalaryTable data={occupationData} /> : null}</Row>
                             <br />
 
                             <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
