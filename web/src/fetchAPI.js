@@ -40,11 +40,11 @@ export async function fetchTopTenData(tablename, columnName) {
     }
 }
 
-export async function fetchJoinedInstanceData(tablename1, tablename2, keyModel, id) {
-    const tablename = getJoinedTablename(tablename1, tablename2);
-    console.log('fetchJoinedTopTenData tablename', tablename);
+export async function fetchJoinedInstanceData(primaryTable, secondaryTable, id) {
+    const tablename = getJoinedTablename(primaryTable, secondaryTable);
+    console.log('fetchJoinedInstanceData tablename', tablename, id);
     try {
-        const queryUrl = `http://www.iodb.info/api/joined_instance/${tablename}/${keyModel}/${id}`;
+        const queryUrl = `http://www.iodb.info/api/joined_instance/${tablename}/${primaryTable}/${id}`;
         const url = proxyUrl + queryUrl;
         const response = await axios.get(url);
         const { data } = response;
@@ -55,11 +55,11 @@ export async function fetchJoinedInstanceData(tablename1, tablename2, keyModel, 
     }
 }
 
-export async function fetchJoinedTopTenData(tablename1, tablename2, keyModel, id, columnName) {
-    const tablename = getJoinedTablename(tablename1, tablename2);
+export async function fetchJoinedTopTenData(primaryTable, secondaryTable, id, columnName) {
+    const tablename = getJoinedTablename(primaryTable, secondaryTable);
     console.log('fetchJoinedTopTenData tablename', tablename);
     try {
-        const queryUrl = `http://www.iodb.info/api/joined_top_ten/${tablename}/${keyModel}/${id}/${columnName}`;
+        const queryUrl = `http://www.iodb.info/api/joined_top_ten/${tablename}/${primaryTable}/${id}/${columnName}`;
         const url = proxyUrl + queryUrl;
         const response = await axios.get(url);
         const { data } = response;

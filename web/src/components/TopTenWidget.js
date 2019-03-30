@@ -5,15 +5,12 @@ import { Bar, Doughnut } from 'react-chartjs-2';
 import { fetchTopTenData, fetchJoinedTopTenData } from '../fetchAPI';
 import { stats, statsWithPop, graphType } from '../constants';
 
-let labelArray = [];
-let dataArray = [];
-let instanceData = {};
-let isPieGraph = false;
-
 class TopTenWidget extends Component {
     state = {
+        instanceData: {},
         selectedColumn: stats[0],
-        data: null
+        isPieGraph: false
+        // data: null
     };
 
     componentDidMount() {
@@ -22,22 +19,26 @@ class TopTenWidget extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (
-            prevProps.tablename1 !== this.props.tablename1 ||
+            prevProps.primaryTable !== this.props.primaryTable ||
             prevProps.id !== this.props.id ||
             prevState.selectedColumn !== this.state.selectedColumn
         ) {
-            console.log('componentDidUpdate', prevProps.tablename1, this.props.tablename1);
+            console.log('componentDidUpdate', prevProps.primaryTable, this.props.primaryTable);
             this.fetchStats();
         }
     }
 
     updateGraph = data => {
-        const { tablename2, total_employment } = this.props;
+        const labelArray = [];
+        const dataArray = [];
+        let instanceData = {};
+        const { secondaryTable, total_employment } = this.props;
         const { selectedColumn } = this.state;
-        isPieGraph = graphType[selectedColumn.value].graph === 'pie';
+        console.log('updateGraph selectedColumn', selectedColumn, data);
+        const isPieGraph = graphType[selectedColumn.value].graph === 'pie';
         let sum = 0;
         data.forEach(instance => {
-            labelArray.push(instance[tablename2].title);
+            labelArray.push(instance[secondaryTable].title);
             dataArray.push(instance[selectedColumn.value]);
             if (isPieGraph) {
                 sum += instance[selectedColumn.value];
@@ -85,6 +86,7 @@ class TopTenWidget extends Component {
                 ]
             };
         }
+        this.setState({ instanceData, isPieGraph });
     };
 
     handleColumnChange = selectedColumn => {
@@ -94,31 +96,26 @@ class TopTenWidget extends Component {
     };
 
     fetchStats() {
-        labelArray = [];
-        dataArray = [];
-        instanceData = {};
         const { selectedColumn } = this.state;
         console.log(selectedColumn);
-        const { joined, tablename1 } = this.props;
+        const { joined, primaryTable } = this.props;
 
         if (joined) {
-            const { tablename2, keyModel, id } = this.props;
-            fetchJoinedTopTenData(tablename1, tablename2, keyModel, id, selectedColumn.value).then(data => {
+            const { secondaryTable, id } = this.props;
+            fetchJoinedTopTenData(primaryTable, secondaryTable, id, selectedColumn.value).then(data => {
                 this.updateGraph(data);
-                this.setState({ data });
-                console.log(data);
+                // this.setState({ data });
             });
         } else {
-            fetchTopTenData(tablename1, selectedColumn.value).then(data => {
+            fetchTopTenData(primaryTable, selectedColumn.value).then(data => {
                 this.updateGraph(data);
-                this.setState({ data });
-                console.log(data);
+                // this.setState({ data });
             });
         }
     }
 
     render() {
-        const { selectedColumn } = this.state;
+        const { selectedColumn, instanceData, isPieGraph } = this.state;
         const { population } = this.props;
         let options = stats;
         if (population) {

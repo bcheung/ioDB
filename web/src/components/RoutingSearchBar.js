@@ -62,7 +62,7 @@ class SearchBar extends Component {
                             placeholder={`Search ${selectedModel.title}`}
                         />
                     </Col>
-                    <Col xs="3">
+                    <Col md="3">
                         <Select
                             className="dropDown"
                             options={modelOptions}

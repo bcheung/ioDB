@@ -43,30 +43,23 @@ class App extends Component {
                                 <NavLink href="#/">Home</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/about">About Us</NavLink>
-                            </NavItem>
-                            <NavItem>
                                 <NavLink href="#/location">Explore</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/example/industries_3d/113000">Example</NavLink>
+                                <NavLink href="#/about">About Us</NavLink>
                             </NavItem>
                         </Nav>
                     </Navbar>
 
-                    <Container>
-                        <RoutingSearchBar
-                            modelOptions={modelOptions}
-                            selectedModel={selectedModel}
-                            setSelectedModel={this.setSelectedModel}
-                        />
-                    </Container>
+                    <RoutingSearchBar
+                        modelOptions={modelOptions}
+                        selectedModel={selectedModel}
+                        setSelectedModel={this.setSelectedModel}
+                    />
 
                     <Switch>
                         <Route exact path="/" render={props => <HomePage tablename={selectedModel.tablename} />} />
                         <Route path="/about" component={AboutPage} />
-
-                        <Route path="/example/:tablename/:id" component={ExampleInstance} />
 
                         <Route path="/industry/:tablename/:id" component={IndustryInstancePage} />
 

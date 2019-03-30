@@ -23,9 +23,13 @@ const joinedTablenames = {
     metro_areas: 'metro_area'
 };
 
-export function getJoinedTablename(tablename1, tablename2) {
-    const tablename = joinedTablenames[tablename1] + joinedTablenames[tablename2];
-    return tablename;
+export function getJoinedTablename(primaryTable, secondaryTable) {
+    const joinedPrimary = joinedTablenames[primaryTable];
+    const joinedSecondary = joinedTablenames[secondaryTable];
+    if (joinedPrimary.substring(0, 1) === '_') {
+        return joinedSecondary + joinedPrimary;
+    }
+    return joinedPrimary + joinedSecondary;
 }
 
 const joinedTablePrimaryKeys = {
