@@ -75,23 +75,27 @@ const legendData = {
 
 class ChemicalEngineers extends Component {
     state = {
+        occupationData: null,
         industryData: null,
         mapData: null
     };
 
     componentDidMount() {
         const { tablename, id } = this.props.match.params;
-
+        fetchInstanceData(tablename, id).then(occupationData => {
+            this.setState({ occupationData });
+            console.log('fetchOccupationData', occupationData);
+        });
         fetchJoinedInstanceData('industries_3d', tablename, tablename, id).then(industryData => {
             this.setState({
-                industryData: industryData
+                industryData
             });
             console.log('fetchIndustryData', industryData);
         });
 
         fetchJoinedInstanceData('states', tablename, tablename, id).then(mapData => {
             this.setState({
-                mapData: mapData
+                mapData
             });
             console.log('fetchMapData', mapData);
         });
@@ -142,16 +146,14 @@ class ChemicalEngineers extends Component {
     map;
 
     render() {
-        const { industryData, mapData } = this.state;
+        const { occupationData, industryData, mapData } = this.state;
         let name = '';
-        let naics = '';
         if (mapData != null) {
             // Maximum location quotient
             // this.setMaxLocQuotient(mapData);
             const max = 5.3;
             // Calculate color
             mapData.forEach(stateData => {
-                naics = stateData.occupation_major.id;
                 name = stateData.occupation_major.title;
                 if (stateData.loc_quotient === -1.0) {
                     // grey color if no location quotient for state
@@ -228,9 +230,9 @@ class ChemicalEngineers extends Component {
             <Container>
                 <Jumbotron>
                     <h1 className="display-3">{name}</h1>
-                    <p>NAICS: {naics} </p>
+                    <p>Occupation Code: {occupationData.id}</p>
                     <hr className="my-2" />
-                    <p className="lead">{}</p>
+                    <p className="lead">{occupationData.description}</p>
                     <p>
                         Annual Mean Wage:
                         {new Intl.NumberFormat('en-US', {
