@@ -25,9 +25,9 @@ class StateOccMajorModel(db.Model):
     annual_75 = db.Column(db.Integer)
     annual_90 = db.Column(db.Integer)
 
-    state = db.relationship(
+    states = db.relationship(
         'StateModel', backref='occupations_major')
-    occupation_major = db.relationship(
+    occupations_major = db.relationship(
         'OccupationMajorModel', backref='states')
 
     def __init__(self, total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90):
@@ -49,9 +49,9 @@ class StateOccMajorModel(db.Model):
 
 
 class StateOccMajorSchema(ma.ModelSchema):
-    state = fields.Nested(
+    states = fields.Nested(
         'self', only=["id", "title"])
-    occupation_major = fields.Nested(
+    occupations_major = fields.Nested(
         'self', only=["id", "title"])
 
     class Meta:
@@ -82,9 +82,9 @@ class MetroAreaOccMajorModel(db.Model):
     annual_75 = db.Column(db.Integer)
     annual_90 = db.Column(db.Integer)
 
-    metro_area = db.relationship(
+    metro_areas = db.relationship(
         'MetroAreaModel', backref='occupations_major')
-    occupation_major = db.relationship(
+    occupations_major = db.relationship(
         'OccupationMajorModel', backref='metro_areas')
 
     def __init__(self, total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90):
@@ -106,9 +106,9 @@ class MetroAreaOccMajorModel(db.Model):
 
 
 class MetroAreaOccMajorSchema(ma.ModelSchema):
-    metro_area = fields.Nested(
+    metro_areas = fields.Nested(
         'self', only=["id", "title"])
-    occupation_detailed = fields.Nested(
+    occupations_detailed = fields.Nested(
         'self', only=["id", "title"])
 
     class Meta:
@@ -139,9 +139,9 @@ class StateOccDetailedModel(db.Model):
     annual_75 = db.Column(db.Integer)
     annual_90 = db.Column(db.Integer)
 
-    state = db.relationship(
+    states = db.relationship(
         'StateModel', backref='occupations_detailed')
-    occupation_detailed = db.relationship(
+    occupations_detailed = db.relationship(
         'OccupationDetailedModel', backref='states')
 
     def __init__(self, total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90):
@@ -164,9 +164,9 @@ class StateOccDetailedModel(db.Model):
 
 
 class StateOccDetailedSchema(ma.ModelSchema):
-    state = fields.Nested(
+    states = fields.Nested(
         'self', only=["id", "title"])
-    occupation_detailed = fields.Nested(
+    occupations_detailed = fields.Nested(
         'self', only=["id", "title"])
 
     class Meta:
@@ -197,9 +197,9 @@ class MetroAreaOccDetailedModel(db.Model):
     annual_75 = db.Column(db.Integer)
     annual_90 = db.Column(db.Integer)
 
-    metro_area = db.relationship(
+    metro_areas = db.relationship(
         'MetroAreaModel', backref='occupations_detailed')
-    occupation_detailed = db.relationship(
+    occupations_detailed = db.relationship(
         'OccupationDetailedModel', backref='metro_areas')
 
     def __init__(self, total_employment, jobs_1000, loc_quotient, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90):
@@ -221,9 +221,9 @@ class MetroAreaOccDetailedModel(db.Model):
 
 
 class MetroAreaOccDetailedSchema(ma.ModelSchema):
-    metro_area = fields.Nested(
+    metro_areas = fields.Nested(
         'self', only=["id", "title"])
-    occupation_detailed = fields.Nested(
+    occupations_detailed = fields.Nested(
         'self', only=["id", "title"])
 
     class Meta:
