@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CountryMap from '../../components/CountryMap';
 import LocationData from '../../components/LocationData';
-import { fetchInstanceData } from '../../fetchAPI';
+import { fetchInstanceData, fetchJoinedTopTenData } from '../../fetchAPI';
 
 class LocationInstance extends Component {
   constructor(props) {
@@ -198,7 +198,6 @@ class LocationInstance extends Component {
   render() {
     return (
       <div>
-        {console.log(this.state.initial.tablename, this.state.initial.id)}
         <CountryMap 
           onStateClick={this.handleStateClick} 
           onMSAClick={this.handleMSAClick} 
@@ -206,11 +205,19 @@ class LocationInstance extends Component {
           tablename={this.state.initial.tablename}
           id={this.state.initial.id}
         />
-        {/* <state info component></state>
-        <msa info component></msa> */}
         <br/>
-        {this.state.showStateInfo ? <LocationData data={this.state.stateData} /> : null}
-        {this.state.showMSAInfo ? <LocationData data={this.state.MSAData} /> : null}
+        {this.state.showStateInfo ? 
+          <LocationData 
+            data={this.state.stateData}
+            keyModel={'states'}
+            id={this.state.state.id}
+            /> : null}
+        {this.state.showMSAInfo ? 
+          <LocationData 
+            data={this.state.MSAData}
+            keyModel={'metro_areas'}
+            id={this.state.MSA.id}
+          /> : null}
       </div>
     );
   }
