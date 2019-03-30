@@ -85,7 +85,7 @@ function getMaxLocQuotient(locationData) {
     return maxLocQuotient;
 }
 
-class ChemicalEngineers extends Component {
+class OccupationInstancePage extends Component {
     state = {
         occupationData: null,
         industryData: null,
@@ -287,12 +287,12 @@ class ChemicalEngineers extends Component {
             <Container>
                 <Row>{this.renderOccupationData()}</Row>
                 <Row>{this.renderLocationData()}</Row>
-                <Row>{this.renderPie()}</Row>
-                <Row>{this.renderBar()}</Row>
+                {/* <Row>{this.renderPie()}</Row>
+                <Row>{this.renderBar()}</Row> */}
                 <div ref={el => (this.mapContainer = el)} />
             </Container>
         );
     }
 }
 
-export default ChemicalEngineers;
+export default OccupationInstancePage;
