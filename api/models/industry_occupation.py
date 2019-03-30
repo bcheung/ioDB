@@ -78,7 +78,7 @@ class Ind4dOccMajorModel(db.Model):
 
     industries_4d = db.relationship(
         'Industry4dModel', backref='occupations_major')
-    occupation_major = db.relationship(
+    occupations_major = db.relationship(
         'OccupationMajorModel', backref='industries_4d')
 
     def __init__(self, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90):
