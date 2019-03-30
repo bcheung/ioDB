@@ -54,7 +54,7 @@ export const stats = [
     { label: 'Hourly Wage Mean', value: 'hourly_mean' },
     { label: 'Annual Wage Median', value: 'annual_median' },
     { label: 'Annual Wage Mean', value: 'annual_mean' },
-    { label: 'Total Employment', value: 'total_employment' }
+    { label: 'Employment', value: 'total_employment' }
 ];
 
 export const statsWithPop = [
@@ -62,6 +62,15 @@ export const statsWithPop = [
     { label: 'Hourly Wage Mean', value: 'hourly_mean' },
     { label: 'Annual Wage Median', value: 'annual_median' },
     { label: 'Annual Wage Mean', value: 'annual_mean' },
-    { label: 'Total Employment', value: 'total_employment' },
-    { label: 'Total Population', value: 'total_population' }
+    { label: 'Employment', value: 'total_employment' },
+    { label: 'Population', value: 'total_population' }
 ];
+
+export const graphType = {
+    hourly_median: { label: 'Hourly Wage Median', graph: 'bar' },
+    hourly_mean: { label: 'Hourly Wage Mean', graph: 'bar' },
+    annual_median: { label: 'Annual Wage Median', graph: 'bar' },
+    annual_mean: { label: 'Annual Wage Mean', graph: 'bar' },
+    total_employment: { label: 'Employment', graph: 'pie' },
+    total_population: { label: 'Population', graph: 'pie' }
+};
