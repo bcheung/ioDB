@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import Select from 'react-select';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { fetchTopTenData, fetchJoinedTopTenData } from '../fetchAPI';
@@ -126,29 +126,36 @@ class TopTenWidget extends Component {
 
     render() {
         const { selectedColumn, instanceData, isPieGraph } = this.state;
-        const { population } = this.props;
+        const { title, population } = this.props;
         let options = stats;
         if (population) {
             options = statsWithPop;
         }
         return (
-            <div>
-                <div style={[styles.dropDown, { margin: 'auto' }]}>
-                    <Select
-                        className="dropDown"
-                        options={options}
-                        // defaultValue={options[0]}
-                        value={selectedColumn}
-                        onChange={this.handleColumnChange}
-                        isSearchable={false}
-                    />
-                </div>
-                {isPieGraph ? (
-                    <Doughnut data={instanceData} width={600} height={600} />
-                ) : (
-                    <Bar data={instanceData} width={900} height={500} />
-                )}
-            </div>
+            <Container>
+                <Row>
+                    <h1 style={{ margin: 'auto' }}>{title}</h1>
+                </Row>
+                <Row>
+                    <Col>
+                        <Select
+                            className="dropDown"
+                            options={options}
+                            // defaultValue={options[0]}
+                            value={selectedColumn}
+                            onChange={this.handleColumnChange}
+                            isSearchable={false}
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    {isPieGraph ? (
+                        <Doughnut data={instanceData} width={600} height={600} />
+                    ) : (
+                        <Bar data={instanceData} width={900} height={500} />
+                    )}
+                </Row>
+            </Container>
         );
     }
 }

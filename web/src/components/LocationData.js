@@ -27,32 +27,15 @@ class LocationData extends Component {
                 <br />
                 <WageSalaryTable data={data} />
                 <br />
-                <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-                    <div style={{ margin: 'auto' }}>
-                        <Row>
-                            <Col className="align-middle">
-                                <h5>Top 10 Occupations by</h5>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <h6>
-                                <TopTenWidget
-                                    joined
-                                    primaryTable={primaryTable}
-                                    secondaryTable="occupations_major"
-                                    id={id}
-                                    total_employment={data.total_employment}
-                                />
-                            </h6>
-                        </Row>
-                    </div>
-                    {/* <BootstrapTable
-            hover
-            keyField='type'
-            data={ data.occ.rows }
-            columns={ data.occ.columns }
-          /> */}
-                </Row>
+
+                <TopTenWidget
+                    joined
+                    title="Top 10 Occupations by"
+                    primaryTable={primaryTable}
+                    secondaryTable="occupations_major"
+                    id={id}
+                    total_employment={data.total_employment}
+                />
             </Card>
         );
     }

@@ -48,35 +48,6 @@ class IndustryInstancePage extends Component {
         });
     };
 
-    renderGraphs = () => {
-        const { tablename, id } = this.props.match.params;
-
-        const { industryData } = this.state;
-
-        if (industryData) {
-            return (
-                <div style={{ margin: 'auto' }}>
-                    <Row>
-                        <Col className="align-middle">
-                            <h1>Top 10 Occupations by</h1>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <h6>
-                            <TopTenWidget
-                                joined
-                                primaryTable={tablename}
-                                secondaryTable="occupations_major"
-                                id={id}
-                                total_employment={industryData.total_employment}
-                            />
-                        </h6>
-                    </Row>
-                </div>
-            );
-        }
-    };
-
     renderDetailedInstanceList = () => {
         const { tablename } = this.props.match.params;
         const { industryData } = this.state;
@@ -120,8 +91,16 @@ class IndustryInstancePage extends Component {
                             <br />
                             {industryData ? <WageSalaryTable data={industryData} /> : null}
                             <br />
-
-                            <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
+                            {industryData ? (
+                                <TopTenWidget
+                                    joined
+                                    title="Top 10 Occupations by"
+                                    primaryTable={tablename}
+                                    secondaryTable="occupations_major"
+                                    id={id}
+                                    total_employment={industryData.total_employment}
+                                />
+                            ) : null}
                         </Card>
                     </Col>
                 </Row>

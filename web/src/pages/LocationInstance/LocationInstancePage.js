@@ -43,7 +43,7 @@ class LocationInstancePage extends Component {
         //   });
         // const response = await axios.get(`${url}`);
 
-        const data = await fetchInstanceData('states', geographyProps.ID);
+        const stateData = await fetchInstanceData('states', geographyProps.ID);
 
         // const proxyurl = 'https://cors-anywhere.herokuapp.com/';
         // const url = 'http://www.iodb.info/api/instance/states/'+geographyProps.ID;
@@ -54,61 +54,6 @@ class LocationInstancePage extends Component {
 
         // console.log(response);
         // console.log(data);
-        const stateData = {
-            title: data.title,
-            total_population: data.total_population,
-            total_employment: data.total_employment,
-            columns: [
-                {
-                    dataField: 'type',
-                    text: 'Type'
-                },
-                {
-                    dataField: 'mean',
-                    text: 'Mean'
-                },
-                {
-                    dataField: 'median',
-                    text: 'Median'
-                },
-                {
-                    dataField: '10',
-                    text: '10th Percentile'
-                },
-                {
-                    dataField: '25',
-                    text: '25th Percentile'
-                },
-                {
-                    dataField: '75',
-                    text: '75th Percentile'
-                },
-                {
-                    dataField: '90',
-                    text: '90th Percentile'
-                }
-            ],
-            rows: [
-                {
-                    type: 'Annual Salary',
-                    mean: data.annual_mean,
-                    median: data.annual_median,
-                    '10': data.annual_10,
-                    '25': data.annual_25,
-                    '75': data.annual_75,
-                    '90': data.annual_90
-                },
-                {
-                    type: 'Hourly Wage',
-                    mean: data.hourly_mean,
-                    median: data.hourly_median,
-                    '10': data.hourly_10,
-                    '25': data.hourly_25,
-                    '75': data.hourly_75,
-                    '90': data.hourly_90
-                }
-            ]
-        };
 
         this.setState({
             state: {
@@ -127,7 +72,7 @@ class LocationInstancePage extends Component {
     async handleMSAClick(geographyProps) {
         const stateInitial = geographyProps.NAME.substring(geographyProps.NAME.length - 2);
 
-        const data = await fetchInstanceData('metro_areas', geographyProps.GEOID);
+        const MSAData = await fetchInstanceData('metro_areas', geographyProps.GEOID);
         // const proxyurl = 'https://cors-anywhere.herokuapp.com/';
         // const url = 'http://www.iodb.info/api/instance/metro_areas/'+geographyProps.GEOID;
 
@@ -135,65 +80,9 @@ class LocationInstancePage extends Component {
         // const response = await axios.get(`${proxyurl}${url}`);
         // const data = response.data;
 
-        if (Object.keys(data).length === 0) {
+        if (Object.keys(MSAData).length === 0) {
             return null;
         }
-
-        const MSAData = {
-            title: data.title,
-            total_population: data.total_population,
-            total_employment: data.total_employment,
-            columns: [
-                {
-                    dataField: 'type',
-                    text: 'Type'
-                },
-                {
-                    dataField: 'mean',
-                    text: 'Mean'
-                },
-                {
-                    dataField: 'median',
-                    text: 'Median'
-                },
-                {
-                    dataField: '10',
-                    text: '10th Percentile'
-                },
-                {
-                    dataField: '25',
-                    text: '25th Percentile'
-                },
-                {
-                    dataField: '75',
-                    text: '75th Percentile'
-                },
-                {
-                    dataField: '90',
-                    text: '90th Percentile'
-                }
-            ],
-            rows: [
-                {
-                    type: 'Annual Salary',
-                    mean: data.annual_mean,
-                    median: data.annual_median,
-                    '10': data.annual_10,
-                    '25': data.annual_25,
-                    '75': data.annual_75,
-                    '90': data.annual_90
-                },
-                {
-                    type: 'Hourly Wage',
-                    mean: data.hourly_mean,
-                    median: data.hourly_median,
-                    '10': data.hourly_10,
-                    '25': data.hourly_25,
-                    '75': data.hourly_75,
-                    '90': data.hourly_90
-                }
-            ]
-        };
 
         // console.log(response);
         // console.log(data);

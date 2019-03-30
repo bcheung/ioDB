@@ -168,40 +168,25 @@ class OccupationInstancePage extends Component {
         if (occupationData) {
             return (
                 <div style={{ margin: 'auto' }}>
-                    <Row>
-                        <Col className="align-middle">
-                            <h1>Top 10 Industries by</h1>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <h6>
-                            <TopTenWidget
-                                joined
-                                primaryTable={tablename}
-                                secondaryTable="industries_3d"
-                                id={id}
-                                total_employment={occupationData.total_employment}
-                            />
-                        </h6>
-                    </Row>
-                    <Row>
-                        <Col className="align-middle">
-                            <h1>Top 10 States by</h1>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <h6>
-                            <TopTenWidget
-                                joined
-                                // population
-                                primaryTable={tablename}
-                                secondaryTable="states"
-                                id={id}
-                                total_employment={occupationData.total_employment}
-                                // total_population={occupationData.total_population}
-                            />
-                        </h6>
-                    </Row>
+                    <TopTenWidget
+                        joined
+                        title="Top 10 Industries by"
+                        primaryTable={tablename}
+                        secondaryTable="industries_3d"
+                        id={id}
+                        total_employment={occupationData.total_employment}
+                    />
+
+                    <TopTenWidget
+                        joined
+                        title="Top 10 States by"
+                        // population
+                        primaryTable={tablename}
+                        secondaryTable="states"
+                        id={id}
+                        total_employment={occupationData.total_employment}
+                        // total_population={occupationData.total_population}
+                    />
                 </div>
             );
         }
