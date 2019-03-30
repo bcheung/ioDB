@@ -181,7 +181,7 @@ class OccupationInstancePage extends Component {
                 <div style={{ margin: 'auto' }}>
                     <Row>
                         <Col className="align-middle">
-                            <h5>Top 10 Industries by</h5>
+                            <h1>Top 10 Industries by</h1>
                         </Col>
                     </Row>
                     <Row>
@@ -197,7 +197,7 @@ class OccupationInstancePage extends Component {
                     </Row>
                     <Row>
                         <Col className="align-middle">
-                            <h5>Top 10 States by</h5>
+                            <h1>Top 10 States by</h1>
                         </Col>
                     </Row>
                     <Row>
@@ -263,7 +263,7 @@ class OccupationInstancePage extends Component {
                             <br />
 
                             <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
-                            <Row>{this.renderLocationData()}</Row>
+                            <Row>{occupationData ? <h1>Where are {occupationData.title} located?</h1> : null}</Row>
                             <div ref={el => (this.mapContainer = el)} />
                             <Row>
                                 <br />

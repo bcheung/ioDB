@@ -7,7 +7,7 @@ const WageSalaryTable = ({ data }) => {
 
     return (
         <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-            <h5 style={{ margin: 'auto' }}>Wage and Salary Statistics</h5>
+            <h1 style={{ margin: 'auto' }}>Wage and Salary Statistics</h1>
             <BootstrapTable hover keyField="type" data={tableData.rows} columns={tableData.columns} />
         </Row>
     );
