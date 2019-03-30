@@ -70,7 +70,7 @@ class App extends Component {
                         setSelectedModel={this.setSelectedModel}
                     />
 
-                    <TopTenWidget tablename1={selectedModel.tablename} />
+                    {/* <TopTenWidget tablename1={selectedModel.tablename} /> */}
 
                     <Route exact path="/" component={HomePage} />
                     <Route path="/about" component={AboutPage} />

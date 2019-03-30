@@ -6,7 +6,7 @@ const joinedTablenames = {
     industries_3d: 'ind_3d',
     industries_4d: 'ind_4d',
     states: 'state',
-    metro_areas: 'metro_areas'
+    metro_areas: 'metro_area'
 };
 
 export function getJoinedTablename(tablename1, tablename2) {
