@@ -6,7 +6,7 @@ class Ind3dOccMajorModel(db.Model):
     __tablename__ = 'ind_3d_occ_major'
     industry_3d_id = db.Column(db.String(), db.ForeignKey(
         'industries_3d.id'), primary_key=True)
-    occupations_major_id = db.Column(db.String(), db.ForeignKey(
+    occupation_major_id = db.Column(db.String(), db.ForeignKey(
         'occupations_major.id'), primary_key=True)
 
     total_employment = db.Column(db.Integer)
