@@ -150,13 +150,15 @@ class TopTenWidget extends Component {
                     />
                 }
             </div>
+
         );
     }
 }
 
 const styles = {
-    dropDown: {
-        width: 250
+    containerStyle: {
+        width: 250,
+        margin: 30
     }
 };
 
