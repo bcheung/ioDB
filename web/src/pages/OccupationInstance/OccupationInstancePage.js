@@ -160,14 +160,6 @@ class OccupationInstancePage extends Component {
         });
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
-        // console.log('getDerivedStateFromProps', nextProps);
-        // if (prevState.occupationData !== this.state.occupationData) {
-        //     return { tablename: nextProps.match.params.tablename, id: nextProps.match.params.id };
-        // }
-        // return null;
-    }
-
     shouldComponentUpdate(nextProps, nextState) {
         if (
             nextState.occupationData !== this.state.occupationData ||

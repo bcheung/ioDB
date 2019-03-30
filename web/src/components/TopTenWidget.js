@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import Select from 'react-select';
+import { Bar, Doughnut } from 'react-chartjs-2';
 import { fetchTopTenData, fetchJoinedTopTenData } from '../fetchAPI';
 import { stats, statsWithPop, graphType } from '../constants';
-import { Bar, Doughnut } from 'react-chartjs-2';
 
 let labelArray = [];
 let dataArray = [];
@@ -11,7 +11,6 @@ let instanceData = {};
 let isPieGraph = false;
 
 class TopTenWidget extends Component {
-
     state = {
         selectedColumn: stats[0],
         data: null
@@ -19,12 +18,14 @@ class TopTenWidget extends Component {
 
     componentDidMount() {
         this.fetchStats();
-    };
+    }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevProps.tablename1 !== this.props.tablename1
-            || prevProps.id !== this.props.id
-            || prevState.selectedColumn !== this.state.selectedColumn) {
+        if (
+            prevProps.tablename1 !== this.props.tablename1 ||
+            prevProps.id !== this.props.id ||
+            prevState.selectedColumn !== this.state.selectedColumn
+        ) {
             console.log('componentDidUpdate', prevProps.tablename1, this.props.tablename1);
             this.fetchStats();
         }
@@ -38,14 +39,14 @@ class TopTenWidget extends Component {
         data.forEach(instance => {
             labelArray.push(instance[tablename2].title);
             dataArray.push(instance[selectedColumn.value]);
-            if(isPieGraph) {
+            if (isPieGraph) {
                 sum += instance[selectedColumn.value];
             }
         });
 
-        if(isPieGraph) {
-            labelArray.push("Other");
-            dataArray.push(total_employment-sum);
+        if (isPieGraph) {
+            labelArray.push('Other');
+            dataArray.push(total_employment - sum);
             instanceData = {
                 labels: labelArray,
                 datasets: [
@@ -62,12 +63,12 @@ class TopTenWidget extends Component {
                             'rgba(160,155,229,1)',
                             'rgba(140,237,167,1)',
                             'rgba(252,246,189,1)',
-                            'rgba(57,122,215,1)',
+                            'rgba(57,122,215,1)'
                         ],
                         data: dataArray
                     }
                 ]
-            }
+            };
         } else {
             instanceData = {
                 labels: labelArray,
@@ -82,11 +83,9 @@ class TopTenWidget extends Component {
                         data: dataArray
                     }
                 ]
-            }
+            };
         }
-
-
-    }
+    };
 
     handleColumnChange = selectedColumn => {
         console.log('handleColumnChange', selectedColumn);
@@ -137,20 +136,12 @@ class TopTenWidget extends Component {
                         isSearchable={false}
                     />
                 </div>
-                {(isPieGraph) ? 
-                    <Doughnut
-                        data={instanceData}
-                        width={600}
-                        height={600}
-                    /> :
-                    <Bar
-                        data={instanceData}
-                        width={900}
-                        height={500}
-                    />
-                }
+                {isPieGraph ? (
+                    <Doughnut data={instanceData} width={600} height={600} />
+                ) : (
+                    <Bar data={instanceData} width={900} height={500} />
+                )}
             </div>
-
         );
     }
 }
