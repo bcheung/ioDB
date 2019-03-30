@@ -161,14 +161,19 @@ class OccupationInstancePage extends Component {
     };
 
     renderOccupation = () => {
+        const { tablename } = this.props.match.params;
         const { occupationData } = this.state;
         if (occupationData) {
             return (
                 <Jumbotron>
                     <h1 className="display-3">{occupationData.title}</h1>
                     <p>Occupation Code: {occupationData.id}</p>
-                    <hr className="my-2" />
-                    <p className="lead">Description:{occupationData.description}</p>
+                    {isMajorModel[tablename] ? null : (
+                        <div>
+                            <hr className="my-2" />
+                            <p className="lead">Description: {occupationData.description}</p>
+                        </div>
+                    )}
                 </Jumbotron>
             );
         }
@@ -328,9 +333,12 @@ class OccupationInstancePage extends Component {
 
                     <Col>
                         <Row>{this.renderOccupation()}</Row>
-
+                        <br />
                         <Card className="container wage-data">
+                            <br />
                             <Row>{this.renderOccupationData()}</Row>
+                            <br />
+
                             <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
                             <Row>{this.renderLocationData()}</Row>
                             <div ref={el => (this.mapContainer = el)} />
