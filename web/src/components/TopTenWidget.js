@@ -36,10 +36,12 @@ class TopTenWidget extends Component {
             const { tablename2, keyModel, id } = this.props;
             fetchJoinedTopTenData(tablename1, tablename2, keyModel, id, selectedColumn.value).then(data => {
                 this.setState({ data });
+                console.log(data);
             });
         } else {
             fetchTopTenData(tablename1, selectedColumn.value).then(data => {
                 this.setState({ data });
+                console.log(data);
             });
         }
     }
@@ -52,7 +54,7 @@ class TopTenWidget extends Component {
             options = statsWithPop;
         }
         return (
-            <div style={styles.dropDown}>
+            <Container style={styles.containerStyle}>
                 <Select
                     className="dropDown"
                     options={options}
@@ -61,14 +63,15 @@ class TopTenWidget extends Component {
                     onChange={this.handleColumnChange}
                     isSearchable={false}
                 />
-            </div>
+            </Container>
         );
     }
 }
 
 const styles = {
-    dropDown: {
-        width: 250
+    containerStyle: {
+        width: 250,
+        margin: 30
     }
 };
 

@@ -9,6 +9,7 @@ import LocationInstance from '../LocationInstance/LocationInstance';
 import ExampleInstance from '../ExampleInstance';
 import './App.css';
 import { RoutingSearchBar, TopTenWidget } from '../../components';
+import { Container } from 'react-bootstrap';
 
 const modelOptions = [
     { title: 'Industries', tablename: 'industries_3d', route: 'industry' },
@@ -51,28 +52,22 @@ class App extends Component {
                                 <NavLink href="#/about">About Us</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/industry">Industry</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href="#/occupation">Occupation</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href="#/location">Location</NavLink>
+                                <NavLink href="#/location">Explore</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink href="#/example/industries_3d/113000">Example</NavLink>
                             </NavItem>
                         </Nav>
                     </Navbar>
-                    <RoutingSearchBar
-                        modelOptions={modelOptions}
-                        selectedModel={selectedModel}
-                        setSelectedModel={this.setSelectedModel}
-                    />
+                    <Container>
+                        <RoutingSearchBar
+                            modelOptions={modelOptions}
+                            selectedModel={selectedModel}
+                            setSelectedModel={this.setSelectedModel}
+                        />
+                    </Container>
 
-                    <TopTenWidget tablename1={selectedModel.tablename} />
-
-                    <Route exact path="/" component={HomePage} />
+                    <Route exact path="/" render={props => <HomePage tablename={selectedModel.tablename} />} />
                     <Route path="/about" component={AboutPage} />
 
                     <Route path="/example/:tablename/:id" component={ExampleInstance} />
