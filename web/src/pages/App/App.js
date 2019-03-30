@@ -59,6 +59,7 @@ class App extends Component {
                             </NavItem>
                         </Nav>
                     </Navbar>
+
                     <Container>
                         <RoutingSearchBar
                             modelOptions={modelOptions}
