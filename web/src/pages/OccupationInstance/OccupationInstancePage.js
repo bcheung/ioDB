@@ -105,27 +105,37 @@ class OccupationInstancePage extends Component {
                 closeButton: false,
                 closeOnClick: false
             });
+            function checkEmpty(info) {
+                return info || 'No data';
+            }
 
-            // map.on('mousemove', function(e) {
-            //     map.getCanvas().style.cursor = 'pointer';
-            //     const position = {
-            //         lon: e.lngLat.lng,
-            //         lat: e.lngLat.lat
-            //     };
-            //     const mappopup = map.queryRenderedFeatures(e.point, {
-            //         layers: ['heat-layer']
-            //     });
-            //     // if()
-            //     popup
-            //         .setLngLat(position)
-            //         .setHTML(mappopup[0].properties.STATE_NAME)
-            //         .addTo(map);
-            //     console.log('popup data', mappopup);
-            // });
-            // map.on('mouseleave', function() {
-            //     map.getCanvas().style.cursor = '';
-            //     popup.remove();
-            // });
+            map.on('mousemove', function(e) {
+                map.getCanvas().style.cursor = 'pointer';
+                const position = {
+                    lon: e.lngLat.lng,
+                    lat: e.lngLat.lat
+                };
+                const mappopup = map.queryRenderedFeatures(e.point, {
+                    layers: ['heat-layer']
+                });
+                // const { locationData } = this.state;
+                if (mappopup.length > 0) {
+                    const stateName = mappopup[0].properties.STATE_NAME;
+                    popup
+                        .setLngLat(position)
+                        .setHTML(stateName)
+                        .addTo(map);
+                } else {
+                    popup
+                        .setLngLat(position)
+                        .setHTML('No data')
+                        .addTo(map);
+                }
+            });
+            map.on('mouseleave', function() {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            });
             this.setState({ mapLoaded: true });
         });
     }
@@ -349,9 +359,11 @@ class OccupationInstancePage extends Component {
         return (
             <Container>
                 <Row>
-                    <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>
-                        Show Detailed Occupations List
-                    </Button>
+                    <Row>
+                        <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>
+                            Show Detailed Occupations List
+                        </Button>
+                    </Row>
                     <Collapse isOpen={collapse}>
                         <div>{isMajorModel[tablename] ? this.renderDetailedInstanceList() : null}</div>
                     </Collapse>
