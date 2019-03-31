@@ -205,7 +205,6 @@ class OccupationInstancePage extends Component {
         this.setState(state => ({ collapse: !state.collapse }));
     }
 
-<<<<<<< HEAD
     renderOccupation = () => {
         const { tablename } = this.props.match.params;
         const { occupationData } = this.state;
@@ -302,8 +301,6 @@ class OccupationInstancePage extends Component {
         }
     };
 
-=======
->>>>>>> 3325d88c0f03dbb58a35a989dac8378e956caf76
     renderGraphs = () => {
         const { tablename, id } = this.props.match.params;
 
@@ -362,14 +359,19 @@ class OccupationInstancePage extends Component {
         return (
             <Container>
                 <Row>
-                    <Row>
-                        <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>
-                            Show Detailed Occupations List
-                        </Button>
-                    </Row>
-                    <Collapse isOpen={collapse}>
-                        <div>{isMajorModel[tablename] ? this.renderDetailedInstanceList() : null}</div>
-                    </Collapse>
+                    <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>
+                        Show Detailed Occupations List
+                    </Button>
+                    <Container>
+                        <br />
+                        <Nav light expand="md" sticky="side" className="shadow-sm py-0 border-dark border-bottom">
+                            <div className="sidebar-sticky">
+                                <Collapse isOpen={collapse}>
+                                    {isMajorModel[tablename] ? this.renderDetailedInstanceList() : null}
+                                </Collapse>
+                            </div>
+                        </Nav>
+                    </Container>
                     <Col>
                         <Row>
                             {occupationData ? (
@@ -383,11 +385,7 @@ class OccupationInstancePage extends Component {
                         <br />
                         <Card className="container wage-data">
                             <br />
-<<<<<<< HEAD
                             <Row className="align-items-md-center">{this.renderOccupationData()}</Row>
-=======
-                            {occupationData ? <WageSalaryTable data={occupationData} /> : null}
->>>>>>> 3325d88c0f03dbb58a35a989dac8378e956caf76
                             <br />
 
                             <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
