@@ -44,7 +44,7 @@ class AboutPage extends Component {
             bio:
                 'Cooper is in his fourth year at the University of Texas at Austin studying Electrical and Computer Engineering with a focus in Software Engineering and Design. With an interest in business and a desire to one day open his own gym he plans on working in the industry for a few years before pursuing his MBA. In his spare time, you can find him in the gym or out on the river kayaking.',
             responsibilities:
-                'Develop data scraper using Python, create 3 static web pages using React.js and deploy onto GCP, configure backend framework for data using Python.'
+                'Develop data scraper using Python, create 3 static web pages using React.js and deploy onto GCP, configure backend framework for data using Python. Wrote initial scraper to populate database with information for many instances of each model. Worked with Brian to design REST API to effectively query for the required data. Worked with Brian to implement a search bar component to be used for search and navigation on the home page.'
         },
         bcheung: {
             name: 'Brian Cheung',
@@ -54,7 +54,7 @@ class AboutPage extends Component {
             bio:
                 'Brian is a second year student at the University of Texas at Austin. He is currently pursuing an Electrical and Computer Engineering degree with a focus in software engineering. At the moment, Brian is looking to gain some industry experience in order to narrow down his area of interest in software engineering. Some of Brian’s hobbies include learning piano, playing basketball, weightlifting, and of course, eating.',
             responsibilities:
-                'Set up frontend and backend infrastructure and deploy onto GCP, configure dynamic routing, create 3 static main web pages for Industry, Location, and Occupation using React.js.'
+                'Set up frontend and backend infrastructure and deploy onto GCP, configure dynamic routing, create 3 static main web pages for Industry, Location, and Occupation using React.js. Configured backend on Google cloud Platform. Analyzed CSV files to design and implement the PostgreSQL database. Updated Cooper’s scraper to populate the database with SQLAlchemy. Designed and implemented the REST API to effectively query the data. Designed general layout with Sean to determine what data was needed for each page. Created frontend fetch API library. Created reusable components to display general information, wage and salary statistics, search bars and dropdown menus. Implemented the home page with search bar to display top ten instances of each model. Helped Brooke implement the heat maps with the data from the REST API. Helped Johnny implement the Industry instance page. Designed and created the router to link all the pages together.'
         },
         brookepaxman: {
             name: 'Brooke Paxman',
@@ -64,7 +64,7 @@ class AboutPage extends Component {
             bio:
                 'Brooke is in her third year at the University of Texas at Austin studying Electrical and Computer Engineering. She also has a secondary focus in Psychology and is interested in learning about how the psychology of human behavior and cognition overlaps with software engineering. She enjoys riding her bike around Austin and soaking up the sun outdoors.',
             responsibilities:
-                'Create About page with GitHub stats derived dynamically from the GitHub API and deploy to GCP, create issues and post to issue board on GitHub.'
+                'Create About page with GitHub stats derived dynamically from the GitHub API and deploy to GCP, create issues and post to issue board on GitHub. Designed UI for all occupation instances including a choropleth map of location data, bar graphs with wage data, and collapsible navigation bar for detailed occupation instances. Populated all data with API requests.'
         },
         'wang-sz': {
             name: 'Sean Wang',
@@ -74,7 +74,7 @@ class AboutPage extends Component {
             bio:
                 'Sean is a second year Electrical and Computer Engineering student at the University of Texas at Austin. He has completed a minor in business, but would like to pursue a career and gain experience in software engineering before making a decision on obtaining a higher degree, such as an MBA. In his free time, he enjoys playing piano or taking a nice and relaxing nap.',
             responsibilities:
-                'Create 3 static web pages for 3 different occupation instances, create issues and post to issue board on GitHub. Write tests to make sure the links direct to the correct pages.'
+                'Create 3 static web pages for 3 different occupation instances, create issues and post to issue board on GitHub. Write tests to make sure the links direct to the correct pages. Designed general UI layout with Brian, determining what data to show and how to show it graphically. Designed locations page and implemented an interactive map for states and metropolitan areas and dynamically showing data based on selected areas. Put together reusable components for general wage statistics and for a “Top 10” graphical ranking.'
         },
         dterral504: {
             name: 'David Terral',
@@ -84,7 +84,7 @@ class AboutPage extends Component {
             bio:
                 'David is a third year student at the University of Texas from New Orleans, LA. He is pursuing a degree in Electrical and Computer Engineering with a focus in Software Engineering and Design. His main interests are application development as well as database management and analysis. In his free time he plays and watches football and soccer. His favorite teams are the New Orleans Saints and Arsenal.',
             responsibilities:
-                'Create 3 static pages with location data using React.js and deploy onto GCP, configure backend framework for data using Python.'
+                'Create 3 static pages with location data using React.js and deploy onto GCP, configure backend framework for data using Python. Added styling and layout to the About page and overall theme of the app with Reactstrap. Implemented the navigation bar. '
         },
         jmgabriel96: {
             name: 'John Gabriel',
@@ -93,7 +93,8 @@ class AboutPage extends Component {
             major: 'Electrical & Computer Eng.',
             bio:
                 'John is studying Electrical and Computer Engineering with a focus in Software Engineering and Design. His interests lie in startups and his plans after graduation is to start his own company.',
-            responsibilities: 'Create 3 static web pages for 3 different industry instances and deploy onto GCP.'
+            responsibilities:
+                'Create 3 static web pages for 3 different industry instances and deploy onto GCP.  Implemented Industry instance page. Researched React UI libraries.'
         }
     };
 
