@@ -205,6 +205,7 @@ class OccupationInstancePage extends Component {
         this.setState(state => ({ collapse: !state.collapse }));
     }
 
+<<<<<<< HEAD
     renderOccupation = () => {
         const { tablename } = this.props.match.params;
         const { occupationData } = this.state;
@@ -301,6 +302,8 @@ class OccupationInstancePage extends Component {
         }
     };
 
+=======
+>>>>>>> 3325d88c0f03dbb58a35a989dac8378e956caf76
     renderGraphs = () => {
         const { tablename, id } = this.props.match.params;
 
@@ -380,7 +383,11 @@ class OccupationInstancePage extends Component {
                         <br />
                         <Card className="container wage-data">
                             <br />
+<<<<<<< HEAD
                             <Row className="align-items-md-center">{this.renderOccupationData()}</Row>
+=======
+                            {occupationData ? <WageSalaryTable data={occupationData} /> : null}
+>>>>>>> 3325d88c0f03dbb58a35a989dac8378e956caf76
                             <br />
 
                             <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>

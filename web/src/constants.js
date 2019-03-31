@@ -70,16 +70,16 @@ const joinedTablePrimaryKeys = {
 export const stats = [
     { label: 'Hourly Wage Median', value: 'hourly_median' },
     { label: 'Hourly Wage Mean', value: 'hourly_mean' },
-    { label: 'Annual Wage Median', value: 'annual_median' },
-    { label: 'Annual Wage Mean', value: 'annual_mean' },
+    { label: 'Annual Salary Median', value: 'annual_median' },
+    { label: 'Annual Salary Mean', value: 'annual_mean' },
     { label: 'Employment', value: 'total_employment' }
 ];
 
 export const statsWithPop = [
     { label: 'Hourly Wage Median', value: 'hourly_median' },
     { label: 'Hourly Wage Mean', value: 'hourly_mean' },
-    { label: 'Annual Wage Median', value: 'annual_median' },
-    { label: 'Annual Wage Mean', value: 'annual_mean' },
+    { label: 'Annual Salary Median', value: 'annual_median' },
+    { label: 'Annual Salary Mean', value: 'annual_mean' },
     { label: 'Employment', value: 'total_employment' },
     { label: 'Population', value: 'total_population' }
 ];
@@ -87,8 +87,8 @@ export const statsWithPop = [
 export const graphType = {
     hourly_median: { label: 'Hourly Wage Median', graph: 'bar' },
     hourly_mean: { label: 'Hourly Wage Mean', graph: 'bar' },
-    annual_median: { label: 'Annual Wage Median', graph: 'bar' },
-    annual_mean: { label: 'Annual Wage Mean', graph: 'bar' },
+    annual_median: { label: 'Annual Salary Median', graph: 'bar' },
+    annual_mean: { label: 'Annual Salary Mean', graph: 'bar' },
     total_employment: { label: 'Employment', graph: 'pie' },
     total_population: { label: 'Population', graph: 'pie' }
 };
