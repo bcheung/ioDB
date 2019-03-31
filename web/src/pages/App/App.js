@@ -5,8 +5,7 @@ import HomePage from '../Home/HomePage';
 import AboutPage from '../About/AboutPage';
 import IndustryInstancePage from '../IndustryInstance/IndustryInstancePage';
 import OccupationInstancePage from '../OccupationInstance/OccupationInstancePage';
-import LocationInstance from '../LocationInstance/LocationInstance';
-import ExampleInstance from '../ExampleInstance';
+import LocationInstancePage from '../LocationInstance/LocationInstancePage';
 import './App.css';
 import { RoutingSearchBar, TopTenWidget } from '../../components';
 import { modelOptions } from '../../constants';
@@ -64,8 +63,8 @@ class App extends Component {
                         <Route path="/industry/:tablename/:id" component={IndustryInstancePage} />
 
                         <Route path="/occupation/:tablename/:id" component={OccupationInstancePage} />
-                        <Route path="/location/:tablename/:id" component={LocationInstance} />
-                        <Route path="/location" component={LocationInstance} />
+                        <Route path="/location/:tablename/:id" component={LocationInstancePage} />
+                        <Route path="/location" component={LocationInstancePage} />
                     </Switch>
                 </div>
             </Router>

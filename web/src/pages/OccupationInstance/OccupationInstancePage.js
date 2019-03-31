@@ -6,7 +6,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { fetchInstanceData, fetchJoinedInstanceData } from '../../fetchAPI';
 import './occupation-instance-page.css';
 import { isMajorModel } from '../../constants';
-import { DetailedInstanceList, TopTenWidget } from '../../components';
+import { DetailedInstanceList, TopTenWidget, WageSalaryTable, InstanceInfo } from '../../components';
 
 mapboxgl.accessToken =
     'pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw';
@@ -101,6 +101,31 @@ class OccupationInstancePage extends Component {
                 },
                 'waterway-label'
             );
+            const popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            });
+
+            // map.on('mousemove', function(e) {
+            //     map.getCanvas().style.cursor = 'pointer';
+            //     const position = {
+            //         lon: e.lngLat.lng,
+            //         lat: e.lngLat.lat
+            //     };
+            //     const mappopup = map.queryRenderedFeatures(e.point, {
+            //         layers: ['heat-layer']
+            //     });
+            //     // if()
+            //     popup
+            //         .setLngLat(position)
+            //         .setHTML(mappopup[0].properties.STATE_NAME)
+            //         .addTo(map);
+            //     console.log('popup data', mappopup);
+            // });
+            // map.on('mouseleave', function() {
+            //     map.getCanvas().style.cursor = '';
+            //     popup.remove();
+            // });
             this.setState({ mapLoaded: true });
         });
     }
@@ -274,40 +299,25 @@ class OccupationInstancePage extends Component {
         if (occupationData) {
             return (
                 <div style={{ margin: 'auto' }}>
-                    <Row>
-                        <Col className="align-middle">
-                            <h5>Top 10 Industries by</h5>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <h6>
-                            <TopTenWidget
-                                joined
-                                primaryTable={tablename}
-                                secondaryTable="industries_3d"
-                                id={id}
-                                total_employment={occupationData.total_employment}
-                            />
-                        </h6>
-                    </Row>
-                    <Row>
-                        <Col className="align-middle">
-                            <h5>Top 10 States by</h5>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <h6>
-                            <TopTenWidget
-                                joined
-                                // population
-                                primaryTable={tablename}
-                                secondaryTable="states"
-                                id={id}
-                                total_employment={occupationData.total_employment}
-                                // total_population={occupationData.total_population}
-                            />
-                        </h6>
-                    </Row>
+                    <TopTenWidget
+                        joined
+                        title="Top 10 Industries by"
+                        primaryTable={tablename}
+                        secondaryTable="industries_3d"
+                        id={id}
+                        total_employment={occupationData.total_employment}
+                    />
+
+                    <TopTenWidget
+                        joined
+                        title="Top 10 States by"
+                        // population
+                        primaryTable={tablename}
+                        secondaryTable="states"
+                        id={id}
+                        total_employment={occupationData.total_employment}
+                        // total_population={occupationData.total_population}
+                    />
                 </div>
             );
         }
@@ -346,7 +356,15 @@ class OccupationInstancePage extends Component {
                         <div>{isMajorModel[tablename] ? this.renderDetailedInstanceList() : null}</div>
                     </Collapse>
                     <Col>
-                        <Row>{this.renderOccupation()}</Row>
+                        <Row>
+                            {occupationData ? (
+                                <InstanceInfo
+                                    title={occupationData.title}
+                                    idLabel="Occupation Code"
+                                    id={occupationData.id}
+                                />
+                            ) : null}
+                        </Row>
                         <br />
                         <Card className="container wage-data">
                             <br />
@@ -354,7 +372,7 @@ class OccupationInstancePage extends Component {
                             <br />
 
                             <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
-                            <Row>{this.renderLocationData()}</Row>
+                            <Row>{occupationData ? <h1>Where are {occupationData.title} located?</h1> : null}</Row>
                             <div ref={el => (this.mapContainer = el)} />
                             <Row>
                                 <br />
