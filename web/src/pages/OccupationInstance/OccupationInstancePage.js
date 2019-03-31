@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Bar } from 'react-chartjs-2';
-import { Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
+import { Button, Collapse, Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { fetchInstanceData, fetchJoinedInstanceData } from '../../fetchAPI';
 import './occupation-instance-page.css';
@@ -49,13 +49,17 @@ function createHeatMapping(locationData) {
 let map;
 
 class OccupationInstancePage extends Component {
-    state = {
-        occupationData: null,
-        industryData: null,
-        locationData: null,
-        mapLoaded: false,
-        isDataLoaded: false
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            occupationData: null,
+            industryData: null,
+            locationData: null,
+            mapLoaded: false,
+            isDataLoaded: false,
+            collapse: false
+        };
+    }
 
     componentDidMount() {
         const { tablename, id } = this.props.match.params;
@@ -96,6 +100,41 @@ class OccupationInstancePage extends Component {
                 },
                 'waterway-label'
             );
+            const popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
+            });
+            function checkEmpty(info) {
+                return info || 'No data';
+            }
+
+            map.on('mousemove', function(e) {
+                map.getCanvas().style.cursor = 'pointer';
+                const position = {
+                    lon: e.lngLat.lng,
+                    lat: e.lngLat.lat
+                };
+                const mappopup = map.queryRenderedFeatures(e.point, {
+                    layers: ['heat-layer']
+                });
+                // const { locationData } = this.state;
+                if (mappopup.length > 0) {
+                    const stateName = mappopup[0].properties.STATE_NAME;
+                    popup
+                        .setLngLat(position)
+                        .setHTML(stateName)
+                        .addTo(map);
+                } else {
+                    popup
+                        .setLngLat(position)
+                        .setHTML('No data')
+                        .addTo(map);
+                }
+            });
+            map.on('mouseleave', function() {
+                map.getCanvas().style.cursor = '';
+                popup.remove();
+            });
             this.setState({ mapLoaded: true });
         });
     }
@@ -160,6 +199,11 @@ class OccupationInstancePage extends Component {
         });
     };
 
+    // Handles toggle button for collapsible detailed occupations list
+    toggle = () => {
+        this.setState(state => ({ collapse: !state.collapse }));
+    };
+
     renderGraphs = () => {
         const { tablename, id } = this.props.match.params;
 
@@ -204,7 +248,7 @@ class OccupationInstancePage extends Component {
     render() {
         console.log('render');
         const { tablename, id } = this.props.match.params;
-        const { occupationData, locationData } = this.state;
+        const { occupationData, locationData, collapse } = this.state;
 
         const renderLegend = (stop, i) => (
             <div key={i} className="txt-s">
@@ -218,8 +262,19 @@ class OccupationInstancePage extends Component {
         return (
             <Container>
                 <Row>
-                    {isMajorModel[tablename] ? this.renderDetailedInstanceList() : null}
-
+                    <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>
+                        Show Detailed Occupations List
+                    </Button>
+                    <Container>
+                        <br />
+                        <Nav light expand="md" sticky="side" className="shadow-sm py-0">
+                            <div className="sidebar-sticky">
+                                <Collapse isOpen={collapse}>
+                                    {isMajorModel[tablename] ? this.renderDetailedInstanceList() : null}
+                                </Collapse>
+                            </div>
+                        </Nav>
+                    </Container>
                     <Col>
                         <Row>
                             {occupationData ? (
@@ -233,9 +288,7 @@ class OccupationInstancePage extends Component {
                         <br />
                         <Card className="container wage-data">
                             <br />
-                            {occupationData ? <WageSalaryTable data={occupationData} /> : null}
-                            <br />
-
+                            {occupationData ? <WageSalaryTable data={occupationData} /> : null} <br />
                             <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
                             <Row>{occupationData ? <h1>Where are {occupationData.title} located?</h1> : null}</Row>
                             <div ref={el => (this.mapContainer = el)} />
