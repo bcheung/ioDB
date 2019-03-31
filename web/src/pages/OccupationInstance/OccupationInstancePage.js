@@ -165,6 +165,11 @@ class OccupationInstancePage extends Component {
         });
     };
 
+    // Handles toggle button for collapsible detailed occupations list
+    toggle() {
+        this.setState(state => ({ collapse: !state.collapse }));
+    }
+
     renderGraphs = () => {
         const { tablename, id } = this.props.match.params;
 
