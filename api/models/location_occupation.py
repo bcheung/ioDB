@@ -108,7 +108,7 @@ class MetroAreaOccMajorModel(db.Model):
 class MetroAreaOccMajorSchema(ma.ModelSchema):
     metro_areas = fields.Nested(
         'self', only=["id", "title"])
-    occupations_detailed = fields.Nested(
+    occupations_major = fields.Nested(
         'self', only=["id", "title"])
 
     class Meta:
