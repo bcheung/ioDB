@@ -224,83 +224,6 @@ class OccupationInstancePage extends Component {
         }
     };
 
-    renderOccupationData = () => {
-        const { occupationData } = this.state;
-        if (occupationData) {
-            const tableData = {
-                title: occupationData.title,
-                total_employment: occupationData.total_employment,
-                columns: [
-                    {
-                        dataField: 'type',
-                        text: 'Type'
-                    },
-                    {
-                        dataField: 'mean',
-                        text: 'Mean'
-                    },
-                    {
-                        dataField: 'median',
-                        text: 'Median'
-                    },
-                    {
-                        dataField: '10',
-                        text: '10th Percentile'
-                    },
-                    {
-                        dataField: '25',
-                        text: '25th Percentile'
-                    },
-                    {
-                        dataField: '75',
-                        text: '75th Percentile'
-                    },
-                    {
-                        dataField: '90',
-                        text: '90th Percentile'
-                    }
-                ],
-                rows: [
-                    {
-                        type: 'Annual Salary',
-                        mean: occupationData.annual_mean,
-                        median: occupationData.annual_median,
-                        '10': occupationData.annual_10,
-                        '25': occupationData.annual_25,
-                        '75': occupationData.annual_75,
-                        '90': occupationData.annual_90
-                    },
-                    {
-                        type: 'Hourly Wage',
-                        mean: occupationData.hourly_mean,
-                        median: occupationData.hourly_median,
-                        '10': occupationData.hourly_10,
-                        '25': occupationData.hourly_25,
-                        '75': occupationData.hourly_75,
-                        '90': occupationData.hourly_90
-                    }
-                ]
-            };
-            return (
-                <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-                    <h5 style={{ margin: 'auto' }}>Salary and Wage Statistics</h5>
-                    <BootstrapTable hover keyField="type" data={tableData.rows} columns={tableData.columns} />
-                </Row>
-            );
-        }
-    };
-
-    renderLocationData = () => {
-        const { mapLoaded, occupationData, locationData } = this.state;
-        if (mapLoaded && occupationData && locationData) {
-            return (
-                <div>
-                    <h1>Where are {occupationData.title} located?</h1>
-                </div>
-            );
-        }
-    };
-
     renderGraphs = () => {
         const { tablename, id } = this.props.match.params;
 
@@ -385,9 +308,7 @@ class OccupationInstancePage extends Component {
                         <br />
                         <Card className="container wage-data">
                             <br />
-                            <Row className="align-items-md-center">{this.renderOccupationData()}</Row>
-                            <br />
-
+                            {occupationData ? <WageSalaryTable data={occupationData} /> : null} <br />
                             <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
                             <Row>{occupationData ? <h1>Where are {occupationData.title} located?</h1> : null}</Row>
                             <div ref={el => (this.mapContainer = el)} />
