@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
-import { NavbarToggler, Collapse, NavbarBrand, Nav, Navbar, NavItem, NavLink, Col } from 'reactstrap';
+import {
+    Container,
+    Button,
+    NavbarToggler,
+    Collapse,
+    NavbarBrand,
+    Nav,
+    Navbar,
+    NavItem,
+    NavLink,
+    Col
+} from 'reactstrap';
 import { getDetailedModel, getInstanceNames, getModelRoutes } from '../constants';
 
 function renderInstanceLinks(detailedModel, data) {
@@ -12,19 +23,31 @@ function renderInstanceLinks(detailedModel, data) {
     ));
 }
 
-const DetailedInstanceList = ({ majorModel, data }) => {
+const DetailedInstanceList = ({ majorModel, data, collapse, label, onClick }) => {
     const detailedModel = getDetailedModel[majorModel];
     const detailedInstanceName = getInstanceNames[detailedModel];
     return (
         <div>
-            <Navbar color="light" light expand="md">
-                <Nav className="align-items-md-center">
-                    <Col>
-                        <p>{detailedInstanceName}:</p>
-                        {renderInstanceLinks(detailedModel, data)}
-                    </Col>
+            <Button color="primary" onClick={onClick} style={{ marginBottom: '1rem' }}>
+                {label}
+            </Button>
+            <Container>
+                <br />
+                <Nav light expand="md" sticky="side" className="shadow-sm py-0">
+                    <div className="sidebar-sticky">
+                        <Collapse isOpen={collapse}>
+                            <Navbar color="light" light expand="md">
+                                <Nav className="align-items-md-center">
+                                    <Col>
+                                        <p>{detailedInstanceName}:</p>
+                                        {renderInstanceLinks(detailedModel, data)}
+                                    </Col>
+                                </Nav>
+                            </Navbar>
+                        </Collapse>
+                    </div>
                 </Nav>
-            </Navbar>
+            </Container>
         </div>
     );
 };

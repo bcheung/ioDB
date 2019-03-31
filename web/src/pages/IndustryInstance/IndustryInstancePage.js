@@ -9,7 +9,8 @@ class IndustryInstancePage extends Component {
     state = {
         industryData: null,
         occupationData: null,
-        isDataLoaded: false
+        isDataLoaded: false,
+        collapse: false
     };
 
     componentDidMount() {
@@ -36,6 +37,11 @@ class IndustryInstancePage extends Component {
         return false;
     }
 
+    // Handles toggle button for collapsible detailed occupations list
+    toggle = () => {
+        this.setState(state => ({ collapse: !state.collapse }));
+    };
+
     fetchData = async (tablename, id) => {
         console.log('fetchData', tablename, id);
         const industryData = await fetchInstanceData(tablename, id);
@@ -60,7 +66,7 @@ class IndustryInstancePage extends Component {
     render() {
         console.log('render');
         const { tablename, id } = this.props.match.params;
-        const { occupationData, industryData } = this.state;
+        const { occupationData, industryData, collapse } = this.state;
 
         const renderLegend = (stop, i) => (
             <div key={i} className="txt-s">
@@ -74,8 +80,6 @@ class IndustryInstancePage extends Component {
         return (
             <Container>
                 <Row>
-                    {isMajorModel[tablename] ? this.renderDetailedInstanceList() : null}
-
                     <Col>
                         <Row>
                             {industryData ? (
@@ -86,6 +90,15 @@ class IndustryInstancePage extends Component {
                                 />
                             ) : null}
                         </Row>
+                        {isMajorModel[tablename] && industryData ? (
+                            <DetailedInstanceList
+                                collapse={collapse}
+                                label="Show Specific Industries List"
+                                onClick={this.toggle}
+                                majorModel={tablename}
+                                data={industryData.industries_4d}
+                            />
+                        ) : null}
                         <br />
                         <Card className="container wage-data">
                             <br />

@@ -236,45 +236,23 @@ class OccupationInstancePage extends Component {
         }
     };
 
-    renderDetailedInstanceList = () => {
-        const { tablename } = this.props.match.params;
-        const { occupationData } = this.state;
-
-        if (occupationData) {
-            return <DetailedInstanceList majorModel={tablename} data={occupationData.occupations_detailed} />;
-        }
-    };
-
     render() {
         console.log('render');
         const { tablename, id } = this.props.match.params;
         const { occupationData, locationData, collapse } = this.state;
 
-        const renderLegend = (stop, i) => (
-            <div key={i} className="txt-s">
-                <span
-                    className="mr6 round-full w12 h12 inline-block align-middle"
-                    style={{ backgroundColor: stop[1] }}
-                />
-                <span>{`${stop[0].toLocaleString()}`}</span>
-            </div>
-        );
         return (
             <Container>
                 <Row>
-                    <Button color="primary" onClick={this.toggle} style={{ marginBottom: '1rem' }}>
-                        Show Detailed Occupations List
-                    </Button>
-                    <Container>
-                        <br />
-                        <Nav light expand="md" sticky="side" className="shadow-sm py-0">
-                            <div className="sidebar-sticky">
-                                <Collapse isOpen={collapse}>
-                                    {isMajorModel[tablename] ? this.renderDetailedInstanceList() : null}
-                                </Collapse>
-                            </div>
-                        </Nav>
-                    </Container>
+                    {isMajorModel[tablename] && occupationData ? (
+                        <DetailedInstanceList
+                            collapse={collapse}
+                            label="Show Specific Occupations List"
+                            onClick={this.toggle}
+                            majorModel={tablename}
+                            data={occupationData.occupations_detailed}
+                        />
+                    ) : null}
                     <Col>
                         <Row>
                             {occupationData ? (
