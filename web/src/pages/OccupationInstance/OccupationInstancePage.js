@@ -244,15 +244,6 @@ class OccupationInstancePage extends Component {
         return (
             <Container>
                 <Row>
-                    {isMajorModel[tablename] && occupationData ? (
-                        <DetailedInstanceList
-                            collapse={collapse}
-                            label="Show Specific Occupations List"
-                            onClick={this.toggle}
-                            majorModel={tablename}
-                            data={occupationData.occupations_detailed}
-                        />
-                    ) : null}
                     <Col>
                         <Row>
                             {occupationData ? (
@@ -263,6 +254,15 @@ class OccupationInstancePage extends Component {
                                 />
                             ) : null}
                         </Row>
+                        {isMajorModel[tablename] && occupationData ? (
+                            <DetailedInstanceList
+                                collapse={collapse}
+                                label="Show Specific Occupations List"
+                                onClick={this.toggle}
+                                majorModel={tablename}
+                                data={occupationData.occupations_detailed}
+                            />
+                        ) : null}
                         <br />
                         <Card className="container wage-data">
                             <br />
