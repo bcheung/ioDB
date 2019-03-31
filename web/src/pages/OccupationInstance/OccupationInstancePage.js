@@ -51,7 +51,6 @@ let map;
 class OccupationInstancePage extends Component {
     constructor(props) {
         super(props);
-        this.toggle = this.toggle.bind(this);
         this.state = {
             occupationData: null,
             industryData: null,
@@ -201,27 +200,8 @@ class OccupationInstancePage extends Component {
     };
 
     // Handles toggle button for collapsible detailed occupations list
-    toggle() {
+    toggle = () => {
         this.setState(state => ({ collapse: !state.collapse }));
-    }
-
-    renderOccupation = () => {
-        const { tablename } = this.props.match.params;
-        const { occupationData } = this.state;
-        if (occupationData) {
-            return (
-                <Jumbotron>
-                    <h1 className="display-3">{occupationData.title}</h1>
-                    <p>Occupation Code: {occupationData.id}</p>
-                    {isMajorModel[tablename] ? null : (
-                        <div>
-                            <hr className="my-2" />
-                            <p className="lead">Description: {occupationData.description}</p>
-                        </div>
-                    )}
-                </Jumbotron>
-            );
-        }
     };
 
     renderGraphs = () => {
