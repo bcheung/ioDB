@@ -364,7 +364,7 @@ class OccupationInstancePage extends Component {
                     </Button>
                     <Container>
                         <br />
-                        <Nav light expand="md" sticky="side" className="shadow-sm py-0 border-dark border-bottom">
+                        <Nav light expand="md" sticky="side" className="shadow-sm py-0">
                             <div className="sidebar-sticky">
                                 <Collapse isOpen={collapse}>
                                     {isMajorModel[tablename] ? this.renderDetailedInstanceList() : null}

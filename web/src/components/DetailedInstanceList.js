@@ -18,9 +18,6 @@ const DetailedInstanceList = ({ majorModel, data }) => {
     return (
         <div>
             <Navbar color="light" light expand="md">
-                <div className="navbar-header">
-                    <NavbarBrand>Detailed Occupations List</NavbarBrand>
-                </div>
                 <Nav className="align-items-md-center">
                     <Col>
                         <p>{detailedInstanceName}:</p>
