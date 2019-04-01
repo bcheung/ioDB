@@ -28,7 +28,7 @@ import Sean from './sean.jpeg';
 const contributorInfo = {
     CooperTravis: {
         name: 'Cooper Travis',
-        image: Brian, // change to cooper once picture is square
+        image: Cooper,
         username: 'CooperTravis',
         major: 'Electrical & Computer Eng.',
         bio:
@@ -44,7 +44,7 @@ const contributorInfo = {
         bio:
             'Brian is a second year student at the University of Texas at Austin. He is currently pursuing an Electrical and Computer Engineering degree with a focus in software engineering. At the moment, Brian is looking to gain some industry experience in order to narrow down his area of interest in software engineering. Some of Brian’s hobbies include learning piano, playing basketball, weightlifting, and of course, eating.',
         responsibilities:
-            'Set up frontend and backend infrastructure and deploy onto GCP, configure dynamic routing, create 3 static main web pages for Industry, Location, and Occupation using React.js. Configured backend on Google cloud Platform. Analyzed CSV files to design and implement the PostgreSQL database. Updated Cooper’s scraper to populate the database with SQLAlchemy. Designed and implemented the REST API to effectively query the data. Designed general layout with Sean to determine what data was needed for each page. Created frontend fetch API library. Created reusable components to display general information, wage and salary statistics, search bars and dropdown menus. Implemented the home page with search bar to display top ten instances of each model. Helped Brooke implement the heat maps with the data from the REST API. Helped Johnny implement the Industry instance page. Designed and created the router to link all the pages together.'
+            'Set up frontend and backend infrastructure and deploy onto GCP, configure dynamic routing, create 3 static main web pages for Industry, Location, and Occupation using React.js. Configured backend on Google cloud Platform. Analyzed CSV files to design and implement the PostgreSQL database. Updated Cooper’s scraper to populate the database with SQLAlchemy. Designed and implemented the REST API to effectively query the data. Designed general layout with Sean to determine what data was needed for each page. Created frontend fetch API library. Created reusable components to display general information, wage and salary statistics, search bars and dropdown menus. Implemented the home page with search bar to display top ten instances of each model. Helped Brooke implement the heat maps with the data from the REST API. Helped John implement the Industry instance page. Designed and created the router to link all the pages together.'
     },
     brookepaxman: {
         name: 'Brooke Paxman',
@@ -84,7 +84,7 @@ const contributorInfo = {
         bio:
             'John is studying Electrical and Computer Engineering with a focus in Software Engineering and Design. His interests lie in startups and his plans after graduation is to start his own company.',
         responsibilities:
-            'Create 3 static web pages for 3 different industry instances and deploy onto GCP.  Implemented Industry instance page. Researched React UI libraries.'
+            'Create 3 static web pages for 3 different industry instances and deploy onto GCP. Worked on Industry instance page and chart components. Researched React-ChartJS-2 and Reactstrap UI libraries. Verified REST API documentation.'
     }
 };
 const contributorStats = {
