@@ -190,7 +190,13 @@ class AboutPage extends Component {
         console.log('renderProfile', id, username, contributorStats[username]);
 
         return (
-            <Card body style={{ borderColor: '#333' }} className="text-left">
+            <Card
+                body
+                style={{ borderColor: '#333', cursor: 'pointer' }}
+                className="text-left"
+                tag="a"
+                onClick={() => window.open(`https://github.com/${username}`)}
+            >
                 <CardHeader className="text-center" tag="b">
                     {contributorInfo[username].name} ({contributorInfo[username].username})
                 </CardHeader>
