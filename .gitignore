@@ -39,3 +39,6 @@ iodb-api-key.json
 
 # secret environment variables
 env_variables.yaml
+
+# bash scripts
+start.sh
