@@ -84,7 +84,7 @@ const contributorInfo = {
         bio:
             'John is studying Electrical and Computer Engineering with a focus in Software Engineering and Design. His interests lie in startups and his plans after graduation is to start his own company.',
         responsibilities:
-            'Create 3 static web pages for 3 different industry instances and deploy onto GCP. Worked on Industry instance page and chart components. Researched React-ChartJS-2 and Reactstrap UI libraries. Verified REST API documentation.'
+            'Create 3 static web pages for 3 different industry instances and deploy onto GCP. Worked on Industry instance page and chart components. Researched React-ChartJS-2 and Reactstrap UI libraries. Verified REST API documentation. Created Testing Plan for Phase 3'
     }
 };
 const contributorStats = {
