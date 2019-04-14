@@ -119,11 +119,11 @@ class LocationInstancePage extends Component {
                     id={this.state.initial.id}
                 />
                 <br />
-                {this.state.showStateInfo ? (
-                    <LocationData data={this.state.stateData} primaryTable="states" id={this.state.state.id} />
-                ) : null}
                 {this.state.showMSAInfo ? (
                     <LocationData data={this.state.MSAData} primaryTable="metro_areas" id={this.state.MSA.id} />
+                ) : null}
+                {this.state.showStateInfo ? (
+                    <LocationData data={this.state.stateData} primaryTable="states" id={this.state.state.id} />
                 ) : null}
             </div>
         );
