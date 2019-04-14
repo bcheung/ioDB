@@ -13,3 +13,10 @@ it('Location instance renders without crashing', () => {
     ReactDOM.render(<LocationInstancePage match={match}/>, div);
     ReactDOM.unmountComponentAtNode(div);
 });
+
+it('handleStateClick test works', async () => {
+    const wrapper = shallow(<LocationInstancePage/>);
+    await wrapper.handleStateClick();
+    wrapper.update();
+    expect(wrapper.find('LocationData'));
+});

@@ -9,7 +9,6 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
 import React from 'react';
 import ReactDOM from 'react-dom';
 import OccupationInstancePage from './OccupationInstancePage';
-import { mapboxgl } from 'mapbox-gl';
 
 it('renders without crashing', () => {
     const div = document.createElement('div');
