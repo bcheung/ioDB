@@ -6,3 +6,4 @@ export * from './WageSalaryTable';
 export * from './InstanceInfo';
 export * from './RoutingDataTable';
 export * from './LoadingComponent';
+export * from './FilterColumnComponent';

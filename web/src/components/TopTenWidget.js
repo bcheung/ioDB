@@ -3,12 +3,12 @@ import { Container, Row, Col } from 'reactstrap';
 import Select from 'react-select';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { fetchTopTenData, fetchJoinedTopTenData } from '../fetchAPI';
-import { stats, statsWithPop, graphType } from '../constants';
+import { groupedStats, statsWithPop, graphType, popStats } from '../constants';
 
 class TopTenWidget extends Component {
     state = {
         instanceData: {},
-        selectedColumn: stats[0],
+        selectedColumn: groupedStats[0],
         isPieGraph: false
         // data: null
     };
@@ -127,9 +127,9 @@ class TopTenWidget extends Component {
     render() {
         const { selectedColumn, instanceData, isPieGraph } = this.state;
         const { title, population } = this.props;
-        let options = stats;
+        let options = groupedStats;
         if (population) {
-            options = statsWithPop;
+            options = [popStats, ...groupedStats];
         }
         return (
             <Container>

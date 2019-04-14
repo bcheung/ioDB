@@ -3,7 +3,14 @@ import { Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
 import { fetchInstanceData, fetchJoinedInstanceData } from '../../fetchAPI';
 import './industry-instance-page.css';
 import { isMajorModel } from '../../constants';
-import { DetailedInstanceList, TopTenWidget, WageSalaryTable, InstanceInfo, LoadingComponent } from '../../components';
+import {
+    RoutingDataTable,
+    DetailedInstanceList,
+    TopTenWidget,
+    WageSalaryTable,
+    InstanceInfo,
+    LoadingComponent
+} from '../../components';
 
 class IndustryInstancePage extends Component {
     state = {
@@ -105,6 +112,9 @@ class IndustryInstancePage extends Component {
                             id={id}
                             total_employment={industryData.total_employment}
                         />
+                        <div style={{ padding: '1em' }}>
+                            <RoutingDataTable data={occupationData} secondaryTable="occupations_major" />
+                        </div>
                     </Col>
                 </Container>
             );

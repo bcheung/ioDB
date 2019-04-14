@@ -2,10 +2,32 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import ReactTable, { toggleRowSubComponent } from 'react-table';
 import matchSorter from 'match-sorter';
-import { stats, getModelRoutes, getInstanceNames } from '../constants';
+import {
+    stats,
+    getModelRoutes,
+    getInstanceNames,
+    wageStats,
+    salaryStats,
+    employmentStats,
+    popStats,
+    formatterType
+} from '../constants';
 import { WageSalaryTable } from './WageSalaryTable';
+import { FilterColumnComponent } from './FilterColumnComponent';
 
-function createColumns(secondaryTable) {
+function filterRow(filter, row) {
+    const { option, value } = filter.value;
+    const rowValue = row._original[filter.id].value;
+    if (option === 'gte') {
+        return rowValue >= value;
+    }
+    if (option === 'e') {
+        return rowValue === filter.value.value;
+    }
+    return rowValue <= filter.value.value;
+}
+
+function createColumns(secondaryTable, population) {
     const columns = [
         {
             Header: getInstanceNames[secondaryTable],
@@ -26,38 +48,73 @@ function createColumns(secondaryTable) {
             ]
         },
         {
-            Header: 'Wage and Salary Stats',
+            Header: 'Total',
             columns: [
-                ...stats.map(column => ({
-                    Header: column.label,
-                    accessor: column.value
-                })),
                 {
-                    id: 'expand',
-                    expander: true,
-                    Header: () => <strong>More Stats</strong>,
-                    width: 100,
-                    Expander: ({ isExpanded, ...rest }) => (
-                        <div>{isExpanded ? <span>&#x2299;</span> : <span>&#x2295;</span>}</div>
-                    ),
-                    style: {
-                        cursor: 'pointer',
-                        fontSize: 25,
-                        padding: '0',
-                        textAlign: 'center',
-                        userSelect: 'none'
-                    }
+                    id: employmentStats.value,
+                    Header: employmentStats.label,
+                    accessor: `${employmentStats.value}.label`,
+                    filterMethod: (filter, row) => filterRow(filter, row),
+                    Filter: ({ filter, onChange }) => <FilterColumnComponent filter={filter} onChange={onChange} />
                 }
+                // ...(population
+                //     ? [
+                //           {
+                //               Header: popStats.label,
+                //               accessor: `${popStats.value}_label`
+                //           }
+                //       ]
+                //     : [])
             ]
+        },
+        {
+            Header: 'Wage',
+            columns: [
+                ...wageStats.map(column => ({
+                    id: column.value,
+                    Header: column.label,
+                    accessor: `${column.value}.label`,
+                    filterMethod: (filter, row) => filterRow(filter, row),
+                    Filter: ({ filter, onChange }) => <FilterColumnComponent filter={filter} onChange={onChange} />
+                }))
+            ]
+        },
+        {
+            Header: 'Salary',
+            columns: [
+                ...salaryStats.map(column => ({
+                    id: column.value,
+                    Header: column.label,
+                    accessor: `${column.value}.label`,
+                    filterMethod: (filter, row) => filterRow(filter, row),
+                    Filter: ({ filter, onChange }) => <FilterColumnComponent filter={filter} onChange={onChange} />
+                }))
+            ]
+        },
+        {
+            id: 'expand',
+            expander: true,
+            Header: () => <strong>More</strong>,
+            width: 50,
+            Expander: ({ isExpanded, ...rest }) => (
+                <div>{isExpanded ? <span>&#x2299;</span> : <span>&#x2295;</span>}</div>
+            ),
+            style: {
+                cursor: 'pointer',
+                fontSize: 25,
+                padding: '0',
+                textAlign: 'center',
+                userSelect: 'none'
+            }
         }
     ];
     return columns;
 }
 
 const DataTable = props => {
-    const { data, secondaryTable, history } = props;
+    const { data, secondaryTable, history, population } = props;
 
-    const columns = createColumns(secondaryTable);
+    const columns = createColumns(secondaryTable, population);
 
     return (
         <div>
@@ -65,7 +122,10 @@ const DataTable = props => {
                 data={data}
                 columns={columns}
                 filterable
-                defaultFilterMethod={(filter, row) => String(row[filter.id]) === filter.value}
+                defaultFilterMethod={(filter, row) => {
+                    console.log(row._original, filter);
+                    return String(row._original[filter.id].value) === filter.value;
+                }}
                 className="-striped -highlight"
                 showPagination={false}
                 defaultPageSize={data.length}
@@ -91,7 +151,20 @@ const DataTable = props => {
                         }
                     }
                 })}
-                SubComponent={rowData => <WageSalaryTable data={rowData} />}
+                resolveData={tableData =>
+                    tableData.map(row => {
+                        const labels = {};
+                        Object.keys(row).forEach(key => {
+                            if (formatterType[key]) {
+                                row[key] = { value: row[key], label: formatterType[key](row[key]) };
+                            }
+                        });
+                        console.log(row);
+
+                        return row;
+                    })
+                }
+                // SubComponent={rowData => <WageSalaryTable data={rowData} />}
             />
         </div>
     );
@@ -103,3 +176,25 @@ const styles = {
 
 const RoutingDataTable = withRouter(DataTable);
 export { RoutingDataTable };
+
+/* <div>
+                                <select
+                                    onChange={event => {
+                                        const val = { option: event.target.value, value: filter.value.value };
+                                        return onChange(val);
+                                    }}
+                                    style={{ width: '100%' }}
+                                    value={filter ? filter.option : 'e'}
+                                >
+                                    <option value="gte">GreaterEqual</option>
+                                    <option value="e">Equal</option>
+                                    <option value="lte">Less Equal </option>
+                                </select>
+                                <input
+                                    value={filter.value}
+                                    onChange={event => {
+                                        const val = { option: filter.value.option, value: event.target.value };
+                                        return onChange(val);
+                                    }}
+                                />
+                            </div> */

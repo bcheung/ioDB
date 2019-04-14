@@ -285,7 +285,7 @@ class OccupationInstancePage extends Component {
                             </Row>
                             <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
                             <div style={{ padding: '1em' }}>
-                                <RoutingDataTable data={locationData} secondaryTable="states" />
+                                <RoutingDataTable data={locationData} secondaryTable="states" population />
                             </div>
                             <div style={{ padding: '1em' }}>
                                 <RoutingDataTable data={industryData} secondaryTable="industries_3d" />

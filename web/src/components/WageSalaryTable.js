@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
+import { formatSalary, formatWage } from '../constants';
 
 const WageSalaryTable = ({ data }) => {
     const tableData = getTableData(data);
@@ -19,34 +20,6 @@ const styles = {
 
 export { WageSalaryTable };
 
-const wageFormatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-});
-
-const salaryFormatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-    minimumFractionDigits: 0
-});
-
-function formatWage(wage) {
-    const formattedWage = wageFormatter.format(wage);
-    if (wage === 100) {
-        return `≥ ${formattedWage}`;
-    }
-    return formattedWage;
-}
-
-function formatSalary(salary) {
-    const formattedSalary = salaryFormatter.format(salary);
-    if (salary === 208000) {
-        return `≥ ${formattedSalary}`;
-    }
-    return formattedSalary;
-}
-
 function getTableData(data) {
     return {
         title: data.title,
@@ -60,10 +33,7 @@ function getTableData(data) {
                 dataField: 'mean',
                 text: 'Mean'
             },
-            {
-                dataField: 'median',
-                text: 'Median'
-            },
+
             {
                 dataField: '10',
                 text: '10th Percentile'
@@ -71,6 +41,10 @@ function getTableData(data) {
             {
                 dataField: '25',
                 text: '25th Percentile'
+            },
+            {
+                dataField: 'median',
+                text: 'Median'
             },
             {
                 dataField: '75',
