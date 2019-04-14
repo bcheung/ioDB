@@ -105,7 +105,6 @@ class IndustryInstancePage extends Component {
                             id={id}
                             total_employment={industryData.total_employment}
                         />
-                        )}
                     </Col>
                 </Container>
             );

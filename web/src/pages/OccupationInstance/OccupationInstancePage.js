@@ -62,11 +62,11 @@ class OccupationInstancePage extends Component {
             occupationData: null,
             industryData: null,
             locationData: null,
-            mapLoaded: false,
+            isMapLoaded: false,
             isDataLoaded: false,
             collapse: false
         };
-        this.mapContainer = React.createRef();
+        // this.mapContainer = React.createRef();
     }
 
     componentDidMount() {
@@ -85,7 +85,7 @@ class OccupationInstancePage extends Component {
             this.fetchData(tablename, id);
             return false;
         }
-        if (nextState.isDataLoaded || nextState.mapLoaded) {
+        if (nextState.isDataLoaded || nextState.isMapLoaded) {
             console.log('shouldComponentUpdate true', nextProps, nextState);
             return true;
         }
@@ -94,8 +94,8 @@ class OccupationInstancePage extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { isDataLoaded, mapLoaded } = this.state;
-        if (isDataLoaded && mapLoaded) {
+        const { isDataLoaded, isMapLoaded } = this.state;
+        if (isDataLoaded && isMapLoaded) {
             this.setHeatMapping();
         } else if (isDataLoaded) {
             this.loadMap();
@@ -105,7 +105,7 @@ class OccupationInstancePage extends Component {
     loadMap = () => {
         console.log('loadMap');
         map = new mapboxgl.Map({
-            container: this.mapContainer.current,
+            container: this.mapContainer,
             style: 'mapbox://styles/mapbox/light-v10',
             center: [-96, 40],
             zoom: 2.25
@@ -175,15 +175,15 @@ class OccupationInstancePage extends Component {
                 map.getCanvas().style.cursor = '';
                 popup.remove();
             });
-            this.setState({ mapLoaded: true });
+            this.setState({ isMapLoaded: true });
         });
     };
 
     setHeatMapping = () => {
-        const { mapLoaded, locationData } = this.state;
-        console.log('setHeatMapping', mapLoaded, locationData);
+        const { isMapLoaded, locationData } = this.state;
+        console.log('setHeatMapping', isMapLoaded, locationData);
 
-        if (mapLoaded && locationData) {
+        if (isMapLoaded && locationData) {
             const expression = createHeatMapping(locationData);
             map.setPaintProperty('heat-layer', 'fill-opacity', 0);
 
@@ -255,45 +255,51 @@ class OccupationInstancePage extends Component {
         console.log('render');
         const { tablename, id } = this.props.match.params;
         const { isDataLoaded, occupationData, locationData, industryData, collapse } = this.state;
-
-        if (isDataLoaded) {
-            return (
-                <Container>
-                    <Col>
-                        <InstanceInfo title={occupationData.title} idLabel="Occupation Code" id={occupationData.id} />
-                        {isMajorModel[tablename] && occupationData ? (
-                            <DetailedInstanceList
-                                collapse={collapse}
-                                label="Show Specific Occupations List"
-                                onClick={this.toggle}
-                                majorModel={tablename}
-                                data={occupationData.occupations_detailed}
+        console.log(this.mapContainer);
+        return (
+            <Container>
+                {isDataLoaded ? (
+                    <div>
+                        <Col>
+                            <InstanceInfo
+                                title={occupationData.title}
+                                idLabel="Occupation Code"
+                                id={occupationData.id}
                             />
-                        ) : null}
-                        <br />
-                        <Row>
-                            <Card className="container wage-data">
-                                <br />
-                                <WageSalaryTable data={occupationData} />
-                                <br />
-                                <Row>{<h1>Where are {occupationData.title} located?</h1>}</Row>
-                                <div style={{ height: '500px' }} ref={this.mapContainer} />
-                                <br />
-                            </Card>
-                        </Row>
-                        <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
-                        <div style={{ padding: '1em' }}>
-                            <RoutingDataTable data={locationData} secondaryTable="states" />
-                        </div>
-                        <div style={{ padding: '1em' }}>
-                            <RoutingDataTable data={industryData} secondaryTable="industries_3d" />
-                        </div>
-                    </Col>
-                    <Row style={{ height: '200px' }} />
-                </Container>
-            );
-        }
-        return <LoadingComponent />;
+                            {isMajorModel[tablename] && occupationData ? (
+                                <DetailedInstanceList
+                                    collapse={collapse}
+                                    label="Show Specific Occupations List"
+                                    onClick={this.toggle}
+                                    majorModel={tablename}
+                                    data={occupationData.occupations_detailed}
+                                />
+                            ) : null}
+                            <br />
+                            <Row>
+                                <Card className="container wage-data">
+                                    <br />
+                                    <WageSalaryTable data={occupationData} />
+                                    <br />
+                                </Card>
+                            </Row>
+                            <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
+                            <div style={{ padding: '1em' }}>
+                                <RoutingDataTable data={locationData} secondaryTable="states" />
+                            </div>
+                            <div style={{ padding: '1em' }}>
+                                <RoutingDataTable data={industryData} secondaryTable="industries_3d" />
+                            </div>
+                            <Row>{<h1>Where are {occupationData.title} located?</h1>}</Row>
+                        </Col>
+                    </div>
+                ) : (
+                    <LoadingComponent />
+                )}
+                <div style={{ height: '500px' }} ref={el => (this.mapContainer = el)} />
+                <Row style={{ height: '200px' }} />
+            </Container>
+        );
     }
 }
 

@@ -19,6 +19,28 @@ const styles = {
 
 export { WageSalaryTable };
 
+const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumSignificantDigits: 6
+});
+
+function formatWage(wage) {
+    const formattedWage = formatter.format(wage);
+    if (wage === 100) {
+        return `≥ ${formattedWage}`;
+    }
+    return formattedWage;
+}
+
+function formatSalary(salary) {
+    const formattedSalary = formatter.format(salary);
+    if (salary === 208000) {
+        return `≥ ${formattedSalary}`;
+    }
+    return formattedSalary;
+}
+
 function getTableData(data) {
     return {
         title: data.title,
@@ -56,21 +78,21 @@ function getTableData(data) {
         rows: [
             {
                 type: 'Annual Salary',
-                mean: data.annual_mean,
-                median: data.annual_median,
-                '10': data.annual_10,
-                '25': data.annual_25,
-                '75': data.annual_75,
-                '90': data.annual_90
+                mean: formatSalary(data.annual_mean),
+                median: formatSalary(data.annual_median),
+                '10': formatSalary(data.annual_10),
+                '25': formatSalary(data.annual_25),
+                '75': formatSalary(data.annual_75),
+                '90': formatSalary(data.annual_90)
             },
             {
                 type: 'Hourly Wage',
-                mean: data.hourly_mean,
-                median: data.hourly_median,
-                '10': data.hourly_10,
-                '25': data.hourly_25,
-                '75': data.hourly_75,
-                '90': data.hourly_90
+                mean: formatWage(data.hourly_mean),
+                median: formatWage(data.hourly_median),
+                '10': formatWage(data.hourly_10),
+                '25': formatWage(data.hourly_25),
+                '75': formatWage(data.hourly_75),
+                '90': formatWage(data.hourly_90)
             }
         ]
     };
