@@ -123,27 +123,18 @@ joined_primary_key_switcher = {
     }
 }
 
-# def column_switcher(table, columnname):
-#     if columnname == 'total_employment':
-#         return table.total_employment
-#     elif columnname == 'hourly_median':
-#         return table.hourly_median
-#     elif columnname == 'annual_median':
-#         return table.annual_median
-#     if table is Industry3dModel:
-#         if columnname == 'total_employment':
-#             return Industry3dModel.total_employment
-#         elif columnname == 'hourly_median':
-#             return Industry3dModel.hourly_median
-#         elif columnname == 'annual_median':
-#             return Industry3dModel.annual_median
-#     elif table is StateModel:
-#         if columnname == 'total_employment':
-#             return StateModel.total_employment
-#         elif columnname == 'hourly_median':
-#             return StateModel.hourly_median
-#         elif columnname == 'annual_median':
-#             return StateModel.annual_median
-
-#     else:
-#         return 0
+column_switcher = {
+    'total_employment': 'total_employment',
+    'hourly_mean': 'hourly_mean',
+    'hourly_10': 'hourly_10',
+    'hourly_25': 'hourly_25',
+    'hourly_median': 'hourly_median',
+    'hourly_75': 'hourly_75',
+    'hourly_90': 'hourly_90',
+    'annual_mean': 'annual_mean',
+    'annual_10': 'annual_10',
+    'annual_25': 'annual_25',
+    'annual_median': 'annual_median',
+    'annual_75': 'annual_75',
+    'annual_90': 'annual_90'
+}
