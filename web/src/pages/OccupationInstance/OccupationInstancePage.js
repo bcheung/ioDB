@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import mapboxgl from 'mapbox-gl';
+import { mapboxgl } from 'mapbox-gl';
 import { Bar } from 'react-chartjs-2';
 import { Button, Collapse, Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
