@@ -9,6 +9,7 @@ import LocationInstancePage from '../LocationInstance/LocationInstancePage';
 import './App.css';
 import { RoutingSearchBar, TopTenWidget } from '../../components';
 import { modelOptions } from '../../constants';
+import TestPage from '../TestPage';
 
 class App extends Component {
     constructor(props) {
@@ -47,6 +48,9 @@ class App extends Component {
                             <NavItem>
                                 <NavLink href="#/about">About Us</NavLink>
                             </NavItem>
+                            <NavItem>
+                                <NavLink href="#/test">Test</NavLink>
+                            </NavItem>
                         </Nav>
                     </Navbar>
 
@@ -59,6 +63,7 @@ class App extends Component {
                     <Switch>
                         <Route exact path="/" render={props => <HomePage tablename={selectedModel.tablename} />} />
                         <Route path="/about" component={AboutPage} />
+                        <Route path="/test" component={TestPage} />
 
                         <Route path="/industry/:tablename/:id" component={IndustryInstancePage} />
 

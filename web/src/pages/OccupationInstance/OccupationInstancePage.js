@@ -6,7 +6,14 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { fetchInstanceData, fetchJoinedInstanceData } from '../../fetchAPI';
 import './occupation-instance-page.css';
 import { isMajorModel } from '../../constants';
-import { DetailedInstanceList, TopTenWidget, WageSalaryTable, InstanceInfo } from '../../components';
+import {
+    DetailedInstanceList,
+    TopTenWidget,
+    WageSalaryTable,
+    InstanceInfo,
+    LoadingComponent,
+    RoutingDataTable
+} from '../../components';
 
 mapboxgl.accessToken =
     'pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw';
@@ -59,13 +66,46 @@ class OccupationInstancePage extends Component {
             isDataLoaded: false,
             collapse: false
         };
+        this.mapContainer = React.createRef();
     }
 
     componentDidMount() {
         const { tablename, id } = this.props.match.params;
         this.fetchData(tablename, id);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (
+            nextProps.match.params.tablename !== this.props.match.params.tablename ||
+            nextProps.match.params.id !== this.props.match.params.id
+        ) {
+            this.setState({ isDataLoaded: false });
+            console.log('shouldComponentUpdate false fetch', nextProps.match.params.tablename);
+            const { tablename, id } = nextProps.match.params;
+            this.fetchData(tablename, id);
+            return false;
+        }
+        if (nextState.isDataLoaded || nextState.mapLoaded) {
+            console.log('shouldComponentUpdate true', nextProps, nextState);
+            return true;
+        }
+        console.log('shouldComponentUpdate false', nextState);
+        return false;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { isDataLoaded, mapLoaded } = this.state;
+        if (isDataLoaded && mapLoaded) {
+            this.setHeatMapping();
+        } else if (isDataLoaded) {
+            this.loadMap();
+        }
+    }
+
+    loadMap = () => {
+        console.log('loadMap');
         map = new mapboxgl.Map({
-            container: this.mapContainer,
+            container: this.mapContainer.current,
             style: 'mapbox://styles/mapbox/light-v10',
             center: [-96, 40],
             zoom: 2.25
@@ -137,32 +177,7 @@ class OccupationInstancePage extends Component {
             });
             this.setState({ mapLoaded: true });
         });
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        if (
-            nextProps.match.params.tablename !== this.props.match.params.tablename ||
-            nextProps.match.params.id !== this.props.match.params.id
-        ) {
-            this.setState({ isDataLoaded: false });
-            console.log('shouldComponentUpdate false fetch', nextProps.match.params.tablename);
-            const { tablename, id } = nextProps.match.params;
-            this.fetchData(tablename, id);
-            return false;
-        }
-        if (nextState.isDataLoaded && nextState.mapLoaded) {
-            console.log('shouldComponentUpdate true', nextProps, nextState);
-            return true;
-        }
-        console.log('shouldComponentUpdate false', nextState);
-        return false;
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (this.state.mapLoaded && this.state.isDataLoaded) {
-            this.setHeatMapping();
-        }
-    }
+    };
 
     setHeatMapping = () => {
         const { mapLoaded, locationData } = this.state;
@@ -188,12 +203,12 @@ class OccupationInstancePage extends Component {
         // const { tablename, id } = this.props.match.params;
         console.log('fetchData', tablename, id);
         const occupationData = await fetchInstanceData(tablename, id);
-        // const industryData = await fetchJoinedInstanceData(tablename, 'industries_3d', id);
+        const industryData = await fetchJoinedInstanceData(tablename, 'industries_3d', id);
         const locationData = await fetchJoinedInstanceData(tablename, 'states', id);
 
         this.setState({
             occupationData,
-            // industryData,
+            industryData,
             locationData,
             isDataLoaded: true
         });
@@ -214,7 +229,7 @@ class OccupationInstancePage extends Component {
                 <div style={{ margin: 'auto' }}>
                     <TopTenWidget
                         joined
-                        title="Top 10 Industries by"
+                        title="Top 10 Major Industries by"
                         primaryTable={tablename}
                         secondaryTable="industries_3d"
                         id={id}
@@ -239,21 +254,13 @@ class OccupationInstancePage extends Component {
     render() {
         console.log('render');
         const { tablename, id } = this.props.match.params;
-        const { occupationData, locationData, collapse } = this.state;
+        const { isDataLoaded, occupationData, locationData, industryData, collapse } = this.state;
 
-        return (
-            <Container>
-                <Row>
+        if (isDataLoaded) {
+            return (
+                <Container>
                     <Col>
-                        <Row>
-                            {occupationData ? (
-                                <InstanceInfo
-                                    title={occupationData.title}
-                                    idLabel="Occupation Code"
-                                    id={occupationData.id}
-                                />
-                            ) : null}
-                        </Row>
+                        <InstanceInfo title={occupationData.title} idLabel="Occupation Code" id={occupationData.id} />
                         {isMajorModel[tablename] && occupationData ? (
                             <DetailedInstanceList
                                 collapse={collapse}
@@ -264,30 +271,29 @@ class OccupationInstancePage extends Component {
                             />
                         ) : null}
                         <br />
-                        <Card className="container wage-data">
-                            <br />
-                            {occupationData ? <WageSalaryTable data={occupationData} /> : null} <br />
-                            <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
-                            <Row>{occupationData ? <h1>Where are {occupationData.title} located?</h1> : null}</Row>
-                            <div ref={el => (this.mapContainer = el)} />
-                            <Row>
+                        <Row>
+                            <Card className="container wage-data">
                                 <br />
+                                <WageSalaryTable data={occupationData} />
                                 <br />
+                                <Row>{<h1>Where are {occupationData.title} located?</h1>}</Row>
+                                <div style={{ height: '500px' }} ref={this.mapContainer} />
                                 <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-                            </Row>
-                        </Card>
+                            </Card>
+                        </Row>
+                        <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
+                        <div style={{ padding: '1em' }}>
+                            <RoutingDataTable data={locationData} secondaryTable="states" />
+                        </div>
+                        <div style={{ padding: '1em' }}>
+                            <RoutingDataTable data={industryData} secondaryTable="industries_3d" />
+                        </div>
                     </Col>
-                </Row>
-            </Container>
-        );
+                    <Row style={{ height: '200px' }} />
+                </Container>
+            );
+        }
+        return <LoadingComponent />;
     }
 }
 
