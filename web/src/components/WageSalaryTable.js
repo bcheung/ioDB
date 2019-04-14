@@ -19,14 +19,20 @@ const styles = {
 
 export { WageSalaryTable };
 
-const formatter = new Intl.NumberFormat('en-US', {
+const wageFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+});
+
+const salaryFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    maximumSignificantDigits: 6
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0
 });
 
 function formatWage(wage) {
-    const formattedWage = formatter.format(wage);
+    const formattedWage = wageFormatter.format(wage);
     if (wage === 100) {
         return `≥ ${formattedWage}`;
     }
@@ -34,7 +40,7 @@ function formatWage(wage) {
 }
 
 function formatSalary(salary) {
-    const formattedSalary = formatter.format(salary);
+    const formattedSalary = salaryFormatter.format(salary);
     if (salary === 208000) {
         return `≥ ${formattedSalary}`;
     }
