@@ -8,7 +8,7 @@ import './occupation-instance-page.css';
 import { isMajorModel } from '../../constants';
 import {
     DetailedInstanceList,
-    TopTenWidget,
+    RoutingTopTenWidget,
     WageSalaryTable,
     InstanceInfo,
     LoadingComponent,
@@ -227,23 +227,23 @@ class OccupationInstancePage extends Component {
         if (occupationData) {
             return (
                 <div style={{ margin: 'auto' }}>
-                    <TopTenWidget
+                    <RoutingTopTenWidget
                         joined
                         title="Top 10 Major Industries by"
                         primaryTable={tablename}
                         secondaryTable="industries_3d"
                         id={id}
-                        total_employment={occupationData.total_employment}
+                        totalEmployment={occupationData.total_employment}
                     />
 
-                    <TopTenWidget
+                    <RoutingTopTenWidget
                         joined
                         title="Top 10 States by"
                         // population
                         primaryTable={tablename}
                         secondaryTable="states"
                         id={id}
-                        total_employment={occupationData.total_employment}
+                        totalEmployment={occupationData.total_employment}
                         // total_population={occupationData.total_population}
                     />
                 </div>

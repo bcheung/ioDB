@@ -7,7 +7,7 @@ import IndustryInstancePage from '../IndustryInstance/IndustryInstancePage';
 import OccupationInstancePage from '../OccupationInstance/OccupationInstancePage';
 import LocationInstancePage from '../LocationInstance/LocationInstancePage';
 import './App.css';
-import { RoutingSearchBar, TopTenWidget } from '../../components';
+import { RoutingSearchBar, RoutingTopTenWidget } from '../../components';
 import { modelOptions } from '../../constants';
 import TestPage from '../TestPage';
 

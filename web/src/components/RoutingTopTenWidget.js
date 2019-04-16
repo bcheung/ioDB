@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
 import Select from 'react-select';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { fetchTopTenData, fetchJoinedTopTenData } from '../fetchAPI';
-import { groupedStats, statsWithPop, graphType, popStats } from '../constants';
+import { groupedStats, statsWithPop, graphType, popStats, getModelRoutes } from '../constants';
 
 class TopTenWidget extends Component {
     state = {
         instanceData: {},
         selectedColumn: groupedStats[0],
-        isPieGraph: false
-        // data: null
+        isPieGraph: false,
+        data: null
     };
 
     componentDidMount() {
@@ -29,10 +30,11 @@ class TopTenWidget extends Component {
     }
 
     updateGraph = (data, joined) => {
+        console.log(data);
         const labelArray = [];
         const dataArray = [];
         let instanceData = {};
-        const { secondaryTable, total_employment } = this.props;
+        const { secondaryTable, totalEmployment } = this.props;
         const { selectedColumn } = this.state;
         console.log('updateGraph selectedColumn', selectedColumn, data);
         const isPieGraph = graphType[selectedColumn.value].graph === 'pie';
@@ -57,7 +59,7 @@ class TopTenWidget extends Component {
 
         if (isPieGraph) {
             labelArray.push('Other');
-            dataArray.push(total_employment - sum);
+            dataArray.push(totalEmployment - sum);
             instanceData = {
                 labels: labelArray,
                 datasets: [
@@ -96,7 +98,7 @@ class TopTenWidget extends Component {
                 ]
             };
         }
-        this.setState({ instanceData, isPieGraph });
+        this.setState({ data, instanceData, isPieGraph });
     };
 
     handleColumnChange = selectedColumn => {
@@ -124,6 +126,25 @@ class TopTenWidget extends Component {
         }
     }
 
+    handleClick = elems => {
+        const { data } = this.state;
+        const { primaryTable, secondaryTable, history, joined } = this.props;
+
+        const index = elems[0]._index;
+        if (index < data.length) {
+            const instance = data[index];
+
+            console.log(elems);
+            if (joined) {
+                const route = getModelRoutes[secondaryTable];
+                history.push(`/${route}/${secondaryTable}/${instance[secondaryTable].id}`);
+            } else {
+                const route = getModelRoutes[primaryTable];
+                history.push(`/${route}/${primaryTable}/${instance.id}`);
+            }
+        }
+    };
+
     render() {
         const { selectedColumn, instanceData, isPieGraph } = this.state;
         const { title, population } = this.props;
@@ -150,9 +171,19 @@ class TopTenWidget extends Component {
                 </Row>
                 <Row>
                     {isPieGraph ? (
-                        <Doughnut data={instanceData} width={600} height={600} />
+                        <Doughnut
+                            onElementsClick={elems => this.handleClick(elems)}
+                            data={instanceData}
+                            width={600}
+                            height={600}
+                        />
                     ) : (
-                        <Bar data={instanceData} width={900} height={500} />
+                        <Bar
+                            onElementsClick={elems => this.handleClick(elems)}
+                            data={instanceData}
+                            width={900}
+                            height={500}
+                        />
                     )}
                 </Row>
             </Container>
@@ -167,4 +198,6 @@ const styles = {
     }
 };
 
-export { TopTenWidget };
+const RoutingTopTenWidget = withRouter(TopTenWidget);
+
+export { RoutingTopTenWidget };

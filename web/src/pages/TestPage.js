@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { fetchInstanceData, fetchJoinedTopTenData, fetchJoinedInstanceData } from '../fetchAPI';
-import { TopTenWidget } from '../components/TopTenWidget';
+import { RoutingTopTenWidget } from '../components/RoutingTopTenWidget';
 import { stats } from '../constants';
 import { RoutingDataTable } from '../components';
 
@@ -42,7 +42,7 @@ class TestPage extends Component {
         // return (
         //     <div>
         //         this is the test page
-        //         {/* <TopTenWidget
+        //         {/* <RoutingTopTenWidget
         //             joined
         //             population
         //             tablename1="states"

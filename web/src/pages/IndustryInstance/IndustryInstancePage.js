@@ -6,7 +6,7 @@ import { isMajorModel } from '../../constants';
 import {
     RoutingDataTable,
     DetailedInstanceList,
-    TopTenWidget,
+    RoutingTopTenWidget,
     WageSalaryTable,
     InstanceInfo,
     LoadingComponent
@@ -104,13 +104,13 @@ class IndustryInstancePage extends Component {
                             {<WageSalaryTable data={industryData} />}
                             <br />
                         </Card>
-                        <TopTenWidget
+                        <RoutingTopTenWidget
                             joined
                             title="Top 10 Occupations by"
                             primaryTable={tablename}
                             secondaryTable="occupations_major"
                             id={id}
-                            total_employment={industryData.total_employment}
+                            totalEmployment={industryData.total_employment}
                         />
                         <div style={{ padding: '1em' }}>
                             <RoutingDataTable data={occupationData} secondaryTable="occupations_major" />

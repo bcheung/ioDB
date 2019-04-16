@@ -4,7 +4,7 @@ import './stylesheets/styles.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import { TopTenWidget, WageSalaryTable } from '.';
+import { RoutingTopTenWidget, WageSalaryTable } from '.';
 // picture of flag?
 
 class LocationData extends Component {
@@ -28,13 +28,13 @@ class LocationData extends Component {
                 <WageSalaryTable data={data} />
                 <br />
 
-                <TopTenWidget
+                <RoutingTopTenWidget
                     joined
                     title="Top 10 Occupations by"
                     primaryTable={primaryTable}
                     secondaryTable="occupations_major"
                     id={id}
-                    total_employment={data.total_employment}
+                    totalEmployment={data.total_employment}
                 />
             </Card>
         );
