@@ -12,33 +12,10 @@ class BarComponent extends Component {
 
     // Constuctor runs when component is initialzied
     constructor(props) {
-        super(props); // Pass properties to compnents(idk what properties)
-        // Like things such as height
-        // so when we call this component we can pass in height like such:
-        // <Chart height="200"/>
-
-        // to create state
-
-        // My question is how do we pass in values to the state
-
-        // NOTE: Apparently, we should have blank data inbetween labels and datasets when
-        // passing in actual data?
-
-        // NEED TO UNDERSTAND:
-
-        /** 1. Distinguishing which chart component to create
-         *
-         * We need to understand how to distinguish between which chart component to make
-         * pie, line, or bar, when passed in a property
-         * so essentially we need an if and else statement in this constructor
-         *
-         * 2. Passing in the data from the parent into the state data[DONE]
-         * We need to figure out how to take data passed in from parent and into the data
-         */
+        super(props);
         this.state = {
             data: {}
         };
-        // this.setState({ data: props.data });
     }
 
     getChartData = canvas => {

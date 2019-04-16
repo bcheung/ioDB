@@ -1,12 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import IndustryInstancePage from './IndustryInstancePage';
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 
-it('renders without crashing', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(<IndustryInstancePage />, div);
-    ReactDOM.unmountComponentAtNode(div);
-});
+import CheckboxWithLabel from './CheckboxWithLabel';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 it('CheckboxWithLabel changes the text after click', () => {
     // Render a checkbox with label in the document
