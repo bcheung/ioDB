@@ -1,18 +1,16 @@
 import React from 'react';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
+import { render, fireEvent, cleanup } from 'react-testing-library';
 import CheckboxWithLabel from './CheckboxWithLabel';
 
-Enzyme.configure({ adapter: new Adapter() });
+// automatically unmount and cleanup DOM after the test is finished.
+afterEach(cleanup);
 
 it('CheckboxWithLabel changes the text after click', () => {
-    // Render a checkbox with label in the document
-    const checkbox = shallow(<CheckboxWithLabel labelOn="On" labelOff="Off" />);
+    const { queryByLabelText, getByLabelText } = render(<CheckboxWithLabel labelOn="On" labelOff="Off" />);
 
-    expect(checkbox.text()).toEqual('Off');
+    expect(queryByLabelText(/off/i)).toBeTruthy();
 
-    checkbox.find('input').simulate('change');
+    fireEvent.click(getByLabelText(/off/i));
 
-    expect(checkbox.text()).toEqual('On');
+    expect(queryByLabelText(/on/i)).toBeTruthy();
 });

@@ -11,16 +11,24 @@ import BarComponent from '../BarComponent';
  *  3. Given Non Null
  *
  */
-
+Enzyme.configure({ adapter: new Adapter() });
 // Before Each Test could fit in here and will give hardcoded data
-const { data } = [];
+const data = {
+    data: [1000, 1000]
+};
+
+const nullData = {
+    data: null
+};
 
 it('CheckboxWithLabel changes the text after click', () => {
     // Render a checkbox with label in the document
-    const checkbox = shallow(<BarComponent data={data} />);
+    const checkbox = shallow(<BarComponent data={nullData.data} />);
 
-    expect(checkbox.toExist());
+    // expect(checkbox.find('div').equals(!null));
 
+    expect(checkbox.isEmpty);
+    //  expect(checkbox.isEmpty);
     //  checkbox.find('input').simulate('change');
 
     //  expect(checkbox.text()).toEqual('On');

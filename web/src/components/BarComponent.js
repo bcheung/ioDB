@@ -4,7 +4,7 @@ import { Bar } from 'react-chartjs-2';
 // Conditionally display Bar or Pie Chart depending on property passed
 // What property is actually passed?
 
-class BarComponent extends Component {
+export default class BarComponent extends Component {
     static defaultProps = {
         data: {}
     };
@@ -42,5 +42,3 @@ class BarComponent extends Component {
         );
     }
 }
-
-export { BarComponent };
