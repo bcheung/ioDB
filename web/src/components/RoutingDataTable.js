@@ -15,16 +15,22 @@ import {
 import { WageSalaryTable } from './WageSalaryTable';
 import { FilterColumnComponent } from './FilterColumnComponent';
 
-function filterRow(filter, row) {
+function filterNum(filter, row) {
     const { option, value } = filter.value;
     const rowValue = row._original[filter.id].value;
-    if (option === 'gte') {
-        return rowValue >= value;
+    if (value === '') {
+        return true;
     }
-    if (option === 'e') {
-        return rowValue === filter.value.value;
+    switch (option) {
+        case 1:
+            return rowValue >= value;
+        case 2:
+            return rowValue === value;
+        case 3:
+            return rowValue <= value;
+        default:
+            return true;
     }
-    return rowValue <= filter.value.value;
 }
 
 function createColumns(secondaryTable, population) {
@@ -36,7 +42,9 @@ function createColumns(secondaryTable, population) {
                     id: 'id', // Required because our accessor is not a string
                     Header: 'ID',
                     accessor: d => d[secondaryTable].id,
-                    width: 75
+                    width: 100,
+                    filterMethod: (filter, rows) => matchSorter(rows, filter.value, { keys: ['id'] }),
+                    filterAll: true
                 },
                 {
                     id: 'title',
@@ -54,14 +62,18 @@ function createColumns(secondaryTable, population) {
                     id: employmentStats.value,
                     Header: employmentStats.label,
                     accessor: `${employmentStats.value}.label`,
-                    filterMethod: (filter, row) => filterRow(filter, row),
+                    filterMethod: (filter, row) => filterNum(filter, row),
                     Filter: ({ filter, onChange }) => <FilterColumnComponent filter={filter} onChange={onChange} />
                 }
                 // ...(population
                 //     ? [
                 //           {
                 //               Header: popStats.label,
-                //               accessor: `${popStats.value}_label`
+                //               accessor: `${popStats.value}_label`,
+                //               filterMethod: (filter, row) => filterRow(filter, row),
+                //               Filter: ({ filter, onChange }) => (
+                //                   <FilterColumnComponent filter={filter} onChange={onChange} />
+                //               )
                 //           }
                 //       ]
                 //     : [])
@@ -74,7 +86,7 @@ function createColumns(secondaryTable, population) {
                     id: column.value,
                     Header: column.label,
                     accessor: `${column.value}.label`,
-                    filterMethod: (filter, row) => filterRow(filter, row),
+                    filterMethod: (filter, row) => filterNum(filter, row),
                     Filter: ({ filter, onChange }) => <FilterColumnComponent filter={filter} onChange={onChange} />
                 }))
             ]
@@ -86,7 +98,7 @@ function createColumns(secondaryTable, population) {
                     id: column.value,
                     Header: column.label,
                     accessor: `${column.value}.label`,
-                    filterMethod: (filter, row) => filterRow(filter, row),
+                    filterMethod: (filter, row) => filterNum(filter, row),
                     Filter: ({ filter, onChange }) => <FilterColumnComponent filter={filter} onChange={onChange} />
                 }))
             ]

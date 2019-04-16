@@ -113,9 +113,17 @@ export function formatNum(num) {
 }
 
 export const formatterType = {
+    hourly_10: formatWage,
+    hourly_25: formatWage,
     hourly_median: formatWage,
+    hourly_75: formatWage,
+    hourly_90: formatWage,
     hourly_mean: formatWage,
+    annual_10: formatSalary,
+    annual_25: formatSalary,
     annual_median: formatSalary,
+    annual_75: formatSalary,
+    annual_90: formatSalary,
     annual_mean: formatSalary,
     total_employment: formatNum,
     total_population: formatNum
