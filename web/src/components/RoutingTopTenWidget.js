@@ -58,8 +58,10 @@ class TopTenWidget extends Component {
         }
 
         if (isPieGraph) {
-            labelArray.push('Other');
-            dataArray.push(totalEmployment - sum);
+            if (joined) {
+                labelArray.push('Other');
+                dataArray.push(totalEmployment - sum);
+            }
             instanceData = {
                 labels: labelArray,
                 datasets: [

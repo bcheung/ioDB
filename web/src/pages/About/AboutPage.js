@@ -151,7 +151,7 @@ class AboutPage extends Component {
         const response = await fetch(url); // make get request to url and wait until response is returned
         const data = await response.json(); // convert response to a json object and wait until the data is returned
         // loop through array
-        console.log(data);
+        console.log('fetchCommits', data);
         data.forEach(contributor => {
             // for each element in array (contributor is the variable for the element)
             // do something
@@ -169,6 +169,7 @@ class AboutPage extends Component {
 
         const response = await fetch(url);
         const data = await response.json();
+        console.log('fetchIssues', data);
         data.forEach(issue => {
             const username = issue.user.login;
             contributorStats[username].issues++;

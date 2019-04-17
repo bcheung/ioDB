@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import { Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Row } from 'reactstrap';
 import { HashRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import HomePage from '../Home/HomePage';
 import AboutPage from '../About/AboutPage';
@@ -37,7 +37,7 @@ class App extends Component {
             <Router>
                 <div>
                     <Navbar color="light" light expand="md">
-                        <NavbarBrand href="/">ioDB</NavbarBrand>
+                        <NavbarBrand href="#/">ioDB</NavbarBrand>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
                                 <NavLink href="#/">Home</NavLink>
@@ -71,6 +71,7 @@ class App extends Component {
                         <Route path="/location/:tablename/:id" component={LocationInstancePage} />
                         <Route path="/location" component={LocationInstancePage} />
                     </Switch>
+                    <Row style={{ height: '200px' }} />
                 </div>
             </Router>
         );

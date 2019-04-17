@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CountryMap from '../../components/CountryMap';
 import LocationData from '../../components/LocationData';
-import { fetchInstanceData, fetchJoinedTopTenData } from '../../fetchAPI';
+import { fetchInstanceData, fetchJoinedTopTenData, fetchJoinedInstanceData } from '../../fetchAPI';
 
 class LocationInstancePage extends Component {
     constructor(props) {
@@ -11,9 +11,11 @@ class LocationInstancePage extends Component {
             state: null,
             showStateInfo: false,
             stateData: null,
+            stateOccData: null,
             MSA: null,
             showMSAInfo: false,
-            MSAData: null
+            MSAData: null,
+            msaOccData: null
         };
     }
 
@@ -61,6 +63,7 @@ class LocationInstancePage extends Component {
         // const response = await axios.get(`${url}`);
 
         const stateData = await fetchInstanceData('states', geographyProps.ID);
+        const stateOccData = await fetchJoinedInstanceData('states', 'occupations_major', geographyProps.ID);
 
         // const proxyurl = 'https://cors-anywhere.herokuapp.com/';
         // const url = 'http://www.iodb.info/api/instance/states/'+geographyProps.ID;
@@ -80,6 +83,7 @@ class LocationInstancePage extends Component {
             },
             showStateInfo: true,
             stateData,
+            stateOccData,
             showMSAInfo: false
         });
 
@@ -90,28 +94,25 @@ class LocationInstancePage extends Component {
         const stateInitial = geographyProps.NAME.substring(geographyProps.NAME.length - 2);
 
         const MSAData = await fetchInstanceData('metro_areas', geographyProps.GEOID);
-        // const proxyurl = 'https://cors-anywhere.herokuapp.com/';
-        // const url = 'http://www.iodb.info/api/instance/metro_areas/'+geographyProps.GEOID;
+        if (MSAData) {
+            const msaOccData = await fetchJoinedInstanceData('metro_areas', 'occupations_major', geographyProps.GEOID);
+            if (Object.keys(MSAData).length === 0) {
+                return null;
+            }
 
-        // const response = await axios.get(`${url}`);
-        // const response = await axios.get(`${proxyurl}${url}`);
-        // const data = response.data;
-
-        if (Object.keys(MSAData).length === 0) {
-            return null;
+            // console.log(response);
+            // console.log(data);
+            this.setState({
+                MSA: {
+                    name: geographyProps.NAME,
+                    initial: stateInitial,
+                    id: geographyProps.GEOID
+                },
+                showMSAInfo: true,
+                MSAData,
+                msaOccData
+            });
         }
-
-        // console.log(response);
-        // console.log(data);
-        this.setState({
-            MSA: {
-                name: geographyProps.NAME,
-                initial: stateInitial,
-                id: geographyProps.GEOID
-            },
-            showMSAInfo: true,
-            MSAData
-        });
     };
 
     handleReset = () => {
@@ -128,7 +129,7 @@ class LocationInstancePage extends Component {
     render() {
         const { tablename, id } = this.props.match.params;
         console.log('render', tablename, id);
-        const { showStateInfo, showMSAInfo, state, stateData, MSA, MSAData } = this.state;
+        const { showStateInfo, showMSAInfo, state, stateData, stateOccData, MSA, MSAData, msaOccData } = this.state;
         return (
             <div>
                 <CountryMap
@@ -139,8 +140,12 @@ class LocationInstancePage extends Component {
                     id={id}
                 />
                 <br />
-                {showMSAInfo ? <LocationData data={MSAData} primaryTable="metro_areas" id={MSA.id} /> : null}
-                {showStateInfo ? <LocationData data={stateData} primaryTable="states" id={state.id} /> : null}
+                {showMSAInfo ? (
+                    <LocationData instanceData={MSAData} occData={msaOccData} primaryTable="metro_areas" id={MSA.id} />
+                ) : null}
+                {showStateInfo ? (
+                    <LocationData instanceData={stateData} occData={stateOccData} primaryTable="states" id={state.id} />
+                ) : null}
             </div>
         );
     }

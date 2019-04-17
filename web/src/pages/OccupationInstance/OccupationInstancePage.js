@@ -220,38 +220,6 @@ class OccupationInstancePage extends Component {
         this.setState(state => ({ collapse: !state.collapse }));
     };
 
-    renderGraphs = () => {
-        const { tablename, id } = this.props.match.params;
-
-        const { occupationData } = this.state;
-
-        if (occupationData) {
-            return (
-                <div style={{ margin: 'auto' }}>
-                    <RoutingTopTenWidget
-                        joined
-                        title="Top 10 Major Industries by"
-                        primaryTable={tablename}
-                        secondaryTable="industries_3d"
-                        id={id}
-                        totalEmployment={occupationData.total_employment}
-                    />
-
-                    <RoutingTopTenWidget
-                        joined
-                        title="Top 10 States by"
-                        // population
-                        primaryTable={tablename}
-                        secondaryTable="states"
-                        id={id}
-                        totalEmployment={occupationData.total_employment}
-                        // total_population={occupationData.total_population}
-                    />
-                </div>
-            );
-        }
-    };
-
     render() {
         console.log('render');
         const { tablename, id } = this.props.match.params;
@@ -284,12 +252,29 @@ class OccupationInstancePage extends Component {
                                     <br />
                                 </Card>
                             </Row>
-                            <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>{this.renderGraphs()}</Row>
-                            <div style={{ padding: '1em' }}>
-                                <RoutingDataTable data={locationData} secondaryTable="states" population />
-                            </div>
+                            <RoutingTopTenWidget
+                                joined
+                                title="Top 10 Major Industries by"
+                                primaryTable={tablename}
+                                secondaryTable="industries_3d"
+                                id={id}
+                                totalEmployment={occupationData.total_employment}
+                            />
                             <div style={{ padding: '1em' }}>
                                 <RoutingDataTable data={industryData} secondaryTable="industries_3d" />
+                            </div>
+                            <RoutingTopTenWidget
+                                joined
+                                title="Top 10 States by"
+                                // population
+                                primaryTable={tablename}
+                                secondaryTable="states"
+                                id={id}
+                                totalEmployment={occupationData.total_employment}
+                                // total_population={occupationData.total_population}
+                            />
+                            <div style={{ padding: '1em' }}>
+                                <RoutingDataTable data={locationData} secondaryTable="states" population />
                             </div>
                             <Row>{<h1>Where are {occupationData.title} located?</h1>}</Row>
                         </Col>
@@ -298,7 +283,6 @@ class OccupationInstancePage extends Component {
                     <LoadingComponent />
                 )}
                 <div style={{ height: '500px' }} ref={el => (this.mapContainer = el)} />
-                <Row style={{ height: '200px' }} />
             </Container>
         );
     }

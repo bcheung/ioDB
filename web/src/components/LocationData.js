@@ -6,6 +6,7 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import { RoutingTopTenWidget, WageSalaryTable } from '.';
 // picture of flag?
+import { RoutingDataTable } from './RoutingDataTable';
 
 class LocationData extends Component {
     constructor(props) {
@@ -14,18 +15,18 @@ class LocationData extends Component {
     }
 
     render() {
-        const { data, primaryTable, id } = this.props;
+        const { instanceData, primaryTable, id, occData } = this.props;
         return (
-            <Card className="container wage-data">
+            <Card className="container wage-instanceData">
                 <CardHeader>
-                    <h1>{data.title}</h1>
+                    <h1>{instanceData.title}</h1>
                     <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-                        <Col className="text-center">Total Population: {data.total_population}</Col>
-                        <Col className="text-center">Total Employment: {data.total_employment}</Col>
+                        <Col className="text-center">Total Population: {instanceData.total_population}</Col>
+                        <Col className="text-center">Total Employment: {instanceData.total_employment}</Col>
                     </Row>
                 </CardHeader>
                 <br />
-                <WageSalaryTable data={data} />
+                <WageSalaryTable data={instanceData} />
                 <br />
 
                 <RoutingTopTenWidget
@@ -34,8 +35,11 @@ class LocationData extends Component {
                     primaryTable={primaryTable}
                     secondaryTable="occupations_major"
                     id={id}
-                    totalEmployment={data.total_employment}
+                    totalEmployment={instanceData.total_employment}
                 />
+                <div style={{ padding: '1em' }}>
+                    <RoutingDataTable data={occData} secondaryTable="occupations_major" />
+                </div>
             </Card>
         );
     }
