@@ -234,6 +234,8 @@ class OccupationInstancePage extends Component {
                                 title={occupationData.title}
                                 idLabel="Occupation Code"
                                 id={occupationData.id}
+                                totalEmployment={occupationData.total_employment}
+                                description={occupationData.description}
                             />
                             {isMajorModel[tablename] && occupationData ? (
                                 <DetailedInstanceList

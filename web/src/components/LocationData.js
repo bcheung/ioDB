@@ -7,6 +7,7 @@ import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import { RoutingTopTenWidget, WageSalaryTable } from '.';
 // picture of flag?
 import { RoutingDataTable } from './RoutingDataTable';
+import { formatNum } from '../constants';
 
 class LocationData extends Component {
     constructor(props) {
@@ -21,8 +22,8 @@ class LocationData extends Component {
                 <CardHeader>
                     <h1>{instanceData.title}</h1>
                     <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-                        <Col className="text-center">Total Population: {instanceData.total_population}</Col>
-                        <Col className="text-center">Total Employment: {instanceData.total_employment}</Col>
+                        <Col className="text-center">Total Employment: {formatNum(instanceData.total_employment)}</Col>
+                        <Col className="text-center">Total Population: {formatNum(instanceData.total_population)}</Col>
                     </Row>
                 </CardHeader>
                 <br />
