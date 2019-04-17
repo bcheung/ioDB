@@ -14,7 +14,8 @@ export default class BarComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: {}
+            data: {},
+            test: false
         };
     }
 
