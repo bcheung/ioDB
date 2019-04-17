@@ -90,11 +90,21 @@ class TopTenWidget extends Component {
                 datasets: [
                     {
                         label: selectedColumn.label,
-                        backgroundColor: 'rgba(255,99,132,1)',
-                        borderColor: 'rgba(255,99,132,1)',
+                        backgroundColor: [
+                            'rgba(252,135,186,1)',
+                            'rgba(186,198,230,1)',
+                            'rgba(250,225,201,1)',
+                            'rgba(165,216,255,1)',
+                            'rgba(255,188,201,1)',
+                            'rgba(203,247,237,1)',
+                            'rgba(160,155,229,1)',
+                            'rgba(140,237,167,1)',
+                            'rgba(252,246,189,1)',
+                            'rgba(57,122,215,1)'
+                        ],
                         borderWidth: 1,
-                        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                        hoverBorderColor: 'rgba(255,99,132,1)',
+                        // hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                        // hoverBorderColor: 'rgba(255,99,132,1)',
                         data: dataArray
                     }
                 ]

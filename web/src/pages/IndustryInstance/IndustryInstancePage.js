@@ -93,6 +93,7 @@ class IndustryInstancePage extends Component {
                             idLabel="NAICS Code"
                             id={industryData.id}
                             totalEmployment={industryData.total_employment}
+                            description={industryData.description}
                         />
                         {isMajorModel[tablename] && industryData ? (
                             <DetailedInstanceList

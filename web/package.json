@@ -36,6 +36,7 @@
         "react-select": "^2.4.2",
         "react-simple-maps": "^0.12.1",
         "react-table": "^6.9.2",
+        "react-tooltip": "^3.10.0",
         "reactstrap": "^7.1.0"
     },
     "scripts": {
