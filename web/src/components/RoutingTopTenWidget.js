@@ -107,6 +107,27 @@ class TopTenWidget extends Component {
         // this.fetchStats();
     };
 
+    handleClick = elems => {
+        if (elems.length > 0) {
+            const { data } = this.state;
+            const { primaryTable, secondaryTable, history, joined } = this.props;
+
+            const index = elems[0]._index;
+            if (index < data.length) {
+                const instance = data[index];
+
+                console.log(elems);
+                if (joined) {
+                    const route = getModelRoutes[secondaryTable];
+                    history.push(`/${route}/${secondaryTable}/${instance[secondaryTable].id}`);
+                } else {
+                    const route = getModelRoutes[primaryTable];
+                    history.push(`/${route}/${primaryTable}/${instance.id}`);
+                }
+            }
+        }
+    };
+
     fetchStats() {
         const { selectedColumn } = this.state;
         console.log(selectedColumn);
@@ -125,25 +146,6 @@ class TopTenWidget extends Component {
             });
         }
     }
-
-    handleClick = elems => {
-        const { data } = this.state;
-        const { primaryTable, secondaryTable, history, joined } = this.props;
-
-        const index = elems[0]._index;
-        if (index < data.length) {
-            const instance = data[index];
-
-            console.log(elems);
-            if (joined) {
-                const route = getModelRoutes[secondaryTable];
-                history.push(`/${route}/${secondaryTable}/${instance[secondaryTable].id}`);
-            } else {
-                const route = getModelRoutes[primaryTable];
-                history.push(`/${route}/${primaryTable}/${instance.id}`);
-            }
-        }
-    };
 
     render() {
         const { selectedColumn, instanceData, isPieGraph } = this.state;

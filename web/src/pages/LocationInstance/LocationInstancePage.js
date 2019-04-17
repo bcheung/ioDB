@@ -139,8 +139,8 @@ class LocationInstancePage extends Component {
                     id={id}
                 />
                 <br />
-                {showStateInfo ? <LocationData data={stateData} primaryTable="states" id={state.id} /> : null}
                 {showMSAInfo ? <LocationData data={MSAData} primaryTable="metro_areas" id={MSA.id} /> : null}
+                {showStateInfo ? <LocationData data={stateData} primaryTable="states" id={state.id} /> : null}
             </div>
         );
     }
