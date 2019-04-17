@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ComposableMap, ZoomableGroup, Geographies, Geography } from 'react-simple-maps';
-import { geoAlbersUsa } from 'd3-geo';
-import { geoPath } from 'd3-geo';
+import { Button } from 'reactstrap';
+import { geoAlbersUsa, geoPath } from 'd3-geo';
 import { geoTimes } from 'd3-geo-projection';
 import { Motion, spring } from 'react-motion';
 import stateData from '../static/usa-map.json';
@@ -22,10 +22,6 @@ class CountryMap extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            initial: {
-                tablename: props.tablename !== undefined ? props.tablename : '',
-                id: props.id !== undefined ? props.id : ''
-            },
             center: [-97, 40],
             zoom: 1,
             detail: false,
@@ -44,70 +40,18 @@ class CountryMap extends Component {
         };
     }
 
-    // componentDidMount() {
-    //   console.log(this.props);
-    //   if(this.props.id !== undefined) {
-    //     if(this.props.id !== this.state.state.id && this.props.id !== this.state.MSA.id) {
-    //       this.setState({
-    //         initial: {
-    //           tablename: this.props.tablename,
-    //           id: this.props.id,
-    //         },
-    //       });
-    //     }
-    //   }
-    // }
-
     shouldComponentUpdate(nextProps, nextState) {
         console.log('shouldComponentUpdate CountryMap', this.state);
         if (nextProps.tablename !== this.props.tablename || nextProps.id !== this.props.id) {
-            // this.setState({ isDataLoaded: false });
             console.log('false props', nextProps.id);
-            // const { tablename, id } = nextProps.match.params;
-            // this.fetchData(tablename, id);
-            // this.setState({
-            //     initial: {
-            //         tablename: nextProps.tablename !== undefined ? nextProps.tablename : '',
-            //         id: nextProps.id !== undefined ? nextProps.id : ''
-            //     }
-            // });
             const { stateGeos } = this.state;
             this.handleStateClick(stateGeos[nextProps.id]);
             return false;
         }
-        // if (
-        //     nextState.initial.tablename !== this.state.initial.tablename ||
-        //     nextState.initial.id !== this.state.initial.id
-        // ) {
-        //     // this.setState({ isDataLoaded: false });
-        //     console.log('true state', nextState.initial.id);
-        //     // const { tablename, id } = nextProps.match.params;
-        //     // this.fetchData(tablename, id);
-
-        //     return true;
-        // }
-        // if (nextState.stateGeo !== this.state.stateGeo) {
-        //     console.log('false stateGeo', nextState.stateGeo);
-        //     this.handleStateClick(nextState.stateGeo);
-        //     return false;
-        // }
-        if (nextState.zoom !== this.state.zoom) {
-            console.log('true zoom', nextState.zoom);
+        if (nextState.state !== this.state.state) {
+            console.log('true state', nextState.state);
             return true;
         }
-        // if (nextState.showStateInfo !== this.state.showStateInfo || nextState.showMSAInfo !== this.state.showMSAInfo) {
-        //     // this.setState({ isDataLoaded: false });
-        //     console.log('shouldComponentUpdate true fetch state');
-        //     // const { tablename, id } = nextProps.match.params;
-        //     // this.fetchData(tablename, id);
-        //     return true;
-        // }
-        // // if (nextState.isDataLoaded) {
-        // //     console.log('shouldComponentUpdate true', nextProps, nextState);
-        // //     return true;
-        // // }
-        // // console.log('shouldComponentUpdate false', nextState);
-        // return false;
         return false;
     }
 
@@ -135,6 +79,9 @@ class CountryMap extends Component {
             const dx = bounds[1][0] - bounds[0][0];
             const dy = bounds[1][1] - bounds[0][1];
             zoom = 0.07 / Math.max(dx / this.props.width, dy / this.props.height);
+            if (zoom > 8) {
+                zoom = 8;
+            }
         }
         console.log(zoom);
         this.setState({
@@ -169,10 +116,10 @@ class CountryMap extends Component {
             .scale(160);
 
     render() {
-        console.log('render countrymap', this.state.initial.id);
+        console.log('render countrymap', this.props.id);
         return (
             <div style={wrapperStyles}>
-                <button onClick={this.handleReset}>Reset</button>
+                <Button onClick={this.handleReset}>Reset</Button>
                 <Motion
                     defaultStyle={{
                         zoom: this.state.zoom,
@@ -204,7 +151,7 @@ class CountryMap extends Component {
                                         this.setState({ stateGeos });
                                         return geographies.map((stateGeo, i) => {
                                             stateGeos[stateGeo.properties.ID] = stateGeo;
-                                            if (this.state.initial.id === stateGeo.properties.ID) {
+                                            if (this.props.id === stateGeo.properties.ID) {
                                                 this.setState({ stateGeo });
                                                 this.handleStateClick(stateGeo);
                                             }
@@ -244,7 +191,7 @@ class CountryMap extends Component {
                                                                       outline: 'none'
                                                                   },
                                                                   pressed: {
-                                                                      fill: '#FF5722',
+                                                                      fill: '#8294a5',
                                                                       stroke: '#607D8B',
                                                                       strokeWidth: 0.75,
                                                                       outline: 'none'
@@ -258,21 +205,20 @@ class CountryMap extends Component {
                                 </Geographies>
                                 <Geographies geography={msaData} disableOptimization>
                                     {(geographies, projection) =>
-                                        geographies.map((geography, i) => {
+                                        geographies.map((msaGeo, i) => {
                                             if (
-                                                geography.properties.NAME.substring(
-                                                    geography.properties.NAME.length - 2
-                                                ) !== this.state.state.initial
+                                                msaGeo.properties.NAME.substring(msaGeo.properties.NAME.length - 2) !==
+                                                this.state.state.initial
                                             ) {
                                                 return null;
                                             }
-                                            if (this.state.initial.id === geography.properties.GEOID) {
-                                                this.handleMSAClick(geography);
+                                            if (this.props.id === msaGeo.properties.GEOID) {
+                                                this.handleMSAClick(msaGeo);
                                             }
                                             return (
                                                 <Geography
                                                     key={i}
-                                                    geography={geography}
+                                                    geography={msaGeo}
                                                     projection={projection}
                                                     onClick={this.handleMSAClick}
                                                     style={{

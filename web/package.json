@@ -12,6 +12,7 @@
         "d3": "^5.9.2",
         "d3-array": "^2.0.3",
         "d3-geo": "^1.11.3",
+        "d3-geo-projection": "^2.6.0",
         "d3-scale": "^3.0.0",
         "datamaps": "^0.5.9",
         "immutable": "^4.0.0-rc.12",

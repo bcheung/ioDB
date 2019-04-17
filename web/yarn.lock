@@ -3412,7 +3412,17 @@ d3-geo-projection@1.2.2:
     d3-array "1"
     d3-geo "^1.1.0"
 
-d3-geo@1, d3-geo@^1.1.0, d3-geo@^1.11.3:
+d3-geo-projection@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/d3-geo-projection/-/d3-geo-projection-2.6.0.tgz#a0acf97be5e6da251e7b0564268b58e0e6a1dc28"
+  integrity sha512-snlzliB5q8SgzvYG2iVp4wRM+qmWbCY5nO2sWIbChRFiR3PD3NayOgNVTtdBoC70eY3QWI9z6dmzy8Qi7q0IQA==
+  dependencies:
+    commander "2"
+    d3-array "1"
+    d3-geo "^1.10.0"
+    resolve "^1.1.10"
+
+d3-geo@1, d3-geo@^1.1.0, d3-geo@^1.10.0, d3-geo@^1.11.3:
   version "1.11.3"
   resolved "https://registry.yarnpkg.com/d3-geo/-/d3-geo-1.11.3.tgz#5bb08388f45e4b281491faa72d3abd43215dbd1c"
   integrity sha512-n30yN9qSKREvV2fxcrhmHUdXP9TNH7ZZj3C/qnaoU0cVf/Ea85+yT7HY7i8ySPwkwjCNYtmKqQFTvLFngfkItQ==
@@ -9979,7 +9989,7 @@ resolve@1.1.7:
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
   integrity sha1-IDEU2CrSxe2ejgQRs5ModeiJ6Xs=
 
-resolve@1.10.0, resolve@^1.1.5, resolve@^1.10.0, resolve@^1.3.2, resolve@^1.5.0, resolve@^1.6.0, resolve@^1.8.1, resolve@^1.9.0:
+resolve@1.10.0, resolve@^1.1.10, resolve@^1.1.5, resolve@^1.10.0, resolve@^1.3.2, resolve@^1.5.0, resolve@^1.6.0, resolve@^1.8.1, resolve@^1.9.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.10.0.tgz#3bdaaeaf45cc07f375656dfd2e54ed0810b101ba"
   integrity sha512-3sUr9aq5OfSg2S9pNtPA9hL1FVEAjvfOC4leW0SNf/mpnaakz2a9femSd6LqAww2RaFctwyf1lCqnTHuF1rxDg==
