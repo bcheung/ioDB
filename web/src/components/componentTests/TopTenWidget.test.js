@@ -3,7 +3,7 @@ import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import ReactDOM from 'react-dom';
 import BarComponent from '../BarComponent';
-import TopTenWidget from '../TopTenWidget';
+import { TopTenWidget } from '../TopTenWidget';
 
 /** Location Data Test:
  *
@@ -98,36 +98,13 @@ const dataTest = {
     ]
 };
 
-const nullData = {
-    data: null
-};
-
-it('Bar Component renders without crashing', () => {
+it('Top Ten Widget Component renders without crashing', () => {
     const div = document.createElement('div');
     const match = {
         data: [1000, 1000]
     };
-    ReactDOM.render(<BarComponent data={dataTest} />, div);
+    ReactDOM.render(<TopTenWidget data={dataTest} />, div);
     ReactDOM.unmountComponentAtNode(div);
-});
-
-it('CheckboxWithLabel changes the text after click', () => {
-    // Render a checkbox with label in the document
-    const checkbox = shallow(<BarComponent data={dataTest} />);
-
-    expect(checkbox.find('div')).toHaveLength(1);
-    expect(checkbox.find('div')).toExist();
-
-    expect(checkbox).toHaveState('test', false);
-    // expect(checkbox.find(BarComponent)).toHaveProp('data');
-});
-
-it('Test State', () => {
-    // Render a checkbox with label in the document
-    const checkbox = shallow(<BarComponent data={dataTest} />);
-
-    expect(checkbox).toHaveState('test', false);
-    // expect(checkbox.find(BarComponent)).toHaveProp('data');
 });
 
 it('Test TopTenWidget', () => {
@@ -139,6 +116,7 @@ it('Test TopTenWidget', () => {
             secondaryTable="occupations_major"
             id="1"
             total_employment={industryData.total_employment}
+            instanceData={instanceData}
         />
     );
 
@@ -149,6 +127,11 @@ it('Test TopTenWidget', () => {
     expect(widget).toHaveProp('title', 'Top 10 Occupations by');
 
     expect(widget).toHaveProp('total_employment', industryData.total_employment);
+
+    expect(widget).toExist();
 });
 
-/** What format entails industryData */
+it('Test TopTenWidget Null Value', () => {
+    // Render a checkbox with label in the document
+    const widget = mount(<TopTenWidget />);
+});
