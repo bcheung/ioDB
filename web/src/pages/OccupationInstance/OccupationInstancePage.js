@@ -71,6 +71,7 @@ class OccupationInstancePage extends Component {
 
     componentDidMount() {
         const { tablename, id } = this.props.match.params;
+        console.log('componentDidMount');
         this.fetchData(tablename, id);
     }
 
