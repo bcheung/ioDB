@@ -12,7 +12,8 @@ import {
     WageSalaryTable,
     InstanceInfo,
     LoadingComponent,
-    RoutingDataTable
+    RoutingDataTable,
+    ChoreplethMap
 } from '../../components';
 
 mapboxgl.accessToken =
@@ -96,88 +97,89 @@ class OccupationInstancePage extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         const { isDataLoaded, isMapLoaded } = this.state;
-        if (isDataLoaded && isMapLoaded) {
-            this.setHeatMapping();
-        } else if (isDataLoaded) {
+        // if (isDataLoaded && isMapLoaded) {
+        // this.setHeatMapping();
+        // } else
+        if (isDataLoaded) {
             this.loadMap();
         }
     }
 
     loadMap = () => {
         console.log('loadMap');
-        map = new mapboxgl.Map({
-            container: this.mapContainer,
-            style: 'mapbox://styles/mapbox/light-v10',
-            center: [-96, 40],
-            zoom: 2.25
-        });
+        // map = new mapboxgl.Map({
+        //     container: this.mapContainer,
+        //     style: 'mapbox://styles/mapbox/light-v10',
+        //     center: [-96, 40],
+        //     zoom: 2.25
+        // });
 
-        map.on('load', () => {
-            map.addSource('states', {
-                type: 'vector',
-                url: 'mapbox://mapbox.us_census_states_2015'
-            });
-            const expression = ['match', ['get', 'STATE_ID']];
-            expression.push('rgba(0,0,0,0)');
-            expression.push('rgba(0,0,0,0)');
-            expression.push('rgba(0,0,0,0)');
+        // map.on('load', () => {
+        //     map.addSource('states', {
+        //         type: 'vector',
+        //         url: 'mapbox://mapbox.us_census_states_2015'
+        //     });
+        //     const expression = ['match', ['get', 'STATE_ID']];
+        //     expression.push('rgba(0,0,0,0)');
+        //     expression.push('rgba(0,0,0,0)');
+        //     expression.push('rgba(0,0,0,0)');
 
-            // Add layer from the vector tile source with data-driven style
-            map.addLayer(
-                {
-                    id: 'heat-layer',
-                    type: 'fill',
-                    source: 'states',
-                    'source-layer': 'states',
-                    paint: {
-                        'fill-color': expression,
-                        'fill-opacity': 0,
-                        'fill-opacity-transition': { duration: 500 }
-                    },
-                    transition: {
-                        duration: 2000,
-                        delay: 0
-                    }
-                },
-                'waterway-label'
-            );
-            const popup = new mapboxgl.Popup({
-                closeButton: false,
-                closeOnClick: false
-            });
-            function checkEmpty(info) {
-                return info || 'No data';
-            }
+        //     // Add layer from the vector tile source with data-driven style
+        //     map.addLayer(
+        //         {
+        //             id: 'heat-layer',
+        //             type: 'fill',
+        //             source: 'states',
+        //             'source-layer': 'states',
+        //             paint: {
+        //                 'fill-color': expression,
+        //                 'fill-opacity': 0,
+        //                 'fill-opacity-transition': { duration: 500 }
+        //             },
+        //             transition: {
+        //                 duration: 2000,
+        //                 delay: 0
+        //             }
+        //         },
+        //         'waterway-label'
+        //     );
+        //     const popup = new mapboxgl.Popup({
+        //         closeButton: false,
+        //         closeOnClick: false
+        //     });
+        //     function checkEmpty(info) {
+        //         return info || 'No data';
+        //     }
 
-            map.on('mousemove', function(e) {
-                map.getCanvas().style.cursor = 'pointer';
-                const position = {
-                    lon: e.lngLat.lng,
-                    lat: e.lngLat.lat
-                };
-                const mappopup = map.queryRenderedFeatures(e.point, {
-                    layers: ['heat-layer']
-                });
-                // const { locationData } = this.state;
-                if (mappopup.length > 0) {
-                    const stateName = mappopup[0].properties.STATE_NAME;
-                    popup
-                        .setLngLat(position)
-                        .setHTML(stateName)
-                        .addTo(map);
-                } else {
-                    popup
-                        .setLngLat(position)
-                        .setHTML('No data')
-                        .addTo(map);
-                }
-            });
-            map.on('mouseleave', function() {
-                map.getCanvas().style.cursor = '';
-                popup.remove();
-            });
-            this.setState({ isMapLoaded: true });
-        });
+        //     map.on('mousemove', function(e) {
+        //         map.getCanvas().style.cursor = 'pointer';
+        //         const position = {
+        //             lon: e.lngLat.lng,
+        //             lat: e.lngLat.lat
+        //         };
+        //         const mappopup = map.queryRenderedFeatures(e.point, {
+        //             layers: ['heat-layer']
+        //         });
+        //         // const { locationData } = this.state;
+        //         if (mappopup.length > 0) {
+        //             const stateName = mappopup[0].properties.STATE_NAME;
+        //             popup
+        //                 .setLngLat(position)
+        //                 .setHTML(stateName)
+        //                 .addTo(map);
+        //         } else {
+        //             popup
+        //                 .setLngLat(position)
+        //                 .setHTML('No data')
+        //                 .addTo(map);
+        //         }
+        //     });
+        //     map.on('mouseleave', function() {
+        //         map.getCanvas().style.cursor = '';
+        //         popup.remove();
+        //     });
+        //     this.setState({ isMapLoaded: true });
+        // });
     };
 
     setHeatMapping = () => {
@@ -279,15 +281,25 @@ class OccupationInstancePage extends Component {
                                 <RoutingDataTable data={locationData} secondaryTable="states" population />
                             </div>
                             <Row>{<h1>Where are {occupationData.title} located?</h1>}</Row>
+                            <ChoreplethMap
+                                // onStateClick={this.handleStateClick}
+                                // onMSAClick={this.handleMSAClick}
+                                // onReset={this.handleReset}
+                                // tablename={tablename}
+                                // id={id}
+                                data={locationData}
+                            />
                         </Col>
                     </div>
                 ) : (
                     <LoadingComponent />
                 )}
-                <div style={{ height: '500px' }} ref={el => (this.mapContainer = el)} />
             </Container>
         );
     }
 }
 
 export default OccupationInstancePage;
+/* {
+    <div style={{ height: '500px' }} ref={el => (this.mapContainer = el)} /> 
+} */

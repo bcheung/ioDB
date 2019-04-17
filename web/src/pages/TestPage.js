@@ -5,6 +5,7 @@ import { fetchInstanceData, fetchJoinedTopTenData, fetchJoinedInstanceData } fro
 import { RoutingTopTenWidget } from '../components/RoutingTopTenWidget';
 import { stats } from '../constants';
 import { RoutingDataTable } from '../components';
+import { ChoreplethMap } from '../components/ChoreplethMap';
 
 // {
 //     id: 'friendName', // Required because our accessor is not a string
@@ -31,10 +32,10 @@ class TestPage extends Component {
         //     console.log('constructor', data);
         // });
         // console.log('constructor onChange', this.onChange(), this.state.selectedOption);
-        fetchJoinedInstanceData('occupations_major', 'states', '11-0000').then(data => {
-            console.log('constructor', data);
-            this.setState({ data });
-        });
+        // fetchJoinedInstanceData('occupations_major', 'states', '11-0000').then(data => {
+        //     console.log('constructor', data);
+        //     this.setState({ data });
+        // });
     }
 
     render() {
@@ -54,7 +55,15 @@ class TestPage extends Component {
         //     </div>
         // );\
 
-        return <RoutingDataTable data={data} secondaryTable="states" />;
+        return (
+            <ChoreplethMap
+                onStateClick={this.handleStateClick}
+                onMSAClick={this.handleMSAClick}
+                onReset={this.handleReset}
+                // tablename={tablename}
+                // id={id}
+            />
+        );
     }
 }
 
