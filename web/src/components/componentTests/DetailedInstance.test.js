@@ -2,16 +2,16 @@ import React from 'react';
 import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import ReactDOM from 'react-dom';
-import { TopTenWidget } from '../TopTenWidget';
+import { DetailedInstanceList } from '../DetailedInstanceList';
 
-/** Location Data Test:
+/** Test:
  *
  *  Tests if component
  *
  *  1. Renders
  *  2. Given Null
  *  3. Given Non Null
- *
+ *' <DetailedInstanceList majorModel={tablename} data={industryData.industries_4d} />
  */
 Enzyme.configure({ adapter: new Adapter() });
 // Before Each Test could fit in here and will give hardcoded data
@@ -97,27 +97,18 @@ const dataTest = {
     ]
 };
 
-it('Top Ten Widget Component renders without crashing', () => {
+it('Detailed Instance Component renders without crashing', () => {
     const div = document.createElement('div');
     const match = {
         data: [1000, 1000]
     };
-    ReactDOM.render(<TopTenWidget data={dataTest} />, div);
+    ReactDOM.render(<DetailedInstanceList majorModel="arbTableName" data={industryData.industries_4d} />, div);
     ReactDOM.unmountComponentAtNode(div);
 });
 
-it('Test TopTenWidget', () => {
+it('Test DetailedInstanceList', () => {
     // Render a checkbox with label in the document
-    const widget = mount(
-        <TopTenWidget
-            joined
-            title="Top 10 Occupations by"
-            secondaryTable="occupations_major"
-            id="1"
-            total_employment={industryData.total_employment}
-            instanceData={{ instanceData }}
-        />
-    );
+    const widget = mount(<DetailedInstanceList majorModel="arbTableName" data={industryData.industries_4d} />);
 
     expect(widget).toHaveState('isPieGraph', false);
 
@@ -133,9 +124,9 @@ it('Test TopTenWidget', () => {
     //  expect(widget.props.joined).to.equal(instanceData);
 });
 
-it('Test TopTenWidget Null Value', () => {
+it('Test DetailedInstanceList Null Value', () => {
     // Render a checkbox with label in the document
-    const widget = mount(<TopTenWidget />);
+    const widget = mount(<DetailedInstanceList majorModel="arbTableName" data={industryData.industries_4d} />);
 
     // Can't pass in data b/c too complex
     expect(widget.prototype.componentDidMount).toExist();
