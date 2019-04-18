@@ -158,7 +158,7 @@ class ChoreplethMap extends Component {
                                     return (
                                         <Geography
                                             key={i}
-                                            data-tip={stateGeo.properties.NAME_1}
+                                            data-tip={stateGeo.properties.NAME_1 + data[i].loc_quotient}
                                             geography={stateGeo}
                                             projection={projection}
                                             onClick={
