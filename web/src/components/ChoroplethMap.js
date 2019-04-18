@@ -156,7 +156,7 @@ class ChoroplethMap extends Component {
                                 return geographies.map((stateGeo, i) => {
                                     stateGeos[stateGeo.properties.ID] = stateGeo;
                                     console.log('THIS DATA', data);
-                                    const tip = `${stateGeo.properties.NAME_1}\n${data[i].loc_quotient}`;
+                                    const tip = `${stateGeo.properties.NAME_1}\n${data[i].total_employment.label}`;
                                     return (
                                         <Geography
                                             key={i}
