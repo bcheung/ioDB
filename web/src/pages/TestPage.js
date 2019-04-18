@@ -5,7 +5,7 @@ import { fetchInstanceData, fetchJoinedTopTenData, fetchJoinedInstanceData } fro
 import { RoutingTopTenWidget } from '../components/RoutingTopTenWidget';
 import { stats } from '../constants';
 import { RoutingDataTable } from '../components';
-import { ChoreplethMap } from '../components/ChoreplethMap';
+import { ChoroplethMap } from '../components/ChoroplethMap';
 
 // {
 //     id: 'friendName', // Required because our accessor is not a string
@@ -56,7 +56,7 @@ class TestPage extends Component {
         // );\
 
         return (
-            <ChoreplethMap
+            <ChoroplethMap
                 onStateClick={this.handleStateClick}
                 onMSAClick={this.handleMSAClick}
                 onReset={this.handleReset}

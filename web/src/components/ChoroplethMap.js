@@ -27,7 +27,7 @@ function getMaxLocQuotient(locationData) {
     return maxLocQuotient;
 }
 
-class ChoreplethMap extends Component {
+class ChoroplethMap extends Component {
     static defaultProps = {
         width: 980,
         height: 551
@@ -216,4 +216,4 @@ class ChoreplethMap extends Component {
     }
 }
 
-export { ChoreplethMap };
+export { ChoroplethMap };
