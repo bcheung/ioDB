@@ -155,8 +155,8 @@ class ChoreplethMap extends Component {
                                 this.setState({ stateGeos });
                                 return geographies.map((stateGeo, i) => {
                                     stateGeos[stateGeo.properties.ID] = stateGeo;
-                                    const tip = `${stateGeo.properties.NAME_1} 
-                                    ${data[i].loc_quotient}`;
+                                    console.log('THIS DATA', data);
+                                    const tip = `${stateGeo.properties.NAME_1}\n${data[i].loc_quotient}`;
                                     return (
                                         <Geography
                                             key={i}
