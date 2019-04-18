@@ -54,7 +54,6 @@ function createHeatMapping(locationData) {
 
     return expression;
 }
-let map;
 
 class OccupationInstancePage extends Component {
     constructor(props) {
@@ -188,17 +187,6 @@ class OccupationInstancePage extends Component {
 
         if (isMapLoaded && locationData) {
             const expression = createHeatMapping(locationData);
-            map.setPaintProperty('heat-layer', 'fill-opacity', 0);
-
-            setTimeout(function() {
-                console.log('setTimeout', map);
-                map.setPaintProperty('heat-layer', 'fill-opacity', 1);
-            }, 1000);
-
-            setTimeout(function() {
-                console.log('setTimeout', map);
-                map.setPaintProperty('heat-layer', 'fill-color', expression);
-            }, 1000);
         }
     };
 
@@ -301,5 +289,5 @@ class OccupationInstancePage extends Component {
 
 export default OccupationInstancePage;
 /* {
-    <div style={{ height: '500px' }} ref={el => (this.mapContainer = el)} /> 
+    <div style={{ height: '500px' }} ref={el => (this.mapContainer = el)} />
 } */

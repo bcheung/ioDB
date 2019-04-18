@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ComposableMap, ZoomableGroup, Geographies, Geography } from 'react-simple-maps';
 import ReactTooltip from 'react-tooltip';
+import { scaleLinear } from 'd3-scale';
 import { Button } from 'reactstrap';
 import { geoAlbersUsa, geoPath } from 'd3-geo';
 import { geoTimes } from 'd3-geo-projection';
@@ -13,6 +14,18 @@ const wrapperStyles = {
     maxWidth: 980,
     margin: '0 auto'
 };
+
+// Finding the maximum loc_quotient value for this locationData set
+function getMaxLocQuotient(locationData) {
+    let maxLocQuotient = 0;
+    console.log('locationData array quotient calculation', locationData);
+    locationData.forEach(stateData => {
+        if (stateData.loc_quotient > maxLocQuotient) {
+            maxLocQuotient = stateData.loc_quotient;
+        }
+    });
+    return maxLocQuotient;
+}
 
 class ChoreplethMap extends Component {
     static defaultProps = {
@@ -112,7 +125,16 @@ class ChoreplethMap extends Component {
     render() {
         const { width, height, data } = this.props;
         const { zoom, center, state, detail } = this.state;
+        const maxquotient = getMaxLocQuotient(data);
+        const popScale = scaleLinear()
+            .domain([0, maxquotient / 2, maxquotient])
+            .range(['#FFFF84', '#FF8084', '#FF0084']);
 
+        const hoverScale = scaleLinear()
+            .domain([0, maxquotient / 2, maxquotient])
+            .range(['#FFFF9D', '#FF999D', '#FF339D']);
+
+        console.log('THIS IS THE DATA', data);
         return (
             <div style={wrapperStyles}>
                 <ComposableMap
@@ -159,13 +181,14 @@ class ChoreplethMap extends Component {
                                                       }
                                                     : {
                                                           default: {
-                                                              fill: '#ECEFF1',
+                                                              fill: popScale(data[i].loc_quotient),
+                                                              // fill: '#ECEFF1',
                                                               stroke: '#607D8B',
                                                               strokeWidth: 0.75,
                                                               outline: 'none'
                                                           },
                                                           hover: {
-                                                              fill: '#CFD8DC',
+                                                              fill: hoverScale(data[i].loc_quotient),
                                                               stroke: '#607D8B',
                                                               strokeWidth: 0.75,
                                                               outline: 'none'
