@@ -27,7 +27,7 @@ function getMaxLocQuotient(locationData) {
     return maxLocQuotient;
 }
 
-class ChoreplethMap extends Component {
+class ChoroplethMap extends Component {
     static defaultProps = {
         width: 980,
         height: 551
@@ -56,14 +56,18 @@ class ChoreplethMap extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         console.log('shouldComponentUpdate CountryMap', this.state);
 
-        if (nextProps.tablename !== this.props.tablename || nextProps.id !== this.props.id) {
-            console.log('false props', nextProps.id);
-            const { stateGeos } = this.state;
-            this.handleStateClick(stateGeos[nextProps.id]);
-            return false;
-        }
+        // if (nextProps.tablename !== this.props.tablename || nextProps.id !== this.props.id) {
+        //     console.log('false props', nextProps.id);
+        //     const { stateGeos } = this.state;
+        //     this.handleStateClick(stateGeos[nextProps.id]);
+        //     return false;
+        // }
         if (nextState.state !== this.state.state) {
             console.log('true state', nextState.state);
+            return true;
+        }
+        if (nextProps.data !== this.props.data) {
+            console.log('true data', nextProps.data);
             return true;
         }
         return false;
@@ -74,7 +78,7 @@ class ChoreplethMap extends Component {
 
         this.setState({
             center: [-97, 40],
-            zoom: 1,
+            zoom: 0.05,
             detail: false,
             state: ''
         });
@@ -148,15 +152,14 @@ class ChoreplethMap extends Component {
                     }}
                 >
                     <ZoomableGroup disablePanning>
-                        <Geographies geography={stateData}>
+                        <Geographies geography={stateData} disableOptimization>
                             {(geographies, projection) => {
                                 console.log('geographies', geographies);
                                 const stateGeos = {};
                                 this.setState({ stateGeos });
                                 return geographies.map((stateGeo, i) => {
                                     stateGeos[stateGeo.properties.ID] = stateGeo;
-                                    const tip = `${stateGeo.properties.NAME_1} 
-                                    ${data[i].loc_quotient}`;
+                                    const tip = `${stateGeo.properties.NAME_1}\n${data[i].jobs_1000}`;
                                     return (
                                         <Geography
                                             key={i}
@@ -216,4 +219,4 @@ class ChoreplethMap extends Component {
     }
 }
 
-export { ChoreplethMap };
+export { ChoroplethMap };

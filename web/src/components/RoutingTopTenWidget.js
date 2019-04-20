@@ -24,7 +24,7 @@ class TopTenWidget extends Component {
             prevProps.id !== this.props.id ||
             prevState.selectedColumn !== this.state.selectedColumn
         ) {
-            console.log('componentDidUpdate', prevProps.primaryTable, this.props.primaryTable);
+            // console.log('componentDidUpdate', prevProps.primaryTable, this.props.primaryTable);
             this.fetchStats();
         }
     }
@@ -36,7 +36,7 @@ class TopTenWidget extends Component {
         let instanceData = {};
         const { secondaryTable, totalEmployment } = this.props;
         const { selectedColumn } = this.state;
-        console.log('updateGraph selectedColumn', selectedColumn, data);
+        // console.log('updateGraph selectedColumn', selectedColumn, data);
         const isPieGraph = graphType[selectedColumn.value].graph === 'pie';
         let sum = 0;
         if (joined) {
@@ -114,7 +114,7 @@ class TopTenWidget extends Component {
     };
 
     handleColumnChange = selectedColumn => {
-        console.log('handleColumnChange', selectedColumn);
+        // console.log('handleColumnChange', selectedColumn);
         this.setState({ selectedColumn });
         // this.fetchStats();
     };

@@ -13,7 +13,7 @@ import {
     InstanceInfo,
     LoadingComponent,
     RoutingDataTable,
-    ChoreplethMap
+    ChoroplethMap
 } from '../../components';
 
 mapboxgl.accessToken =
@@ -281,8 +281,8 @@ class OccupationInstancePage extends Component {
                             <div style={{ padding: '1em' }}>
                                 <RoutingDataTable data={locationData} secondaryTable="states" population />
                             </div>
-                            <Row>{<h1>Where are {occupationData.title} located?</h1>}</Row>
-                            <ChoreplethMap
+                            <Row>{<h1 style={{ margin: 'auto' }}>Where are {occupationData.title} located?</h1>}</Row>
+                            <ChoroplethMap
                                 // onStateClick={this.handleStateClick}
                                 // onMSAClick={this.handleMSAClick}
                                 // onReset={this.handleReset}
