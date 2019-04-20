@@ -86,8 +86,7 @@ class LocationInstancePage extends Component {
             stateOccData,
             showMSAInfo: false
         });
-
-        // console.log(this.state.state.stateData);
+        console.log('handleStateClick', stateData);
     };
 
     handleMSAClick = async geographyProps => {
@@ -128,8 +127,8 @@ class LocationInstancePage extends Component {
 
     render() {
         const { tablename, id } = this.props.match.params;
-        console.log('render', tablename, id);
         const { showStateInfo, showMSAInfo, state, stateData, stateOccData, MSA, MSAData, msaOccData } = this.state;
+        console.log('render', tablename, id, stateData);
         return (
             <div>
                 <CountryMap
@@ -138,6 +137,7 @@ class LocationInstancePage extends Component {
                     onReset={this.handleReset}
                     tablename={tablename}
                     id={id}
+                    metroAreas={stateData ? stateData.metro_areas : null}
                 />
                 <br />
                 {showMSAInfo ? (

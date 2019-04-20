@@ -152,11 +152,11 @@ const DataTable = props => {
                             const route = getModelRoutes[secondaryTable];
                             history.push(`/${route}/${secondaryTable}/${rowInfo.original[secondaryTable].id}`);
 
-                            console.log('A Td Element was clicked!', handleOriginal);
-                            console.log('it produced this event:', e);
-                            console.log('It was in this column:', column);
-                            console.log('It was in this row:', rowInfo);
-                            console.log('It was in this table instance:', instance);
+                            // console.log('A Td Element was clicked!', handleOriginal);
+                            // console.log('it produced this event:', e);
+                            // console.log('It was in this column:', column);
+                            // console.log('It was in this row:', rowInfo);
+                            // console.log('It was in this table instance:', instance);
                         }
                         if (handleOriginal) {
                             handleOriginal();
@@ -171,7 +171,7 @@ const DataTable = props => {
                                 row[key] = { value: row[key], label: formatterType[key](row[key]) };
                             }
                         });
-                        console.log(row);
+                        // console.log(row);
 
                         return row;
                     })

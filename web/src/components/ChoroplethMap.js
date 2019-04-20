@@ -56,14 +56,18 @@ class ChoroplethMap extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         console.log('shouldComponentUpdate CountryMap', this.state);
 
-        if (nextProps.tablename !== this.props.tablename || nextProps.id !== this.props.id) {
-            console.log('false props', nextProps.id);
-            const { stateGeos } = this.state;
-            this.handleStateClick(stateGeos[nextProps.id]);
-            return false;
-        }
+        // if (nextProps.tablename !== this.props.tablename || nextProps.id !== this.props.id) {
+        //     console.log('false props', nextProps.id);
+        //     const { stateGeos } = this.state;
+        //     this.handleStateClick(stateGeos[nextProps.id]);
+        //     return false;
+        // }
         if (nextState.state !== this.state.state) {
             console.log('true state', nextState.state);
+            return true;
+        }
+        if (nextProps.data !== this.props.data) {
+            console.log('true data', nextProps.data);
             return true;
         }
         return false;
@@ -74,7 +78,7 @@ class ChoroplethMap extends Component {
 
         this.setState({
             center: [-97, 40],
-            zoom: 1,
+            zoom: 0.05,
             detail: false,
             state: ''
         });
@@ -148,15 +152,14 @@ class ChoroplethMap extends Component {
                     }}
                 >
                     <ZoomableGroup disablePanning>
-                        <Geographies geography={stateData}>
+                        <Geographies geography={stateData} disableOptimization>
                             {(geographies, projection) => {
                                 console.log('geographies', geographies);
                                 const stateGeos = {};
                                 this.setState({ stateGeos });
                                 return geographies.map((stateGeo, i) => {
                                     stateGeos[stateGeo.properties.ID] = stateGeo;
-                                    console.log('THIS DATA', data);
-                                    const tip = `${stateGeo.properties.NAME_1}\n${data[i].total_employment.label}`;
+                                    const tip = `${stateGeo.properties.NAME_1}\n${data[i].jobs_1000}`;
                                     return (
                                         <Geography
                                             key={i}

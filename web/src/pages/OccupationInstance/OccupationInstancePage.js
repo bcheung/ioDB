@@ -276,12 +276,12 @@ class OccupationInstancePage extends Component {
                                 secondaryTable="states"
                                 id={id}
                                 totalEmployment={occupationData.total_employment}
-                            // total_population={occupationData.total_population}
+                                // total_population={occupationData.total_population}
                             />
                             <div style={{ padding: '1em' }}>
                                 <RoutingDataTable data={locationData} secondaryTable="states" population />
                             </div>
-                            <Row>{<h1>Where are {occupationData.title} located?</h1>}</Row>
+                            <Row>{<h1 style={{ margin: 'auto' }}>Where are {occupationData.title} located?</h1>}</Row>
                             <ChoroplethMap
                                 // onStateClick={this.handleStateClick}
                                 // onMSAClick={this.handleMSAClick}
@@ -293,8 +293,8 @@ class OccupationInstancePage extends Component {
                         </Col>
                     </div>
                 ) : (
-                        <LoadingComponent />
-                    )}
+                    <LoadingComponent />
+                )}
             </Container>
         );
     }
