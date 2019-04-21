@@ -44,8 +44,10 @@ class ChoroplethMap extends Component {
             statesData: props.data.reduce((obj, item) => {
                 obj[item.states.id] = item;
                 return obj;
-            }, {})
+            }, {}),
+            maxquotient: getMaxLocQuotient(props.data)
         };
+        console.log(getMaxLocQuotient(props.data));
     }
 
     componentDidMount() {
@@ -75,23 +77,66 @@ class ChoroplethMap extends Component {
             .translate([this.props.width / 2, this.props.height / 2])
             .scale(160);
 
-    // renderGeography = () => {};
+    renderGeography = (projection, stateGeo, key, stateData) => {
+        const { maxquotient } = this.state;
+
+        let tip = stateGeo.properties.NAME_1;
+
+        let defaultFill = '#ECEFF1';
+        let hoverFill = '#ECEFF1';
+        let clickFill = '#ECEFF1';
+
+        if (stateData) {
+            const { loc_quotient } = stateData;
+            tip += `\n${stateData.jobs_1000}`;
+            defaultFill = scaleLinear()
+                .domain([0, maxquotient / 2, maxquotient])
+                .range(['#FFFF84', '#FF8084', '#FF0084'])(loc_quotient);
+            hoverFill = scaleLinear()
+                .domain([0, maxquotient / 2, maxquotient])
+                .range(['#FFFF9D', '#FF999D', '#FF339D'])(loc_quotient);
+            clickFill = scaleLinear()
+                .domain([0, maxquotient / 2, maxquotient])
+                .range(['#CCCC6A', '#CC666A', '#CC006A'])(loc_quotient);
+        }
+        return (
+            <Geography
+                key={key}
+                data-tip={tip}
+                data-for="state"
+                geography={stateGeo}
+                projection={projection}
+                onClick={this.handleStateClick}
+                onMouseEnter={event => {
+                    console.log('mouse entered:', event);
+                }}
+                style={{
+                    default: {
+                        fill: defaultFill,
+                        stroke: '#607D8B',
+                        strokeWidth: 0.75,
+                        outline: 'none'
+                    },
+                    hover: {
+                        fill: hoverFill,
+                        stroke: '#607D8B',
+                        strokeWidth: 0.75,
+                        outline: 'none'
+                    },
+                    pressed: {
+                        fill: clickFill,
+                        stroke: '#607D8B',
+                        strokeWidth: 0.75,
+                        outline: 'none'
+                    }
+                }}
+            />
+        );
+    };
 
     render() {
         const { width, height, data, history } = this.props;
-        const { zoom, center } = this.state;
-        const maxquotient = getMaxLocQuotient(data);
-        const popScale = scaleLinear()
-            .domain([0, maxquotient / 2, maxquotient])
-            .range(['#FFFF84', '#FF8084', '#FF0084']);
-
-        const hoverScale = scaleLinear()
-            .domain([0, maxquotient / 2, maxquotient])
-            .range(['#FFFF9D', '#FF999D', '#FF339D']);
-
-        const clickScale = scaleLinear()
-            .domain([0, maxquotient / 2, maxquotient])
-            .range(['#CCCC6A', '#CC666A', '#CC006A']);
+        const { zoom, center, statesData } = this.state;
 
         console.log('props data', data);
         return (
@@ -108,97 +153,19 @@ class ChoroplethMap extends Component {
                 >
                     <ZoomableGroup disablePanning>
                         <Geographies geography={stateJSON} disableOptimization>
-                            {(geographies, projection) => {
-                                console.log('geographies', geographies, data);
-
-                                console.log(statesData);
-                                const stateGeos = {};
-                                const stateGeoArr = geographies.map((stateGeo, i) => {
-                                    stateGeos[stateGeo.properties.ID] = stateGeo;
+                            {(geographies, projection) =>
+                                geographies.map((stateGeo, key) => {
                                     const stateData = statesData[stateGeo.properties.ID];
-                                    let tip = stateGeo.properties.NAME_1;
-                                    let defaultFill = '#ECEFF1';
-                                    let hoverFill = '#ECEFF1';
-                                    let clickFill = '#ECEFF1';
-                                    if (stateData) {
-                                        tip += `\n${stateData.jobs_1000}`;
-                                        defaultFill = popScale(stateData.loc_quotient);
-                                        hoverFill = hoverScale(stateData.loc_quotient);
-                                        clickFill = clickScale(stateData.loc_quotient);
-                                    }
-                                    return (
-                                        <Geography
-                                            key={i}
-                                            data-tip={tip}
-                                            data-for="state"
-                                            geography={stateGeo}
-                                            projection={projection}
-                                            onClick={this.handleStateClick}
-                                            onMouseEnter={event => {
-                                                console.log('mouse entered:', event);
-                                            }}
-                                            style={{
-                                                default: {
-                                                    fill: defaultFill,
-                                                    stroke: '#607D8B',
-                                                    strokeWidth: 0.75,
-                                                    outline: 'none'
-                                                },
-                                                hover: {
-                                                    fill: hoverFill,
-                                                    stroke: '#607D8B',
-                                                    strokeWidth: 0.75,
-                                                    outline: 'none'
-                                                },
-                                                pressed: {
-                                                    fill: clickFill,
-                                                    stroke: '#607D8B',
-                                                    strokeWidth: 0.75,
-                                                    outline: 'none'
-                                                }
-                                            }}
-                                        />
-                                    );
-                                });
-                                this.setState({ stateGeos });
-                                return stateGeoArr;
-                            }}
+                                    return this.renderGeography(projection, stateGeo, key, stateData);
+                                })
+                            }
                         </Geographies>
                         <Geographies geography={dcJSON}>
                             {(geographies, projection) =>
-                                geographies.map((stateGeo, i) => (
-                                    <Geography
-                                        key={i}
-                                        data-tip={stateGeo.properties.NAME}
-                                        data-for="state"
-                                        geography={stateGeo}
-                                        projection={projection}
-                                        onClick={this.handleStateClick}
-                                        onMouseEnter={event => {
-                                            console.log('mouse entered:', event);
-                                        }}
-                                        style={{
-                                            default: {
-                                                fill: '#ECEFF1',
-                                                stroke: '#607D8B',
-                                                strokeWidth: 0.75,
-                                                outline: 'none'
-                                            },
-                                            hover: {
-                                                fill: '#CFD8DC',
-                                                stroke: '#607D8B',
-                                                strokeWidth: 0.75,
-                                                outline: 'none'
-                                            },
-                                            pressed: {
-                                                fill: '#8294a5',
-                                                stroke: '#607D8B',
-                                                strokeWidth: 0.75,
-                                                outline: 'none'
-                                            }
-                                        }}
-                                    />
-                                ))
+                                geographies.map((stateGeo, key) => {
+                                    const stateData = statesData[stateGeo.properties.ID];
+                                    return this.renderGeography(projection, stateGeo, key, stateData);
+                                })
                             }
                         </Geographies>
                     </ZoomableGroup>

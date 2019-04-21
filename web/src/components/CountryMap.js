@@ -240,7 +240,7 @@ class CountryMap extends Component {
                                             return (
                                                 <Geography
                                                     key={i}
-                                                    data-tip={stateGeo.properties.NAME}
+                                                    data-tip={stateGeo.properties.NAME_1}
                                                     data-for="state"
                                                     geography={stateGeo}
                                                     projection={projection}
