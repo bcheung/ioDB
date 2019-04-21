@@ -23,7 +23,8 @@ class LocationData extends Component {
                     <h1>{instanceData.title}</h1>
                     <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
                         <Col className="text-center">Total Employment: {formatNum(instanceData.total_employment)}</Col>
-                        <Col className="text-center">Total Population: {formatNum(instanceData.total_population)}</Col>
+                        {(primaryTable === "metro_areas") ? null : 
+                            <Col className="text-center">Total Population: {formatNum(instanceData.total_population)}</Col>}
                     </Row>
                 </CardHeader>
                 <br />

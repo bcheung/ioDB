@@ -27,6 +27,42 @@ class OccupationInstancePage extends Component {
         };
     }
 
+    // Finding the maximum loc_quotient value for this locationData set
+    getMaxLocQuotient = locationData => {
+        let maxLocQuotient = 0;
+        console.log('locationData array quotient calculation', locationData);
+        locationData.forEach(stateData => {
+            if (stateData.loc_quotient > maxLocQuotient) {
+                maxLocQuotient = stateData.loc_quotient;
+            }
+        });
+        return maxLocQuotient;
+    };
+
+    createHeatMapping = locationData => {
+        // For use to calculate state fill shade color
+        const expression = ['match', ['get', 'STATE_ID']];
+
+        // Maximum location quotient
+        const maxLocQuotient = this.getMaxLocQuotient(locationData);
+        // Calculate color
+        locationData.forEach(stateData => {
+            if (stateData.loc_quotient === -1.0) {
+                // grey color if no location quotient for state
+                const color = `rgba(${102}, ${102}, ${121}, 0.75)`;
+                expression.push(stateData.states.id, color);
+            } else {
+                const green = 255 - (stateData.loc_quotient / maxLocQuotient) * 255;
+                const color = `rgba(${255}, ${green}, ${132}, 0.75)`;
+                expression.push(stateData.states.id, color);
+            }
+        });
+        // Last value is the default
+        expression.push('rgba(0,0,0,0)');
+
+        return expression;
+    };
+
     componentDidMount() {
         const { tablename, id } = this.props.match.params;
         console.log('componentDidMount');

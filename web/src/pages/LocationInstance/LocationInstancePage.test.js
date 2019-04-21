@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import LocationInstancePage from './LocationInstancePage';
 import { shallow } from 'enzyme';
+import ReactToolTip from 'react-tooltip';
+
 
 const match = {
     params: {
@@ -22,7 +24,12 @@ const geoData = {
     "ENGTYPE_1": "State",
     "CC_1": "",
     "HASC_1": "US.AL"
-  };
+};
+
+const MSAGeoData = {
+    "GEOID":"13820",
+    "NAME":"Birmingham-Hoover, AL",
+};
 
 it('Location instance renders without crashing', () => {
     const div = document.createElement('div');
@@ -33,5 +40,12 @@ it('Location instance renders without crashing', () => {
 it('handleStateClick test works', async () => {
     const wrapper = shallow(<LocationInstancePage match={match}/>).instance();
     const obj = await wrapper.handleStateClick(geoData);
+    expect(obj).not.toEqual(null);
+});
+
+it('handleMSAClick test works', async() => {
+    const wrapper = shallow(<LocationInstancePage match={match}/>).instance();
+    await wrapper.handleStateClick(geoData);
+    const obj = await wrapper.handleMSAClick(MSAGeoData);
     expect(obj).not.toEqual(null);
 });
