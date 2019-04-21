@@ -79,7 +79,11 @@ class ChoroplethMap extends Component {
             .domain([0, maxquotient / 2, maxquotient])
             .range(['#FFFF9D', '#FF999D', '#FF339D']);
 
-        console.log('THIS IS THE DATA', data);
+        const clickScale = scaleLinear()
+            .domain([0, maxquotient / 2, maxquotient])
+            .range(['CCCC6A', '#CC666A', '#CC006A']);
+
+        console.log('props data', data);
         return (
             <div style={wrapperStyles}>
                 <ComposableMap
@@ -108,10 +112,12 @@ class ChoroplethMap extends Component {
                                     let tip = stateGeo.properties.NAME_1;
                                     let defaultFill = '#ECEFF1';
                                     let hoverFill = '#ECEFF1';
+                                    let clickFill = '#ECEFF1';
                                     if (stateData) {
                                         tip += `\n${stateData.jobs_1000}`;
                                         defaultFill = popScale(stateData.loc_quotient);
                                         hoverFill = hoverScale(stateData.loc_quotient);
+                                        clickFill = clickScale(stateData.loc_quotient);
                                     }
                                     return (
                                         <Geography
@@ -141,7 +147,7 @@ class ChoroplethMap extends Component {
                                                     outline: 'none'
                                                 },
                                                 pressed: {
-                                                    fill: '#8294a5',
+                                                    fill: clickFill,
                                                     stroke: '#607D8B',
                                                     strokeWidth: 0.75,
                                                     outline: 'none'
