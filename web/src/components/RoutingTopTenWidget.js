@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'reactstrap';
 import Select from 'react-select';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { fetchTopTenData, fetchJoinedTopTenData } from '../fetchAPI';
-import { groupedStats, statsWithPop, graphType, popStats, getModelRoutes } from '../constants';
+import { groupedStats, statsWithPop, graphType, popStats, getModelRoutes, getInstanceNames } from '../constants';
 
 class TopTenWidget extends Component {
     state = {
@@ -162,15 +162,26 @@ class TopTenWidget extends Component {
 
     render() {
         const { selectedColumn, instanceData, isPieGraph } = this.state;
-        const { title, population } = this.props;
+        const { title, instanceTitle, primaryTable, secondaryTable, population } = this.props;
         let options = groupedStats;
         if (population) {
             options = [popStats, ...groupedStats];
         }
+        let header;
+        if (title) {
+            header = title;
+        } else if (secondaryTable) {
+            header = `Top 10 ${getInstanceNames[secondaryTable]} for ${instanceTitle}`;
+        } else {
+            header = `Top 10 ${getInstanceNames[primaryTable]}`;
+        }
         return (
             <Container>
                 <Row>
-                    <h1 style={{ margin: 'auto' }}>{title}</h1>
+                    <h1 style={{ margin: 'auto' }}>{header}</h1>
+                </Row>
+                <Row>
+                    <h3>Sorted by</h3>
                 </Row>
                 <Row>
                     <Col>

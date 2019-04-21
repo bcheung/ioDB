@@ -112,7 +112,7 @@ class IndustryInstancePage extends Component {
                         </Card>
                         <RoutingTopTenWidget
                             joined
-                            title="Top 10 Occupations by"
+                            instanceTitle={industryData.title}
                             primaryTable={tablename}
                             secondaryTable="occupations_major"
                             id={id}

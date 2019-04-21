@@ -144,7 +144,7 @@ class OccupationInstancePage extends Component {
                             </Row>
                             <RoutingTopTenWidget
                                 joined
-                                title="Top 10 Major Industries by"
+                                instanceTitle={occupationData.title}
                                 primaryTable={tablename}
                                 secondaryTable="industries_3d"
                                 id={id}
@@ -155,7 +155,7 @@ class OccupationInstancePage extends Component {
                             </div>
                             <RoutingTopTenWidget
                                 joined
-                                title="Top 10 States by"
+                                instanceTitle={occupationData.title}
                                 // population
                                 primaryTable={tablename}
                                 secondaryTable="states"
