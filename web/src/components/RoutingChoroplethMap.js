@@ -81,7 +81,7 @@ class ChoroplethMap extends Component {
 
         const clickScale = scaleLinear()
             .domain([0, maxquotient / 2, maxquotient])
-            .range(['CCCC6A', '#CC666A', '#CC006A']);
+            .range(['#CCCC6A', '#CC666A', '#CC006A']);
 
         console.log('props data', data);
         return (
