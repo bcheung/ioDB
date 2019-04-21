@@ -88,7 +88,7 @@ class ChoroplethMap extends Component {
 
         if (stateData) {
             const { loc_quotient } = stateData;
-            tip += `\n${stateData.jobs_1000}`;
+            tip += `<br>Jobs per 1000: ${stateData.jobs_1000}`;
             defaultFill = scaleLinear()
                 .domain([0, maxquotient / 2, maxquotient])
                 .range(['#FFFF84', '#FF8084', '#FF0084'])(loc_quotient);
@@ -170,7 +170,7 @@ class ChoroplethMap extends Component {
                         </Geographies>
                     </ZoomableGroup>
                 </ComposableMap>
-                <ReactTooltip id="state" />
+                <ReactTooltip id="state" multiline />
             </div>
         );
     }
