@@ -7,4 +7,4 @@ export * from './InstanceInfo';
 export * from './RoutingDataTable';
 export * from './LoadingComponent';
 export * from './FilterColumnComponent';
-export * from './ChoroplethMap';
+export * from './RoutingChoroplethMap';
