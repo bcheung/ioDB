@@ -2,7 +2,7 @@ import React from 'react';
 import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import ReactDOM from 'react-dom';
-import { CountryMap } from '../CountryMap';
+import CountryMap from '../CountryMap';
 
 /** Test:
  *
@@ -37,6 +37,27 @@ const state = {
     }
 };
 
+const geoData = {
+    GID_0: 'USA',
+    NAME_0: 'United States',
+    GID_1: 'USA.1_1',
+    NAME_1: 'Alabama',
+    ID: '01',
+    VARNAME_1: 'AL|Ala.',
+    NL_NAME_1: '',
+    TYPE_1: 'State',
+    ENGTYPE_1: 'State',
+    CC_1: '',
+    HASC_1: 'US.AL'
+};
+
+const match = {
+    params: {
+        tablename: 'states',
+        id: '01'
+    }
+};
+
 it('Detailed Instance Component renders without crashing', () => {
     const div = document.createElement('div');
     const match = {
@@ -48,16 +69,16 @@ it('Detailed Instance Component renders without crashing', () => {
 
 /** We need to look at sean's locationinstance tests to get a better idea */
 
-// it('Test DetailedInstanceList', () => {
-//     // Render a checkbox with label in the document
-//     const widget = mount(<DetailedInstanceList majorModel="arbTableName" data={industryData.industries_4d} />);
+it('Test CountryMap Not Null', () => {
+    // Render a checkbox with label in the document
+    const widget = mount(<CountryMap />);
+    const instance = widget.instance();
+    expect(instance).not.toEqual(null);
+    widget.unmount();
+});
 
-// });
-
-// it('Test DetailedInstanceList Null Value', () => {
-//     // Render a checkbox with label in the document
-//     const widget = mount(<DetailedInstanceList majorModel="arbTableName" data={industryData.industries_4d} />);
-
-//     // Can't pass in data b/c too complex
-//     expect(widget.prototype.componentDidMount).toExist();
-// });
+it('Test CountryMap Instance', async () => {
+    // Render a checkbox with label in the document
+    const widget2 = shallow(<CountryMap match={match} />).instance();
+    expect(widget2).not.toEqual(null);
+});
