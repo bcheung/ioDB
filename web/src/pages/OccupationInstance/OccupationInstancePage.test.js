@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import OccupationInstancePage, { getMaxLocQuotient } from './OccupationInstancePage';
-import { fetchInstanceData, fetchJoinedInstanceData } from '../../fetchAPI';
+import { fetchJoinedInstanceData } from '../../fetchAPI';
 import { shallow } from 'enzyme';
 
 
@@ -35,6 +35,6 @@ it('renders without crashing', () => {
 it('get max location quotient', () => {
     const wrapper = shallow(<OccupationInstancePage match={match}/>).instance();
     const locData = fetchJoinedInstanceData("occupations_major", '11-000');
-    const maxLocQ = getMaxLocQuotient(locData);
+    const maxLocQ = OccupationInstancePage.prototype.getMaxLocQuotient(locData);
     expect(maxLocQ).toEqual(null);
 })

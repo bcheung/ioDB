@@ -50,6 +50,10 @@ class CountryMap extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         console.log('shouldComponentUpdate CountryMap', this.state);
 
+        setTimeout(() => {
+            ReactTooltip.rebuild();
+        }, 100);
+
         if (nextProps.tablename !== this.props.tablename || nextProps.id !== this.props.id) {
             console.log('false props', nextProps.id);
             const { stateGeos } = this.state;
@@ -180,6 +184,7 @@ class CountryMap extends Component {
                                                 <Geography
                                                     key={i}
                                                     data-tip={stateGeo.properties.NAME_1}
+                                                    data-for='state'
                                                     geography={stateGeo}
                                                     projection={projection}
                                                     onClick={
@@ -241,6 +246,8 @@ class CountryMap extends Component {
                                             return (
                                                 <Geography
                                                     key={i}
+                                                    data-tip={msaGeo.properties.NAME}
+                                                    data-for='metro'
                                                     geography={msaGeo}
                                                     projection={projection}
                                                     onClick={this.handleMSAClick}
@@ -273,7 +280,8 @@ class CountryMap extends Component {
                         </ComposableMap>
                     )}
                 </Motion>
-                <ReactTooltip />
+                <ReactTooltip id='metro'/>
+                <ReactTooltip id='state'/>
             </div>
         );
     }
