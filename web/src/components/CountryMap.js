@@ -328,7 +328,7 @@ class CountryMap extends Component {
                                                             outline: 'none'
                                                         },
                                                         pressed: {
-                                                            fill: '#FF5722',
+                                                            fill: '#4e668e',
                                                             stroke: '#607D8B',
                                                             strokeWidth: 0.75,
                                                             outline: 'none'
