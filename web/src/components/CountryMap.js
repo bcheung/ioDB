@@ -6,6 +6,7 @@ import { geoAlbersUsa, geoPath } from 'd3-geo';
 import { geoTimes } from 'd3-geo-projection';
 import { Motion, spring } from 'react-motion';
 import stateData from '../static/usa-map.json';
+import dcData from '../static/dc-map.json';
 import msaData from '../static/msa-map.json';
 
 const wrapperStyles = {
@@ -230,6 +231,64 @@ class CountryMap extends Component {
                                                 />
                                             );
                                         });
+                                    }}
+                                </Geographies>
+                                <Geographies geography={dcData}>
+                                    {(geographies, projection) => {
+                                        return geographies.map((stateGeo, i) => {
+                                            if (id === stateGeo.properties.ID) {
+                                                this.setState({ stateGeo });
+                                                this.handleStateClick(stateGeo);
+                                            }
+                                            return (
+                                                <Geography
+                                                    key={i}
+                                                    data-tip={stateGeo.properties.NAME}
+                                                    data-for='state'
+                                                    geography={stateGeo}
+                                                    projection={projection}
+                                                    onClick={
+                                                        detail && state.id === stateGeo.properties.ID
+                                                            ? null
+                                                            : this.handleStateClick
+                                                    }
+                                                    onMouseEnter={event => {
+                                                        console.log(event);
+                                                    }}
+                                                    style={
+                                                        detail && state.id === stateGeo.properties.ID
+                                                            ? {
+                                                                  default: {
+                                                                      fill: '#ECEFF1',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  }
+                                                              }
+                                                            : {
+                                                                  default: {
+                                                                      fill: '#ECEFF1',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  },
+                                                                  hover: {
+                                                                      fill: '#CFD8DC',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  },
+                                                                  pressed: {
+                                                                      fill: '#8294a5',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  }
+                                                              }
+                                                    }
+                                                />
+                                            )
+                                        })
                                     }}
                                 </Geographies>
                                 <Geographies geography={msaData} disableOptimization>
