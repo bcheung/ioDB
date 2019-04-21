@@ -19,41 +19,7 @@ import {
 mapboxgl.accessToken =
     'pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw';
 
-// Finding the maximum loc_quotient value for this locationData set
-function getMaxLocQuotient(locationData) {
-    let maxLocQuotient = 0;
-    console.log('locationData array quotient calculation', locationData);
-    locationData.forEach(stateData => {
-        if (stateData.loc_quotient > maxLocQuotient) {
-            maxLocQuotient = stateData.loc_quotient;
-        }
-    });
-    return maxLocQuotient;
-}
 
-function createHeatMapping(locationData) {
-    // For use to calculate state fill shade color
-    const expression = ['match', ['get', 'STATE_ID']];
-
-    // Maximum location quotient
-    const maxLocQuotient = getMaxLocQuotient(locationData);
-    // Calculate color
-    locationData.forEach(stateData => {
-        if (stateData.loc_quotient === -1.0) {
-            // grey color if no location quotient for state
-            const color = `rgba(${102}, ${102}, ${121}, 0.75)`;
-            expression.push(stateData.states.id, color);
-        } else {
-            const green = 255 - (stateData.loc_quotient / maxLocQuotient) * 255;
-            const color = `rgba(${255}, ${green}, ${132}, 0.75)`;
-            expression.push(stateData.states.id, color);
-        }
-    });
-    // Last value is the default
-    expression.push('rgba(0,0,0,0)');
-
-    return expression;
-}
 
 // let map;
 
@@ -69,6 +35,42 @@ class OccupationInstancePage extends Component {
             collapse: false
         };
         // this.mapContainer = React.createRef();
+    }
+
+    // Finding the maximum loc_quotient value for this locationData set
+    getMaxLocQuotient = (locationData) => {
+        let maxLocQuotient = 0;
+        console.log('locationData array quotient calculation', locationData);
+        locationData.forEach(stateData => {
+            if (stateData.loc_quotient > maxLocQuotient) {
+                maxLocQuotient = stateData.loc_quotient;
+            }
+        });
+        return maxLocQuotient;
+    }
+
+    createHeatMapping = (locationData) => {
+        // For use to calculate state fill shade color
+        const expression = ['match', ['get', 'STATE_ID']];
+
+        // Maximum location quotient
+        const maxLocQuotient = this.getMaxLocQuotient(locationData);
+        // Calculate color
+        locationData.forEach(stateData => {
+            if (stateData.loc_quotient === -1.0) {
+                // grey color if no location quotient for state
+                const color = `rgba(${102}, ${102}, ${121}, 0.75)`;
+                expression.push(stateData.states.id, color);
+            } else {
+                const green = 255 - (stateData.loc_quotient / maxLocQuotient) * 255;
+                const color = `rgba(${255}, ${green}, ${132}, 0.75)`;
+                expression.push(stateData.states.id, color);
+            }
+        });
+        // Last value is the default
+        expression.push('rgba(0,0,0,0)');
+
+        return expression;
     }
 
     componentDidMount() {
@@ -188,7 +190,7 @@ class OccupationInstancePage extends Component {
         console.log('setHeatMapping', isMapLoaded, locationData);
 
         if (isMapLoaded && locationData) {
-            const expression = createHeatMapping(locationData);
+            const expression = this.createHeatMapping(locationData);
             // map.setPaintProperty('heat-layer', 'fill-opacity', 0);
 
             // setTimeout(function() {

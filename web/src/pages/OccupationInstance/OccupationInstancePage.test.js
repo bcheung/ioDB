@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import OccupationInstancePage, { getMaxLocQuotient } from './OccupationInstancePage';
+import OccupationInstancePage from './OccupationInstancePage';
 import { fetchJoinedInstanceData } from '../../fetchAPI';
 import { shallow } from 'enzyme';
 
@@ -32,9 +32,14 @@ it('renders without crashing', () => {
     ReactDOM.unmountComponentAtNode(div);
 });
 
-it('get max location quotient', () => {
+it('get max location quotient', async () => {
     const wrapper = shallow(<OccupationInstancePage match={match}/>).instance();
-    const locData = fetchJoinedInstanceData("occupations_major", '11-000');
-    const maxLocQ = OccupationInstancePage.prototype.getMaxLocQuotient(locData);
-    expect(maxLocQ).toEqual(null);
-})
+    const maxLocQ = wrapper.getMaxLocQuotient(await fetchJoinedInstanceData('occupations_major', '11-000'));
+    expect(maxLocQ).not.toEqual(null);
+});
+
+it('createHeatMapping test', async () => {
+    const wrapper = shallow(<OccupationInstancePage match={match}/>).instance();
+    const expression = wrapper.createHeatMapping(await fetchJoinedInstanceData('occupations_major', '11-000'));
+    expect(expression).not.toEqual(null);
+});
