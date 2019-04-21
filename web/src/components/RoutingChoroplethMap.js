@@ -7,8 +7,9 @@ import { Button } from 'reactstrap';
 import { geoAlbersUsa, geoPath } from 'd3-geo';
 import { geoTimes } from 'd3-geo-projection';
 import { Motion, spring } from 'react-motion';
-import stateData from '../static/usa-map.json';
-import msaData from '../static/msa-map.json';
+import stateJSON from '../static/usa-map.json';
+import dcJSON from '../static/dc-map.json';
+
 import { getModelRoutes } from '../constants';
 
 const wrapperStyles = {
@@ -39,7 +40,11 @@ class ChoroplethMap extends Component {
         super(props);
         this.state = {
             center: [-97, 40],
-            zoom: 1
+            zoom: 1,
+            statesData: props.data.reduce((obj, item) => {
+                obj[item.states.id] = item;
+                return obj;
+            }, {})
         };
     }
 
@@ -58,7 +63,12 @@ class ChoroplethMap extends Component {
         return false;
     }
 
-    handleStateClick = geography => {};
+    handleStateClick = geography => {
+        const { history } = this.props;
+        console.log('clicked: ', geography);
+        const route = getModelRoutes.states;
+        history.push(`/${route}/states/${geography.properties.ID}`);
+    };
 
     projection = () =>
         geoTimes()
@@ -93,13 +103,10 @@ class ChoroplethMap extends Component {
                     }}
                 >
                     <ZoomableGroup disablePanning>
-                        <Geographies geography={stateData} disableOptimization>
+                        <Geographies geography={stateJSON} disableOptimization>
                             {(geographies, projection) => {
                                 console.log('geographies', geographies, data);
-                                const statesData = data.reduce((obj, item) => {
-                                    obj[item.states.id] = item;
-                                    return obj;
-                                }, {});
+
                                 console.log(statesData);
                                 const stateGeos = {};
                                 const stateGeoArr = geographies.map((stateGeo, i) => {
@@ -117,13 +124,10 @@ class ChoroplethMap extends Component {
                                         <Geography
                                             key={i}
                                             data-tip={tip}
+                                            data-for="state"
                                             geography={stateGeo}
                                             projection={projection}
-                                            onClick={geography => {
-                                                console.log('clicked: ', geography);
-                                                const route = getModelRoutes.states;
-                                                history.push(`/${route}/states/${geography.properties.ID}`);
-                                            }}
+                                            onClick={this.handleStateClick}
                                             onMouseEnter={event => {
                                                 console.log('mouse entered:', event);
                                             }}
@@ -154,9 +158,46 @@ class ChoroplethMap extends Component {
                                 return stateGeoArr;
                             }}
                         </Geographies>
+                        <Geographies geography={dcJSON}>
+                            {(geographies, projection) =>
+                                geographies.map((stateGeo, i) => (
+                                    <Geography
+                                        key={i}
+                                        data-tip={stateGeo.properties.NAME}
+                                        data-for="state"
+                                        geography={stateGeo}
+                                        projection={projection}
+                                        onClick={this.handleStateClick}
+                                        onMouseEnter={event => {
+                                            console.log('mouse entered:', event);
+                                        }}
+                                        style={{
+                                            default: {
+                                                fill: '#ECEFF1',
+                                                stroke: '#607D8B',
+                                                strokeWidth: 0.75,
+                                                outline: 'none'
+                                            },
+                                            hover: {
+                                                fill: '#CFD8DC',
+                                                stroke: '#607D8B',
+                                                strokeWidth: 0.75,
+                                                outline: 'none'
+                                            },
+                                            pressed: {
+                                                fill: '#8294a5',
+                                                stroke: '#607D8B',
+                                                strokeWidth: 0.75,
+                                                outline: 'none'
+                                            }
+                                        }}
+                                    />
+                                ))
+                            }
+                        </Geographies>
                     </ZoomableGroup>
                 </ComposableMap>
-                <ReactTooltip />
+                <ReactTooltip id="state" />
             </div>
         );
     }

@@ -110,6 +110,7 @@ class TopTenWidget extends Component {
                 ]
             };
         }
+
         this.setState({ data, instanceData, isPieGraph });
     };
 
@@ -197,6 +198,18 @@ class TopTenWidget extends Component {
                             data={instanceData}
                             width={900}
                             height={500}
+                            options={{
+                                // Customize chart options
+                                tooltips: {
+                                    titleFontSize: 16,
+                                    bodyFontSize: 14,
+                                    xPadding: 10,
+                                    yPadding: 10,
+                                    callbacks: {
+                                        label: (tooltipItem, data) => `$${tooltipItem.value}`
+                                    }
+                                }
+                            }}
                         />
                     )}
                 </Row>
