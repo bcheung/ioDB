@@ -122,6 +122,8 @@ it('Test DetailedInstanceList', () => {
 
     expect(widget.prototype.componentDidMount).toExist();
     //  expect(widget.props.joined).to.equal(instanceData);
+
+    widget.unmount();
 });
 
 it('Test DetailedInstanceList Null Value', () => {
