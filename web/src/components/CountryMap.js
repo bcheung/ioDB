@@ -141,6 +141,7 @@ class CountryMap extends Component {
         const { zoom, center, state, detail } = this.state;
 
         console.log('render countrymap', id);
+        console.log('state zoom', zoom);
 
         return (
             <div style={wrapperStyles}>
@@ -157,7 +158,7 @@ class CountryMap extends Component {
                         y: spring(center[1], { stiffness: 210, damping: 20 })
                     }}
                 >
-                    {({ mapZoom, x, y }) => (
+                    {({ zoom, x, y }) => (
                         <ComposableMap
                             projection={geoAlbersUsa}
                             projectionConfig={{ scale: 1000 }}
@@ -168,7 +169,7 @@ class CountryMap extends Component {
                                 height: 'auto'
                             }}
                         >
-                            <ZoomableGroup center={[x, y]} zoom={mapZoom}>
+                            <ZoomableGroup center={[x, y]} zoom={zoom}>
                                 <Geographies geography={stateData}>
                                     {(geographies, projection) => {
                                         console.log('geographies', geographies);
