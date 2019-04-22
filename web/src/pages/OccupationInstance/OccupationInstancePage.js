@@ -142,17 +142,7 @@ class OccupationInstancePage extends Component {
                                     <br />
                                 </Card>
                             </Row>
-                            <RoutingTopTenWidget
-                                joined
-                                instanceTitle={occupationData.title}
-                                primaryTable={tablename}
-                                secondaryTable="industries_3d"
-                                id={id}
-                                totalEmployment={occupationData.total_employment}
-                            />
-                            <div style={{ padding: '1em' }}>
-                                <RoutingDataTable data={industryData} secondaryTable="industries_3d" />
-                            </div>
+                            <RoutingChoroplethMap instanceTitle={occupationData.title} data={locationData} />
                             <RoutingTopTenWidget
                                 joined
                                 instanceTitle={occupationData.title}
@@ -163,11 +153,26 @@ class OccupationInstancePage extends Component {
                                 totalEmployment={occupationData.total_employment}
                                 // total_population={occupationData.total_population}
                             />
-                            <div style={{ padding: '1em' }}>
-                                <RoutingDataTable data={locationData} secondaryTable="states" population />
-                            </div>
-                            <Row>{<h1 style={{ margin: 'auto' }}>Where are {occupationData.title} located?</h1>}</Row>
-                            <RoutingChoroplethMap data={locationData} />
+                            <RoutingDataTable
+                                data={locationData}
+                                instanceTitle={occupationData.title}
+                                primaryTable={tablename}
+                                secondaryTable="states"
+                                population
+                            />
+                            <RoutingTopTenWidget
+                                joined
+                                instanceTitle={occupationData.title}
+                                primaryTable={tablename}
+                                secondaryTable="industries_3d"
+                                id={id}
+                                totalEmployment={occupationData.total_employment}
+                            />
+                            <RoutingDataTable
+                                data={industryData}
+                                instanceTitle={occupationData.title}
+                                secondaryTable="industries_3d"
+                            />
                         </Col>
                     </div>
                 ) : (

@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { ComposableMap, ZoomableGroup, Geographies, Geography } from 'react-simple-maps';
 import ReactTooltip from 'react-tooltip';
 import { scaleLinear } from 'd3-scale';
-import { Button } from 'reactstrap';
+import { Button, Row } from 'reactstrap';
 import { geoAlbersUsa, geoPath } from 'd3-geo';
 import { geoTimes } from 'd3-geo-projection';
 import { Motion, spring } from 'react-motion';
@@ -135,12 +135,13 @@ class ChoroplethMap extends Component {
     };
 
     render() {
-        const { width, height, data, history } = this.props;
+        const { instanceTitle, width, height, data, history } = this.props;
         const { zoom, center, statesData } = this.state;
 
         console.log('props data', data);
         return (
             <div style={wrapperStyles}>
+                <Row>{<h1 style={{ margin: 'auto' }}>Where are {instanceTitle} located?</h1>}</Row>
                 <ComposableMap
                     projection={geoAlbersUsa}
                     projectionConfig={{ scale: 1000 }}

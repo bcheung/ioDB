@@ -118,9 +118,12 @@ class IndustryInstancePage extends Component {
                             id={id}
                             totalEmployment={industryData.total_employment}
                         />
-                        <div style={{ padding: '1em' }}>
-                            <RoutingDataTable data={occupationData} secondaryTable="occupations_major" />
-                        </div>
+                        <RoutingDataTable
+                            data={occupationData}
+                            instanceTitle={industryData.title}
+                            primaryTable={tablename}
+                            secondaryTable="occupations_major"
+                        />
                     </Col>
                 </Container>
             );

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { Row } from 'reactstrap';
 import ReactTable, { toggleRowSubComponent } from 'react-table';
 import matchSorter from 'match-sorter';
 import {
@@ -124,12 +125,22 @@ function createColumns(secondaryTable, population) {
 }
 
 const DataTable = props => {
-    const { data, secondaryTable, history, population } = props;
+    const { title, data, instanceTitle, primaryTable, secondaryTable, history, population } = props;
 
     const columns = createColumns(secondaryTable, population);
-
+    let header;
+    if (title) {
+        header = title;
+    } else if (secondaryTable) {
+        header = `Other ${getInstanceNames[secondaryTable]} for ${instanceTitle}`;
+    } else {
+        header = `${getInstanceNames[primaryTable]}`;
+    }
     return (
-        <div>
+        <div style={{ padding: '1em' }}>
+            <Row>
+                <h1 style={{ margin: 'auto' }}>{header}</h1>
+            </Row>
             <ReactTable
                 data={data}
                 columns={columns}

@@ -42,9 +42,12 @@ class LocationData extends Component {
                     id={id}
                     totalEmployment={instanceData.total_employment}
                 />
-                <div style={{ padding: '1em' }}>
-                    <RoutingDataTable data={occData} secondaryTable="occupations_major" />
-                </div>
+                <RoutingDataTable
+                    data={occData}
+                    instanceTitle={instanceData.title}
+                    primaryTable={primaryTable}
+                    secondaryTable="occupations_major"
+                />
             </Card>
         );
     }
