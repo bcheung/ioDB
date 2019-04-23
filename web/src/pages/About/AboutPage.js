@@ -143,7 +143,7 @@ class AboutPage extends Component {
                 // we use await to make the main thread wait until the asynchronous thread terminates and returns a value
                 const response = await fetch(url); // make get request to url and wait until response is returned
                 console.log('fetch response', response);
-                if (response) {
+                if (response.ok) {
                     const data = await response.json(); // convert response to a json object and wait until the data is returned
                     console.log('data', data);
                     return data;
@@ -159,33 +159,41 @@ class AboutPage extends Component {
         let commitsTotal = 0;
         const url = 'https://api.github.com/repos/bcheung/ioDB/stats/contributors';
 
-        const data = await this.attemptFetch(url, 3);
-        // loop through array
-        console.log('fetchCommits', data);
-        data.forEach(contributor => {
-            // for each element in array (contributor is the variable for the element)
-            // do something
-            const username = contributor.author.login;
-            contributorStats[username].commits = contributor.total;
-            commitsTotal += contributor.total;
-        });
+        try {
+            const data = await this.attemptFetch(url, 3);
+            // loop through array
+            console.log('fetchCommits', data);
+            data.forEach(contributor => {
+                // for each element in array (contributor is the variable for the element)
+                // do something
+                const username = contributor.author.login;
+                contributorStats[username].commits = contributor.total;
+                commitsTotal += contributor.total;
+            });
 
-        this.setState({ commitsTotal });
+            this.setState({ commitsTotal });
+        } catch (err) {
+            console.log('error fetching stats check connection');
+        }
     }
 
     async fetchIssues() {
         let issuesTotal = 0;
         const url = 'https://api.github.com/repos/bcheung/ioDB/issues';
 
-        const data = await this.attemptFetch(url, 3);
-        console.log('fetchIssues', data);
-        data.forEach(issue => {
-            const username = issue.user.login;
-            contributorStats[username].issues++;
-            issuesTotal++;
-        });
+        try {
+            const data = await this.attemptFetch(url, 3);
+            console.log('fetchIssues', data);
+            data.forEach(issue => {
+                const username = issue.user.login;
+                contributorStats[username].issues++;
+                issuesTotal++;
+            });
 
-        this.setState({ issuesTotal });
+            this.setState({ issuesTotal });
+        } catch (err) {
+            console.log('error fetching stats check connection');
+        }
     }
 
     fetchGithubStats() {
