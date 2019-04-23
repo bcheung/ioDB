@@ -3,14 +3,14 @@ import logging
 import os
 import socket
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 import sqlalchemy
 from sqlalchemy.inspection import inspect
 from sqlalchemy import desc
 
 import config
 from config import app, db
-from constants import all_model_switcher, all_schema_switcher, model_switcher, schema_switcher, joined_model_switcher, joined_schema_switcher, primary_key_switcher, joined_primary_key_switcher
+from constants import all_model_switcher, all_schema_switcher, model_switcher, schema_switcher, joined_model_switcher, joined_schema_switcher, primary_key_switcher, joined_primary_key_switcher, column_switcher
 from models.visit import Visit
 from models.occupation import OccupationMajorModel, OccupationDetailedModel, OccupationMajorSchema, OccupationDetailedSchema
 from models.industry import Industry3dModel, Industry4dModel, Industry3dSchema, Industry4dSchema
@@ -67,7 +67,11 @@ def get_table(tablename):
     if model != None and schema != None:
         for instance in model.query.all():
             data.append(schema().dump(instance).data)
-    return jsonify(data)
+        resp = jsonify(data)
+        resp.status_code = 200
+        return resp
+    else:
+        return invalid_table(tablename)
 
 
 @app.route('/api/instance/<tablename>/<id>')
@@ -77,8 +81,15 @@ def get_instance(tablename, id):
     schema = schema_switcher.get(tablename, None)
     if model != None and schema != None:
         instance = model.query.get(id)
+        if instance == None:
+            return invalid_ID(id)
         data = schema().dump(instance).data
-    return jsonify(data)
+        resp = jsonify(data)
+        resp.status_code = 200
+        return resp
+    else:
+        return invalid_table(tablename)
+    
 
 
 @app.route('/api/joined_instance/<tablename>/<key_model>/<id>')
@@ -90,7 +101,16 @@ def get_joined_instance(tablename, key_model, id):
     if model != None and schema != None and key != None:
         for instance in model.query.filter_by(**{key: id}).all():
             data.append(schema().dump(instance).data)
-    return jsonify(data)
+        if len(data) == 0:
+            return invalid_ID(id)
+        resp = jsonify(data)
+        resp.status_code = 200
+        return resp
+    elif model == None:
+        return invalid_table(tablename)
+    else:
+        return invalid_table(key_model)
+    
 
 
 @app.route('/api/joined_row/<tablename>/<id_1>/<id_2>')
@@ -100,8 +120,14 @@ def get_joined_row(tablename, id_1, id_2):
     schema = joined_schema_switcher.get(tablename, None)
     if model != None and schema != None:
         instance = model.query.get((id_1, id_2))
+        if instance == None:
+            return invalid_IDSet(id_1, id_2)
         data = schema().dump(instance).data
-    return jsonify(data)
+        resp = jsonify(data)
+        resp.status_code = 200
+        return resp
+    else:
+        return invalid_table(tablename)
 
 
 @app.route('/api/list/<tablename>')
@@ -111,18 +137,29 @@ def get_list(tablename):
     if model != None:
         for instance in model.query.with_entities(model.id, model.title):
             data.append({'id': instance.id, 'title': instance.title})
-    return jsonify(data)
+        resp = jsonify(data)
+        resp.status_code = 200
+        return resp
+    else:
+        return invalid_table(tablename)
 
 
 @app.route('/api/top_ten/<tablename>/<column_name>')
 def get_top_ten(tablename, column_name):
     data = []
     model = model_switcher.get(tablename, None)
-    if model != None:
+    column = column_switcher.get(column_name, None)
+    if model != None and column != None:
         for instance in model.query.with_entities(model.id, model.title, column_name).order_by(desc(column_name)).limit(10):
             data.append({'id': instance.id, 'title': instance.title,
                          column_name: getattr(instance, column_name)})
-    return jsonify(data)
+        resp = jsonify(data)
+        resp.status_code = 200
+        return resp
+    elif model == None:
+        return invalid_table(tablename)
+    else:
+        return invalid_column(column_name)
 
 
 @app.route('/api/joined_top_ten/<tablename>/<key_model>/<id>/<column_name>')
@@ -131,9 +168,47 @@ def get_joined_top_ten(tablename, key_model, id, column_name):
     model = joined_model_switcher.get(tablename, None)
     schema = joined_schema_switcher.get(tablename, None)
     key = primary_key_switcher.get(key_model, None)
-    if model != None and schema != None:
+    column = column_switcher.get(column_name, None)
+    if model != None and schema != None and key != None and column != None:
         for instance in model.query.filter_by(**{key: id}).order_by(desc(column_name)).limit(10):
             data.append(schema().dump(instance).data)
+        if len(data) == 0:
+            return invalid_ID(id)
+        resp = jsonify(data)
+        resp.status_code = 200
+        return resp
+    elif model == None:
+        return invalid_table(tablename)
+    elif key == None:
+        return invalid_table(key_model)
+    else:
+        return invalid_column(column_name)
+
+
+@app.route('/api/filter/<tablename>/<column_name>/<operator>/<value>')
+def get_filtered(tablename, column_name, operator, value):
+    data = []
+    model = model_switcher.get(tablename, None)
+    schema = schema_switcher.get(tablename, None)
+    column = column_switcher.get(column_name, None)
+    v = float(value)
+    if model != None and schema != None and column != None:
+        for instance in model.query.with_entities(model.id, model.title, column_name).order_by(desc(column_name)).all():
+            if operator == 'gt':
+                if(getattr(instance, column_name) > v):
+                    data.append(schema().dump(instance).data)
+            elif operator == 'gte':
+                if(getattr(instance, column_name) >= v):
+                    data.append(schema().dump(instance).data)
+            elif operator == 'lt':
+                if(getattr(instance, column_name) < v):
+                    data.append(schema().dump(instance).data)
+            elif operator == 'lte':
+                if(getattr(instance, column_name) <= v):
+                    data.append(schema().dump(instance).data)
+            elif operator == 'eq':
+                if(getattr(instance, column_name) == v):
+                    data.append(schema().dump(instance).data)
     return jsonify(data)
 
 
@@ -144,6 +219,58 @@ def server_error(e):
     An internal error occurred: <pre>{}</pre>
     See logs for full stacktrace.
     """.format(e), 500
+
+
+# Error 0: Invalid TableName
+@app.errorhandler(400)
+def invalid_table(table_name):
+    message = {
+        'status': 400,
+        'message': 'Invalid Table Name: ' + table_name,
+    }
+    resp = jsonify(message)
+    resp.status_code = 400
+
+    return resp
+
+
+# Error 1: Invalid ID
+@app.errorhandler(400)
+def invalid_ID(id):
+    message = {
+        'status': 400,
+        'message': 'Invalid ID: ' + id
+    }
+    resp = jsonify(message)
+    resp.status_code = 400
+
+    return resp
+
+
+# Error 2: Invalid ID Set
+@app.errorhandler(400)
+def invalid_IDSet(id1, id2):
+    message = {
+        'status': 400,
+        'message': 'Invalid ID Set: ' + id1 + ' ' + id2
+    }
+    resp = jsonify(message)
+    resp.status_code = 400
+
+    return resp
+
+
+# Error 3: Invalid Column Name
+@app.errorhandler(400)
+def invalid_column(column_name):
+    message = {
+        'status': 400,
+        'message': 'Invalid Column Name: ' + column_name
+    }
+    resp = jsonify(message)
+    resp.status_code = 400
+
+    return resp
 
 
 if __name__ == '__main__':
