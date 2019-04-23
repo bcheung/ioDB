@@ -50,8 +50,7 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "lint": "eslint .",
-        "lint:fix": "eslint . --fix",
-        "testSel": "mocha --recursive --timeout 10000 selenium-test.js"
+        "lint:fix": "eslint . --fix"
     },
     "browserslist": [
         ">0.2%",
