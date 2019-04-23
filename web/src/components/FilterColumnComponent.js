@@ -37,13 +37,13 @@ class FilterColumnComponent extends Component {
                 </Row>
                 <Row>
                     <ButtonGroup>
-                        <Button color="primary" onClick={() => this.handleOptionClick(1)} active={option === 1}>
+                        <Button color="light" onClick={() => this.handleOptionClick(1)} active={option === 1}>
                             ≥
                         </Button>
-                        <Button color="primary" onClick={() => this.handleOptionClick(2)} active={option === 2}>
+                        <Button color="light" onClick={() => this.handleOptionClick(2)} active={option === 2}>
                             =
                         </Button>
-                        <Button color="primary" onClick={() => this.handleOptionClick(3)} active={option === 3}>
+                        <Button color="light" onClick={() => this.handleOptionClick(3)} active={option === 3}>
                             ≤
                         </Button>
                     </ButtonGroup>

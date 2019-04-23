@@ -202,6 +202,7 @@ class TopTenWidget extends Component {
                             data={instanceData}
                             width={600}
                             height={600}
+                            options={{ maintainAspectRatio: false }}
                         />
                     ) : (
                         <Bar
