@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Container } from 'reactstrap';
 import CountryMap from '../../components/CountryMap';
 import LocationData from '../../components/LocationData';
 import { fetchInstanceData, fetchJoinedTopTenData, fetchJoinedInstanceData } from '../../fetchAPI';
@@ -130,7 +131,7 @@ class LocationInstancePage extends Component {
         const { showStateInfo, showMSAInfo, state, stateData, stateOccData, MSA, MSAData, msaOccData } = this.state;
         console.log('render', tablename, id, stateData);
         return (
-            <div>
+            <Container>
                 <CountryMap
                     onStateClick={this.handleStateClick}
                     onMSAClick={this.handleMSAClick}
@@ -146,7 +147,7 @@ class LocationInstancePage extends Component {
                 {showStateInfo ? (
                     <LocationData instanceData={stateData} occData={stateOccData} primaryTable="states" id={state.id} />
                 ) : null}
-            </div>
+            </Container>
         );
     }
 }
