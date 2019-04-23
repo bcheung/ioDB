@@ -4,7 +4,15 @@ import { Container, Row, Col } from 'reactstrap';
 import Select from 'react-select';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { fetchTopTenData, fetchJoinedTopTenData } from '../fetchAPI';
-import { groupedStats, statsWithPop, graphType, popStats, getModelRoutes, getInstanceNames } from '../constants';
+import {
+    groupedStats,
+    statsWithPop,
+    graphType,
+    popStats,
+    getModelRoutes,
+    getInstanceNames,
+    formatterType
+} from '../constants';
 
 class TopTenWidget extends Component {
     state = {
@@ -195,6 +203,7 @@ class TopTenWidget extends Component {
                         />
                     </Col>
                 </Row>
+                <br />
                 <Row>
                     {isPieGraph ? (
                         <Doughnut
@@ -202,7 +211,22 @@ class TopTenWidget extends Component {
                             data={instanceData}
                             width={600}
                             height={600}
-                            options={{ maintainAspectRatio: false }}
+                            options={{
+                                maintainAspectRatio: false,
+                                tooltips: {
+                                    titleFontSize: 16,
+                                    bodyFontSize: 14,
+                                    xPadding: 10,
+                                    yPadding: 10,
+                                    callbacks: {
+                                        title: (tooltipItem, data) => data.labels[tooltipItem[0].index],
+                                        label: (tooltipItem, data) =>
+                                            formatterType[selectedColumn.value](
+                                                data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
+                                            )
+                                    }
+                                }
+                            }}
                         />
                     ) : (
                         <Bar
@@ -212,13 +236,17 @@ class TopTenWidget extends Component {
                             height={500}
                             options={{
                                 // Customize chart options
+                                legend: {
+                                    display: false
+                                },
                                 tooltips: {
                                     titleFontSize: 16,
                                     bodyFontSize: 14,
                                     xPadding: 10,
                                     yPadding: 10,
                                     callbacks: {
-                                        label: (tooltipItem, data) => `$${tooltipItem.value}`
+                                        label: (tooltipItem, data) =>
+                                            formatterType[selectedColumn.value](tooltipItem.value)
                                     }
                                 }
                             }}
