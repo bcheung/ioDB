@@ -48,9 +48,9 @@ class App extends Component {
                             <NavItem>
                                 <NavLink href="#/about">About Us</NavLink>
                             </NavItem>
-                            <NavItem>
+                            {/* <NavItem>
                                 <NavLink href="#/test">Test</NavLink>
-                            </NavItem>
+                            </NavItem> */}
                         </Nav>
                     </Navbar>
 
@@ -63,7 +63,7 @@ class App extends Component {
                     <Switch>
                         <Route exact path="/" render={props => <HomePage tablename={selectedModel.tablename} />} />
                         <Route path="/about" component={AboutPage} />
-                        <Route path="/test" component={TestPage} />
+                        {/* <Route path="/test" component={TestPage} /> */}
 
                         <Route path="/industry/:tablename/:id" component={IndustryInstancePage} />
 
