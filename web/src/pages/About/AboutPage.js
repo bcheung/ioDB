@@ -135,12 +135,17 @@ class AboutPage extends Component {
         this.fetchGithubStats();
     }
 
-    fetchGithubStats() {
-        this.fetchIssues();
-        this.fetchCommits();
-        this.calculateUnitTests();
-        this.setState({ contributorStats });
-    }
+    attemptFetch = async (url, n) => {
+        let error;
+        for (let i = 0; i < n; i++) {
+            try {
+                return await fetch(url);
+            } catch (err) {
+                error = err;
+            }
+        }
+        throw error;
+    };
 
     async fetchCommits() {
         let commitsTotal = 0;
@@ -148,7 +153,7 @@ class AboutPage extends Component {
 
         // fetch() and json() are asynchronous
         // we use await to make the main thread wait until the asynchronous thread terminates and returns a value
-        const response = await fetch(url); // make get request to url and wait until response is returned
+        const response = await this.attemptFetch(url, 3); // make get request to url and wait until response is returned
         const data = await response.json(); // convert response to a json object and wait until the data is returned
         // loop through array
         console.log('fetchCommits', data);
@@ -167,7 +172,7 @@ class AboutPage extends Component {
         let issuesTotal = 0;
         const url = 'https://api.github.com/repos/bcheung/ioDB/issues';
 
-        const response = await fetch(url);
+        const response = await this.attemptFetch(url, 3);
         const data = await response.json();
         console.log('fetchIssues', data);
         data.forEach(issue => {
@@ -177,6 +182,13 @@ class AboutPage extends Component {
         });
 
         this.setState({ issuesTotal });
+    }
+
+    fetchGithubStats() {
+        this.fetchIssues();
+        this.fetchCommits();
+        this.calculateUnitTests();
+        this.setState({ contributorStats });
     }
 
     calculateUnitTests() {
@@ -190,7 +202,7 @@ class AboutPage extends Component {
     renderProfile(id) {
         const username = this.contributorKeys[id];
         const { contributorStats } = this.state;
-        console.log('renderProfile', id, username, contributorStats[username]);
+        // console.log('renderProfile', id, username, contributorStats[username]);
 
         return (
             <Card
