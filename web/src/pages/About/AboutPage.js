@@ -139,7 +139,15 @@ class AboutPage extends Component {
         let error;
         for (let i = 0; i < n; i++) {
             try {
-                return await fetch(url);
+                // fetch() and json() are asynchronous
+                // we use await to make the main thread wait until the asynchronous thread terminates and returns a value
+                const response = await fetch(url); // make get request to url and wait until response is returned
+                console.log('fetch response', response);
+                if (response) {
+                    const data = await response.json(); // convert response to a json object and wait until the data is returned
+                    console.log('data', data);
+                    return data;
+                }
             } catch (err) {
                 error = err;
             }
@@ -151,10 +159,7 @@ class AboutPage extends Component {
         let commitsTotal = 0;
         const url = 'https://api.github.com/repos/bcheung/ioDB/stats/contributors';
 
-        // fetch() and json() are asynchronous
-        // we use await to make the main thread wait until the asynchronous thread terminates and returns a value
-        const response = await this.attemptFetch(url, 3); // make get request to url and wait until response is returned
-        const data = await response.json(); // convert response to a json object and wait until the data is returned
+        const data = await this.attemptFetch(url, 3);
         // loop through array
         console.log('fetchCommits', data);
         data.forEach(contributor => {
@@ -172,8 +177,7 @@ class AboutPage extends Component {
         let issuesTotal = 0;
         const url = 'https://api.github.com/repos/bcheung/ioDB/issues';
 
-        const response = await this.attemptFetch(url, 3);
-        const data = await response.json();
+        const data = await this.attemptFetch(url, 3);
         console.log('fetchIssues', data);
         data.forEach(issue => {
             const username = issue.user.login;
