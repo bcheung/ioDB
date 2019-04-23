@@ -16,6 +16,8 @@ import CountryMap from '../CountryMap';
 Enzyme.configure({ adapter: new Adapter() });
 // Before Each Test could fit in here and will give hardcoded data
 
+console.log = function() {};
+
 const state = {
     initial: {
         done: false,
@@ -60,14 +62,10 @@ const match = {
 
 it('Detailed Instance Component renders without crashing', () => {
     const div = document.createElement('div');
-    const match = {
-        data: [1000, 1000]
-    };
+
     ReactDOM.render(<CountryMap />, div);
     ReactDOM.unmountComponentAtNode(div);
 });
-
-/** We need to look at sean's locationinstance tests to get a better idea */
 
 it('Test CountryMap Not Null', () => {
     // Render a checkbox with label in the document
