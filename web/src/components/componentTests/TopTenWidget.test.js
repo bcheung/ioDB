@@ -129,14 +129,5 @@ it('Test TopTenWidget', () => {
 
     expect(widget).toExist();
 
-    expect(widget.prototype.componentDidMount).toExist();
     //  expect(widget.props.joined).to.equal(instanceData);
-});
-
-it('Test TopTenWidget Null Value', () => {
-    // Render a checkbox with label in the document
-    const widget = mount(<TopTenWidget />);
-
-    // Can't pass in data b/c too complex
-    expect(widget.prototype.componentDidMount).toExist();
 });
