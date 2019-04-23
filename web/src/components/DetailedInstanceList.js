@@ -33,7 +33,7 @@ const DetailedInstanceList = ({ majorModel, data, collapse, label, onClick }) =>
             </Button>
             <Container>
                 <br />
-                <Nav light expand="md" sticky="side" className="shadow-sm py-0">
+                <Nav expand="md" sticky="side" className="shadow-sm py-0">
                     <div className="sidebar-sticky">
                         <Collapse isOpen={collapse}>
                             <Navbar color="light" light expand="md">

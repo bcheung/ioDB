@@ -1,10 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import IndustryInstancePage from './IndustryInstancePage';
+import { shallow } from 'enzyme';
 
-it('renders without crashing', () => {
+const match = {
+    params: {
+        tablename: "industries_3d",
+        id: "425000",
+    }
+};
+
+it('Industry instance renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<IndustryInstancePage />, div);
+    ReactDOM.render(<IndustryInstancePage match={match}/>, div);
     ReactDOM.unmountComponentAtNode(div);
 });
 
@@ -17,4 +25,10 @@ it('CheckboxWithLabel changes the text after click', () => {
     checkbox.find('input').simulate('change');
 
     expect(checkbox.text()).toEqual('On');
+});
+
+it('test renderDetailedInstanceList', () => {
+    const wrapper = shallow(<IndustryInstancePage match={match}/>).instance();
+    const obj = wrapper.renderDetailedInstanceList();
+    expect(obj).not.toEqual(null);
 });

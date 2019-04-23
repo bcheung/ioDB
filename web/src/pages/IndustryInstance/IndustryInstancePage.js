@@ -3,7 +3,14 @@ import { Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
 import { fetchInstanceData, fetchJoinedInstanceData } from '../../fetchAPI';
 import './industry-instance-page.css';
 import { isMajorModel } from '../../constants';
-import { DetailedInstanceList, TopTenWidget, WageSalaryTable, InstanceInfo } from '../../components';
+import {
+    RoutingDataTable,
+    DetailedInstanceList,
+    RoutingTopTenWidget,
+    WageSalaryTable,
+    InstanceInfo,
+    LoadingComponent
+} from '../../components';
 
 class IndustryInstancePage extends Component {
     state = {
@@ -66,7 +73,7 @@ class IndustryInstancePage extends Component {
     render() {
         console.log('render');
         const { tablename, id } = this.props.match.params;
-        const { occupationData, industryData, collapse } = this.state;
+        const { isDataLoaded, occupationData, industryData, collapse } = this.state;
 
         const renderLegend = (stop, i) => (
             <div key={i} className="txt-s">
@@ -77,19 +84,17 @@ class IndustryInstancePage extends Component {
                 <span>{`${stop[0].toLocaleString()}`}</span>
             </div>
         );
-        return (
-            <Container>
-                <Row>
+        if (isDataLoaded) {
+            return (
+                <Container>
                     <Col>
-                        <Row>
-                            {industryData ? (
-                                <InstanceInfo
-                                    title={industryData.title}
-                                    idLabel="Occupation Code"
-                                    id={industryData.id}
-                                />
-                            ) : null}
-                        </Row>
+                        <InstanceInfo
+                            title={industryData.title}
+                            idLabel="NAICS Code"
+                            id={industryData.id}
+                            totalEmployment={industryData.total_employment}
+                            description={industryData.description}
+                        />
                         {isMajorModel[tablename] && industryData ? (
                             <DetailedInstanceList
                                 collapse={collapse}
@@ -102,23 +107,28 @@ class IndustryInstancePage extends Component {
                         <br />
                         <Card className="container wage-data">
                             <br />
-                            {industryData ? <WageSalaryTable data={industryData} /> : null}
+                            {<WageSalaryTable data={industryData} />}
                             <br />
-                            {industryData ? (
-                                <TopTenWidget
-                                    joined
-                                    title="Top 10 Occupations by"
-                                    primaryTable={tablename}
-                                    secondaryTable="occupations_major"
-                                    id={id}
-                                    total_employment={industryData.total_employment}
-                                />
-                            ) : null}
                         </Card>
+                        <RoutingTopTenWidget
+                            joined
+                            instanceTitle={industryData.title}
+                            primaryTable={tablename}
+                            secondaryTable="occupations_major"
+                            id={id}
+                            totalEmployment={industryData.total_employment}
+                        />
+                        <RoutingDataTable
+                            data={occupationData}
+                            instanceTitle={industryData.title}
+                            primaryTable={tablename}
+                            secondaryTable="occupations_major"
+                        />
                     </Col>
-                </Row>
-            </Container>
-        );
+                </Container>
+            );
+        }
+        return <LoadingComponent />;
     }
 }
 

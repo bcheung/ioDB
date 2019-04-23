@@ -14,11 +14,15 @@
         "d3": "^5.9.2",
         "d3-array": "^2.0.3",
         "d3-geo": "^1.11.3",
+        "d3-geo-projection": "^2.6.0",
         "d3-scale": "^3.0.0",
         "datamaps": "^0.5.9",
+        "enzyme": "^3.9.0",
+        "enzyme-adapter-react-16": "^1.12.1",
         "immutable": "^4.0.0-rc.12",
         "jest-enzyme": "^7.0.2",
         "mapbox-gl": "^0.53.1",
+        "match-sorter": "^2.3.0",
         "prop-types": "^15.7.2",
         "react": "^16.8.2",
         "react-addons-test-utils": "^15.6.2",
@@ -35,8 +39,10 @@
         "react-scripts": "2.1.5",
         "react-select": "^2.4.2",
         "react-simple-maps": "^0.12.1",
-        "reactstrap": "^7.1.0",
-        "selenium-webdriver": "^4.0.0-alpha.1"
+        "selenium-webdriver": "^4.0.0-alpha.1",
+        "react-table": "^6.9.2",
+        "react-tooltip": "^3.10.0",
+        "reactstrap": "^7.1.0"
     },
     "scripts": {
         "start": "react-scripts start",

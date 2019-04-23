@@ -4,8 +4,10 @@ import './stylesheets/styles.css';
 import BootstrapTable from 'react-bootstrap-table-next';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import { TopTenWidget, WageSalaryTable } from '.';
+import { RoutingTopTenWidget, WageSalaryTable } from '.';
 // picture of flag?
+import { RoutingDataTable } from './RoutingDataTable';
+import { formatNum } from '../constants';
 
 class LocationData extends Component {
     constructor(props) {
@@ -14,27 +16,37 @@ class LocationData extends Component {
     }
 
     render() {
-        const { data, primaryTable, id } = this.props;
+        const { instanceData, primaryTable, id, occData } = this.props;
         return (
-            <Card className="container wage-data">
+            <Card className="container wage-instanceData">
                 <CardHeader>
-                    <h1>{data.title}</h1>
+                    <h1>{instanceData.title}</h1>
                     <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-                        <Col className="text-center">Total Population: {data.total_population}</Col>
-                        <Col className="text-center">Total Employment: {data.total_employment}</Col>
+                        <Col className="text-center">Total Employment: {formatNum(instanceData.total_employment)}</Col>
+                        {primaryTable === 'metro_areas' ? null : (
+                            <Col className="text-center">
+                                Total Population: {formatNum(instanceData.total_population)}
+                            </Col>
+                        )}
                     </Row>
                 </CardHeader>
                 <br />
-                <WageSalaryTable data={data} />
+                <WageSalaryTable data={instanceData} />
                 <br />
 
-                <TopTenWidget
+                <RoutingTopTenWidget
                     joined
-                    title="Top 10 Occupations by"
+                    instanceTitle={instanceData.title}
                     primaryTable={primaryTable}
                     secondaryTable="occupations_major"
                     id={id}
-                    total_employment={data.total_employment}
+                    totalEmployment={instanceData.total_employment}
+                />
+                <RoutingDataTable
+                    data={occData}
+                    instanceTitle={instanceData.title}
+                    primaryTable={primaryTable}
+                    secondaryTable="occupations_major"
                 />
             </Card>
         );

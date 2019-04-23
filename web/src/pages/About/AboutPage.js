@@ -131,6 +131,7 @@ class AboutPage extends Component {
     contributorKeys = ['CooperTravis', 'bcheung', 'brookepaxman', 'wang-sz', 'dterral504', 'jmgabriel96'];
 
     componentDidMount() {
+        console.log('componentDidMount');
         this.fetchGithubStats();
     }
 
@@ -150,6 +151,7 @@ class AboutPage extends Component {
         const response = await fetch(url); // make get request to url and wait until response is returned
         const data = await response.json(); // convert response to a json object and wait until the data is returned
         // loop through array
+        console.log('fetchCommits', data);
         data.forEach(contributor => {
             // for each element in array (contributor is the variable for the element)
             // do something
@@ -167,6 +169,7 @@ class AboutPage extends Component {
 
         const response = await fetch(url);
         const data = await response.json();
+        console.log('fetchIssues', data);
         data.forEach(issue => {
             const username = issue.user.login;
             contributorStats[username].issues++;
@@ -191,6 +194,7 @@ class AboutPage extends Component {
 
         return (
             <Card
+                key={id}
                 body
                 style={{ borderColor: '#333', cursor: 'pointer' }}
                 className="text-left"
@@ -231,7 +235,7 @@ class AboutPage extends Component {
         for (let id = 0; id < this.contributorKeys.length; id += 3) {
             // render each row
             profiles.push(
-                <Container>
+                <Container key={id}>
                     <CardDeck>
                         {this.renderProfile(id)}
                         {this.renderProfile(id + 1)}

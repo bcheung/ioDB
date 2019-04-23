@@ -316,9 +316,9 @@ def populate_states():
         return line_cnt, states_cnt, major_cnt, detailed_cnt
 
 
-def populate_metro_areas():
+def populate_metro_areas(file):
     # Populate metro_areas, metro_areas_occ_major, metro_areas_occ_detailed tables
-    with open('data/occupations_by_metropolitan_areas.csv', 'r') as f:
+    with open('data/' + file, 'r') as f:
         line_cnt = metro_areas_cnt = major_cnt = detailed_cnt = 0
         reader = csv.reader(f)
         for line in reader:
@@ -424,6 +424,11 @@ if __name__ == '__main__':
     line_cnt, state_cnt, major_cnt, detailed_cnt = populate_states()
     print('Done populating state tables! line_cnt: {}, state_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
         line_cnt, state_cnt, major_cnt, detailed_cnt))
-    line_cnt, metro_areas_cnt, major_cnt, detailed_cnt = populate_metro_areas()
-    print('Done populating metro areas tables! line_cnt: {}, metro_areas_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
+    line_cnt, metro_areas_cnt, major_cnt, detailed_cnt = populate_metro_areas(
+        'occupations_by_metropolitan_areas.csv')
+    print('Done populating metro areas! line_cnt: {}, metro_areas_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
+        line_cnt, metro_areas_cnt, major_cnt, detailed_cnt))
+    line_cnt, metro_areas_cnt, major_cnt, detailed_cnt = populate_metro_areas(
+        'occupations_by_large_MSA.csv')
+    print('Done populating large metro areas! line_cnt: {}, metro_areas_cnt: {} major_cnt: {}, detailed_cnt: {}'.format(
         line_cnt, metro_areas_cnt, major_cnt, detailed_cnt))

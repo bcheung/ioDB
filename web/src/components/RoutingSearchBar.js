@@ -62,7 +62,7 @@ class SearchBar extends Component {
                             placeholder={`Search ${selectedModel.title}`}
                         />
                     </Col>
-                    <Col md="3">
+                    <Col md="2">
                         <Select
                             className="dropDown"
                             options={modelOptions}
@@ -73,9 +73,7 @@ class SearchBar extends Component {
                             getOptionValue={option => option.tablename}
                         />
                     </Col>
-                </Row>
-                <Row>
-                    <Col>
+                    <Col md="1">
                         <Button color="primary" onClick={this.onSearchRequest}>
                             Search
                         </Button>
