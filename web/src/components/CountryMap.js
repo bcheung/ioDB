@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { ComposableMap, ZoomableGroup, Geographies, Geography } from 'react-simple-maps';
+import ReactTooltip from 'react-tooltip';
 import { Button } from 'reactstrap';
 import { geoAlbersUsa, geoPath } from 'd3-geo';
 import { geoTimes } from 'd3-geo-projection';
 import { Motion, spring } from 'react-motion';
 import stateData from '../static/usa-map.json';
+import dcData from '../static/dc-map.json';
 import msaData from '../static/msa-map.json';
 
 const wrapperStyles = {
@@ -23,14 +25,9 @@ class CountryMap extends Component {
         super(props);
         this.state = {
             center: [-97, 40],
-            zoom: 1,
+            mapZoom: 1,
             detail: false,
             state: {
-                name: '',
-                initial: '',
-                id: ''
-            },
-            MSA: {
                 name: '',
                 initial: '',
                 id: ''
@@ -40,8 +37,19 @@ class CountryMap extends Component {
         };
     }
 
+    componentDidMount() {
+        setTimeout(() => {
+            ReactTooltip.rebuild();
+        }, 100);
+    }
+
     shouldComponentUpdate(nextProps, nextState) {
-        console.log('shouldComponentUpdate CountryMap', this.state);
+        console.log('shouldComponentUpdate CountryMap', nextProps);
+
+        setTimeout(() => {
+            ReactTooltip.rebuild();
+        }, 100);
+
         if (nextProps.tablename !== this.props.tablename || nextProps.id !== this.props.id) {
             console.log('false props', nextProps.id);
             const { stateGeos } = this.state;
@@ -52,62 +60,73 @@ class CountryMap extends Component {
             console.log('true state', nextState.state);
             return true;
         }
+        if (nextProps.metroAreas !== this.props.metroAreas) {
+            return true;
+        }
         return false;
     }
 
     handleReset = () => {
+        const { onReset } = this.props;
+
         this.setState({
             center: [-97, 40],
-            zoom: 1,
+            mapZoom: 1,
             detail: false,
             state: ''
         });
-        this.props.onReset();
+        onReset();
     };
 
     handleStateClick = geography => {
         console.log('State data: ', geography);
+        const { width, height, onStateClick } = this.props;
+
         const path = geoPath().projection(this.projection());
         const center = this.projection().invert(path.centroid(geography));
-        let zoom;
+        let mapZoom;
         if (geography.properties.NAME_1 === 'Alaska') {
-            zoom = 2.5;
+            mapZoom = 2.5;
         } else if (geography.properties.NAME_1 === 'Hawaii') {
-            zoom = 4.7;
+            mapZoom = 4.7;
         } else {
             const bounds = path.bounds(geography);
             const dx = bounds[1][0] - bounds[0][0];
             const dy = bounds[1][1] - bounds[0][1];
-            zoom = 0.07 / Math.max(dx / this.props.width, dy / this.props.height);
-            if (zoom > 8) {
-                zoom = 8;
+            mapZoom = 0.1 / Math.max(dx / width, dy / height);
+            if (mapZoom > 7) {
+                mapZoom = 7;
             }
         }
-        console.log(zoom);
+        console.log(mapZoom);
+
         this.setState({
             center,
-            zoom,
+            mapZoom,
             detail: true,
             state: {
                 name: geography.properties.NAME_1,
                 initial: geography.properties.HASC_1.substring(geography.properties.HASC_1.length - 2),
                 id: geography.properties.ID
-            },
-            MSA: {}
+            }
         });
-        this.props.onStateClick(geography.properties);
+
+        onStateClick(geography.properties);
     };
 
     handleMSAClick = geography => {
         console.log('MSA data: ', geography);
-        this.setState({
-            MSA: {
-                name: geography.properties.NAME,
-                initial: geography.properties.NAME.substring(geography.properties.NAME.length - 2),
-                id: geography.properties.GEOID
-            }
-        });
-        this.props.onMSAClick(geography.properties);
+
+        const { onMSAClick } = this.props;
+
+        // this.setState({
+        //     MSA: {
+        //         name: geography.properties.NAME,
+        //         initial: geography.properties.NAME.substring(geography.properties.NAME.length - 2),
+        //         id: geography.properties.GEOID
+        //     }
+        // });
+        onMSAClick(geography.properties);
     };
 
     projection = () =>
@@ -116,28 +135,33 @@ class CountryMap extends Component {
             .scale(160);
 
     render() {
-        console.log('render countrymap', this.props.id);
+        const { width, height, id, tablename, metroAreas } = this.props;
+        const { mapZoom, center, state, detail } = this.state;
+
+        console.log('render countrymap', id);
+        console.log('state zoom', mapZoom);
+
         return (
             <div style={wrapperStyles}>
                 <Button onClick={this.handleReset}>Reset</Button>
                 <Motion
                     defaultStyle={{
-                        zoom: this.state.zoom,
-                        x: this.state.center[0],
-                        y: this.state.center[1]
+                        zoom: mapZoom,
+                        x: center[0],
+                        y: center[1]
                     }}
                     style={{
-                        zoom: spring(this.state.zoom, { stiffness: 210, damping: 20 }),
-                        x: spring(this.state.center[0], { stiffness: 210, damping: 20 }),
-                        y: spring(this.state.center[1], { stiffness: 210, damping: 20 })
+                        zoom: spring(mapZoom, { stiffness: 210, damping: 20 }),
+                        x: spring(center[0], { stiffness: 210, damping: 20 }),
+                        y: spring(center[1], { stiffness: 210, damping: 20 })
                     }}
                 >
                     {({ zoom, x, y }) => (
                         <ComposableMap
                             projection={geoAlbersUsa}
                             projectionConfig={{ scale: 1000 }}
-                            width={this.props.width}
-                            height={this.props.height}
+                            width={width}
+                            height={height}
                             style={{
                                 width: '100%',
                                 height: 'auto'
@@ -151,24 +175,27 @@ class CountryMap extends Component {
                                         this.setState({ stateGeos });
                                         return geographies.map((stateGeo, i) => {
                                             stateGeos[stateGeo.properties.ID] = stateGeo;
-                                            if (this.props.id === stateGeo.properties.ID) {
+                                            if (id === stateGeo.properties.ID) {
                                                 this.setState({ stateGeo });
                                                 this.handleStateClick(stateGeo);
                                             }
                                             return (
                                                 <Geography
                                                     key={i}
+                                                    data-tip={stateGeo.properties.NAME_1}
+                                                    data-for="state"
                                                     geography={stateGeo}
                                                     projection={projection}
                                                     onClick={
-                                                        this.state.detail &&
-                                                        this.state.state.id === stateGeo.properties.ID
+                                                        detail && state.id === stateGeo.properties.ID
                                                             ? null
                                                             : this.handleStateClick
                                                     }
+                                                    onMouseEnter={event => {
+                                                        console.log(event);
+                                                    }}
                                                     style={
-                                                        this.state.detail &&
-                                                        this.state.state.id === stateGeo.properties.ID
+                                                        detail && state.id === stateGeo.properties.ID
                                                             ? {
                                                                   default: {
                                                                       fill: '#ECEFF1',
@@ -203,24 +230,90 @@ class CountryMap extends Component {
                                         });
                                     }}
                                 </Geographies>
+                                <Geographies geography={dcData}>
+                                    {(geographies, projection) =>
+                                        geographies.map((stateGeo, i) => {
+                                            if (id === stateGeo.properties.ID) {
+                                                this.setState({ stateGeo });
+                                                this.handleStateClick(stateGeo);
+                                            }
+                                            return (
+                                                <Geography
+                                                    key={i}
+                                                    data-tip={stateGeo.properties.NAME_1}
+                                                    data-for="state"
+                                                    geography={stateGeo}
+                                                    projection={projection}
+                                                    onClick={
+                                                        detail && state.id === stateGeo.properties.ID
+                                                            ? null
+                                                            : this.handleStateClick
+                                                    }
+                                                    onMouseEnter={event => {
+                                                        console.log(event);
+                                                    }}
+                                                    style={
+                                                        detail && state.id === stateGeo.properties.ID
+                                                            ? {
+                                                                  default: {
+                                                                      fill: '#ECEFF1',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  }
+                                                              }
+                                                            : {
+                                                                  default: {
+                                                                      fill: '#ECEFF1',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  },
+                                                                  hover: {
+                                                                      fill: '#CFD8DC',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  },
+                                                                  pressed: {
+                                                                      fill: '#8294a5',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  }
+                                                              }
+                                                    }
+                                                />
+                                            );
+                                        })
+                                    }
+                                </Geographies>
                                 <Geographies geography={msaData} disableOptimization>
                                     {(geographies, projection) =>
                                         geographies.map((msaGeo, i) => {
                                             if (
                                                 msaGeo.properties.NAME.substring(msaGeo.properties.NAME.length - 2) !==
-                                                this.state.state.initial
+                                                state.initial
                                             ) {
                                                 return null;
                                             }
-                                            if (this.props.id === msaGeo.properties.GEOID) {
+                                            if (msaGeo.properties.LSAD === 'M2') {
+                                                return null;
+                                            }
+                                            if (id === msaGeo.properties.GEOID) {
                                                 this.handleMSAClick(msaGeo);
                                             }
                                             return (
                                                 <Geography
                                                     key={i}
+                                                    data-tip={msaGeo.properties.NAME}
+                                                    data-for="metro"
                                                     geography={msaGeo}
                                                     projection={projection}
                                                     onClick={this.handleMSAClick}
+                                                    onMouseEnter={event => {
+                                                        console.log(event);
+                                                    }}
                                                     style={{
                                                         default: {
                                                             fill: '#a8c6f7',
@@ -235,7 +328,7 @@ class CountryMap extends Component {
                                                             outline: 'none'
                                                         },
                                                         pressed: {
-                                                            fill: '#FF5722',
+                                                            fill: '#4e668e',
                                                             stroke: '#607D8B',
                                                             strokeWidth: 0.75,
                                                             outline: 'none'
@@ -250,6 +343,8 @@ class CountryMap extends Component {
                         </ComposableMap>
                     )}
                 </Motion>
+                <ReactTooltip id="metro" />
+                <ReactTooltip id="state" />
             </div>
         );
     }

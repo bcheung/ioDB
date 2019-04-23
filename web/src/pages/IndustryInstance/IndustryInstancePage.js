@@ -93,6 +93,7 @@ class IndustryInstancePage extends Component {
                             idLabel="NAICS Code"
                             id={industryData.id}
                             totalEmployment={industryData.total_employment}
+                            description={industryData.description}
                         />
                         {isMajorModel[tablename] && industryData ? (
                             <DetailedInstanceList
@@ -111,15 +112,18 @@ class IndustryInstancePage extends Component {
                         </Card>
                         <RoutingTopTenWidget
                             joined
-                            title="Top 10 Occupations by"
+                            instanceTitle={industryData.title}
                             primaryTable={tablename}
                             secondaryTable="occupations_major"
                             id={id}
                             totalEmployment={industryData.total_employment}
                         />
-                        <div style={{ padding: '1em' }}>
-                            <RoutingDataTable data={occupationData} secondaryTable="occupations_major" />
-                        </div>
+                        <RoutingDataTable
+                            data={occupationData}
+                            instanceTitle={industryData.title}
+                            primaryTable={tablename}
+                            secondaryTable="occupations_major"
+                        />
                     </Col>
                 </Container>
             );

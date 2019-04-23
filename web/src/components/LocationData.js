@@ -23,7 +23,11 @@ class LocationData extends Component {
                     <h1>{instanceData.title}</h1>
                     <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
                         <Col className="text-center">Total Employment: {formatNum(instanceData.total_employment)}</Col>
-                        <Col className="text-center">Total Population: {formatNum(instanceData.total_population)}</Col>
+                        {primaryTable === 'metro_areas' ? null : (
+                            <Col className="text-center">
+                                Total Population: {formatNum(instanceData.total_population)}
+                            </Col>
+                        )}
                     </Row>
                 </CardHeader>
                 <br />
@@ -32,15 +36,18 @@ class LocationData extends Component {
 
                 <RoutingTopTenWidget
                     joined
-                    title="Top 10 Occupations by"
+                    instanceTitle={instanceData.title}
                     primaryTable={primaryTable}
                     secondaryTable="occupations_major"
                     id={id}
                     totalEmployment={instanceData.total_employment}
                 />
-                <div style={{ padding: '1em' }}>
-                    <RoutingDataTable data={occData} secondaryTable="occupations_major" />
-                </div>
+                <RoutingDataTable
+                    data={occData}
+                    instanceTitle={instanceData.title}
+                    primaryTable={primaryTable}
+                    secondaryTable="occupations_major"
+                />
             </Card>
         );
     }

@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import mapboxgl from 'mapbox-gl';
-import { Bar } from 'react-chartjs-2';
 import { Button, Collapse, Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { fetchInstanceData, fetchJoinedInstanceData } from '../../fetchAPI';
@@ -12,48 +10,9 @@ import {
     WageSalaryTable,
     InstanceInfo,
     LoadingComponent,
-    RoutingDataTable
+    RoutingDataTable,
+    RoutingChoroplethMap
 } from '../../components';
-
-mapboxgl.accessToken =
-    'pk.eyJ1IjoiYW1ldGh5c3QtZWU0NjFsIiwiYSI6ImNqdDdxYWxzZzAwcXc0NG91NnJ4Z2t4bnMifQ.1M-jA2MKBuUbXoy3bIMxlw';
-
-// Finding the maximum loc_quotient value for this locationData set
-function getMaxLocQuotient(locationData) {
-    let maxLocQuotient = 0;
-    console.log('locationData array quotient calculation', locationData);
-    locationData.forEach(stateData => {
-        if (stateData.loc_quotient > maxLocQuotient) {
-            maxLocQuotient = stateData.loc_quotient;
-        }
-    });
-    return maxLocQuotient;
-}
-
-function createHeatMapping(locationData) {
-    // For use to calculate state fill shade color
-    const expression = ['match', ['get', 'STATE_ID']];
-
-    // Maximum location quotient
-    const maxLocQuotient = getMaxLocQuotient(locationData);
-    // Calculate color
-    locationData.forEach(stateData => {
-        if (stateData.loc_quotient === -1.0) {
-            // grey color if no location quotient for state
-            const color = `rgba(${102}, ${102}, ${121}, 0.75)`;
-            expression.push(stateData.states.id, color);
-        } else {
-            const green = 255 - (stateData.loc_quotient / maxLocQuotient) * 255;
-            const color = `rgba(${255}, ${green}, ${132}, 0.75)`;
-            expression.push(stateData.states.id, color);
-        }
-    });
-    // Last value is the default
-    expression.push('rgba(0,0,0,0)');
-
-    return expression;
-}
-let map;
 
 class OccupationInstancePage extends Component {
     constructor(props) {
@@ -66,8 +25,43 @@ class OccupationInstancePage extends Component {
             isDataLoaded: false,
             collapse: false
         };
-        // this.mapContainer = React.createRef();
     }
+
+    // Finding the maximum loc_quotient value for this locationData set
+    getMaxLocQuotient = locationData => {
+        let maxLocQuotient = 0;
+        console.log('locationData array quotient calculation', locationData);
+        locationData.forEach(stateData => {
+            if (stateData.loc_quotient > maxLocQuotient) {
+                maxLocQuotient = stateData.loc_quotient;
+            }
+        });
+        return maxLocQuotient;
+    };
+
+    createHeatMapping = locationData => {
+        // For use to calculate state fill shade color
+        const expression = ['match', ['get', 'STATE_ID']];
+
+        // Maximum location quotient
+        const maxLocQuotient = this.getMaxLocQuotient(locationData);
+        // Calculate color
+        locationData.forEach(stateData => {
+            if (stateData.loc_quotient === -1.0) {
+                // grey color if no location quotient for state
+                const color = `rgba(${102}, ${102}, ${121}, 0.75)`;
+                expression.push(stateData.states.id, color);
+            } else {
+                const green = 255 - (stateData.loc_quotient / maxLocQuotient) * 255;
+                const color = `rgba(${255}, ${green}, ${132}, 0.75)`;
+                expression.push(stateData.states.id, color);
+            }
+        });
+        // Last value is the default
+        expression.push('rgba(0,0,0,0)');
+
+        return expression;
+    };
 
     componentDidMount() {
         const { tablename, id } = this.props.match.params;
@@ -93,112 +87,6 @@ class OccupationInstancePage extends Component {
         console.log('shouldComponentUpdate false', nextState);
         return false;
     }
-
-    componentDidUpdate(prevProps, prevState) {
-        const { isDataLoaded, isMapLoaded } = this.state;
-        if (isDataLoaded && isMapLoaded) {
-            this.setHeatMapping();
-        } else if (isDataLoaded) {
-            this.loadMap();
-        }
-    }
-
-    loadMap = () => {
-        console.log('loadMap');
-        map = new mapboxgl.Map({
-            container: this.mapContainer,
-            style: 'mapbox://styles/mapbox/light-v10',
-            center: [-96, 40],
-            zoom: 2.25
-        });
-
-        map.on('load', () => {
-            map.addSource('states', {
-                type: 'vector',
-                url: 'mapbox://mapbox.us_census_states_2015'
-            });
-            const expression = ['match', ['get', 'STATE_ID']];
-            expression.push('rgba(0,0,0,0)');
-            expression.push('rgba(0,0,0,0)');
-            expression.push('rgba(0,0,0,0)');
-
-            // Add layer from the vector tile source with data-driven style
-            map.addLayer(
-                {
-                    id: 'heat-layer',
-                    type: 'fill',
-                    source: 'states',
-                    'source-layer': 'states',
-                    paint: {
-                        'fill-color': expression,
-                        'fill-opacity': 0,
-                        'fill-opacity-transition': { duration: 500 }
-                    },
-                    transition: {
-                        duration: 2000,
-                        delay: 0
-                    }
-                },
-                'waterway-label'
-            );
-            const popup = new mapboxgl.Popup({
-                closeButton: false,
-                closeOnClick: false
-            });
-            function checkEmpty(info) {
-                return info || 'No data';
-            }
-
-            map.on('mousemove', function(e) {
-                map.getCanvas().style.cursor = 'pointer';
-                const position = {
-                    lon: e.lngLat.lng,
-                    lat: e.lngLat.lat
-                };
-                const mappopup = map.queryRenderedFeatures(e.point, {
-                    layers: ['heat-layer']
-                });
-                // const { locationData } = this.state;
-                if (mappopup.length > 0) {
-                    const stateName = mappopup[0].properties.STATE_NAME;
-                    popup
-                        .setLngLat(position)
-                        .setHTML(stateName)
-                        .addTo(map);
-                } else {
-                    popup
-                        .setLngLat(position)
-                        .setHTML('No data')
-                        .addTo(map);
-                }
-            });
-            map.on('mouseleave', function() {
-                map.getCanvas().style.cursor = '';
-                popup.remove();
-            });
-            this.setState({ isMapLoaded: true });
-        });
-    };
-
-    setHeatMapping = () => {
-        const { isMapLoaded, locationData } = this.state;
-        console.log('setHeatMapping', isMapLoaded, locationData);
-
-        if (isMapLoaded && locationData) {
-            const expression = createHeatMapping(locationData);
-            map.setPaintProperty('heat-layer', 'fill-opacity', 0);
-
-            setTimeout(function() {
-                console.log('setTimeout', map);
-                map.setPaintProperty('heat-layer', 'fill-opacity', 1);
-            }, 1000);
-
-            setTimeout(function() {
-                console.log('setTimeout', map);
-                map.setPaintProperty('heat-layer', 'fill-color', expression);
-            }, 1000);
-        }
-    };
 
     fetchData = async (tablename, id) => {
         // const { tablename, id } = this.props.match.params;
@@ -254,20 +142,10 @@ class OccupationInstancePage extends Component {
                                     <br />
                                 </Card>
                             </Row>
+                            <RoutingChoroplethMap instanceTitle={occupationData.title} data={locationData} />
                             <RoutingTopTenWidget
                                 joined
-                                title="Top 10 Major Industries by"
-                                primaryTable={tablename}
-                                secondaryTable="industries_3d"
-                                id={id}
-                                totalEmployment={occupationData.total_employment}
-                            />
-                            <div style={{ padding: '1em' }}>
-                                <RoutingDataTable data={industryData} secondaryTable="industries_3d" />
-                            </div>
-                            <RoutingTopTenWidget
-                                joined
-                                title="Top 10 States by"
+                                instanceTitle={occupationData.title}
                                 // population
                                 primaryTable={tablename}
                                 secondaryTable="states"
@@ -275,16 +153,31 @@ class OccupationInstancePage extends Component {
                                 totalEmployment={occupationData.total_employment}
                                 // total_population={occupationData.total_population}
                             />
-                            <div style={{ padding: '1em' }}>
-                                <RoutingDataTable data={locationData} secondaryTable="states" population />
-                            </div>
-                            <Row>{<h1>Where are {occupationData.title} located?</h1>}</Row>
+                            <RoutingDataTable
+                                data={locationData}
+                                instanceTitle={occupationData.title}
+                                primaryTable={tablename}
+                                secondaryTable="states"
+                                population
+                            />
+                            <RoutingTopTenWidget
+                                joined
+                                instanceTitle={occupationData.title}
+                                primaryTable={tablename}
+                                secondaryTable="industries_3d"
+                                id={id}
+                                totalEmployment={occupationData.total_employment}
+                            />
+                            <RoutingDataTable
+                                data={industryData}
+                                instanceTitle={occupationData.title}
+                                secondaryTable="industries_3d"
+                            />
                         </Col>
                     </div>
                 ) : (
                     <LoadingComponent />
                 )}
-                <div style={{ height: '500px' }} ref={el => (this.mapContainer = el)} />
             </Container>
         );
     }

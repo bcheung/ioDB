@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'reactstrap';
 import Select from 'react-select';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { fetchTopTenData, fetchJoinedTopTenData } from '../fetchAPI';
-import { groupedStats, statsWithPop, graphType, popStats, getModelRoutes } from '../constants';
+import { groupedStats, statsWithPop, graphType, popStats, getModelRoutes, getInstanceNames } from '../constants';
 
 class TopTenWidget extends Component {
     state = {
@@ -24,7 +24,7 @@ class TopTenWidget extends Component {
             prevProps.id !== this.props.id ||
             prevState.selectedColumn !== this.state.selectedColumn
         ) {
-            console.log('componentDidUpdate', prevProps.primaryTable, this.props.primaryTable);
+            // console.log('componentDidUpdate', prevProps.primaryTable, this.props.primaryTable);
             this.fetchStats();
         }
     }
@@ -36,7 +36,7 @@ class TopTenWidget extends Component {
         let instanceData = {};
         const { secondaryTable, totalEmployment } = this.props;
         const { selectedColumn } = this.state;
-        console.log('updateGraph selectedColumn', selectedColumn, data);
+        // console.log('updateGraph selectedColumn', selectedColumn, data);
         const isPieGraph = graphType[selectedColumn.value].graph === 'pie';
         let sum = 0;
         if (joined) {
@@ -90,21 +90,32 @@ class TopTenWidget extends Component {
                 datasets: [
                     {
                         label: selectedColumn.label,
-                        backgroundColor: 'rgba(255,99,132,1)',
-                        borderColor: 'rgba(255,99,132,1)',
+                        backgroundColor: [
+                            'rgba(252,135,186,1)',
+                            'rgba(186,198,230,1)',
+                            'rgba(250,225,201,1)',
+                            'rgba(165,216,255,1)',
+                            'rgba(255,188,201,1)',
+                            'rgba(203,247,237,1)',
+                            'rgba(160,155,229,1)',
+                            'rgba(140,237,167,1)',
+                            'rgba(252,246,189,1)',
+                            'rgba(57,122,215,1)'
+                        ],
                         borderWidth: 1,
-                        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                        hoverBorderColor: 'rgba(255,99,132,1)',
+                        // hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                        // hoverBorderColor: 'rgba(255,99,132,1)',
                         data: dataArray
                     }
                 ]
             };
         }
+
         this.setState({ data, instanceData, isPieGraph });
     };
 
     handleColumnChange = selectedColumn => {
-        console.log('handleColumnChange', selectedColumn);
+        // console.log('handleColumnChange', selectedColumn);
         this.setState({ selectedColumn });
         // this.fetchStats();
     };
@@ -151,15 +162,26 @@ class TopTenWidget extends Component {
 
     render() {
         const { selectedColumn, instanceData, isPieGraph } = this.state;
-        const { title, population } = this.props;
+        const { title, instanceTitle, primaryTable, secondaryTable, population } = this.props;
         let options = groupedStats;
         if (population) {
             options = [popStats, ...groupedStats];
         }
+        let header;
+        if (title) {
+            header = title;
+        } else if (secondaryTable) {
+            header = `Top 10 ${getInstanceNames[secondaryTable]} for ${instanceTitle}`;
+        } else {
+            header = `Top 10 ${getInstanceNames[primaryTable]}`;
+        }
         return (
             <Container>
                 <Row>
-                    <h1 style={{ margin: 'auto' }}>{title}</h1>
+                    <h1 style={{ margin: 'auto' }}>{header}</h1>
+                </Row>
+                <Row>
+                    <h3>Sorted by</h3>
                 </Row>
                 <Row>
                     <Col>
@@ -188,6 +210,18 @@ class TopTenWidget extends Component {
                             data={instanceData}
                             width={900}
                             height={500}
+                            options={{
+                                // Customize chart options
+                                tooltips: {
+                                    titleFontSize: 16,
+                                    bodyFontSize: 14,
+                                    xPadding: 10,
+                                    yPadding: 10,
+                                    callbacks: {
+                                        label: (tooltipItem, data) => `$${tooltipItem.value}`
+                                    }
+                                }
+                            }}
                         />
                     )}
                 </Row>
