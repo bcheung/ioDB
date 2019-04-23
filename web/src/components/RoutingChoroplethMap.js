@@ -57,7 +57,7 @@ class ChoroplethMap extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.log('shouldComponentUpdate CountryMap', this.state);
+        console.log('shouldComponentUpdate choropleth map', this.state);
         if (nextProps.data !== this.props.data) {
             console.log('true data', nextProps.data);
             return true;
@@ -78,6 +78,7 @@ class ChoroplethMap extends Component {
             .scale(160);
 
     renderGeography = (projection, stateGeo, key, stateData) => {
+        console.log('renderGeography');
         const { maxquotient } = this.state;
 
         let tip = stateGeo.properties.NAME_1;
@@ -161,7 +162,7 @@ class ChoroplethMap extends Component {
                                 })
                             }
                         </Geographies>
-                        <Geographies geography={dcJSON}>
+                        <Geographies geography={dcJSON} disableOptimization>
                             {(geographies, projection) =>
                                 geographies.map((stateGeo, key) => {
                                     const stateData = statesData[stateGeo.properties.ID];
