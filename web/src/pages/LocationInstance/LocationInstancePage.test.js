@@ -7,27 +7,27 @@ import LocationInstancePage from './LocationInstancePage';
 const match = {
     params: {
         tablename: 'states',
-        id: '01',
+        id: '01'
     }
 };
 
 const geoData = {
-    'GID_0': 'USA',
-    'NAME_0': 'United States',
-    'GID_1': 'USA.1_1',
-    'NAME_1': 'Alabama',
-    'ID': '01',
-    'VARNAME_1': 'AL|Ala.',
-    'NL_NAME_1': '',
-    'TYPE_1': 'State',
-    'ENGTYPE_1': 'State',
-    'CC_1': '',
-    'HASC_1': 'US.AL'
+    GID_0: 'USA',
+    NAME_0: 'United States',
+    GID_1: 'USA.1_1',
+    NAME_1: 'Alabama',
+    ID: '01',
+    VARNAME_1: 'AL|Ala.',
+    NL_NAME_1: '',
+    TYPE_1: 'State',
+    ENGTYPE_1: 'State',
+    CC_1: '',
+    HASC_1: 'US.AL'
 };
 
 const MSAGeoData = {
-    'GEOID':'13820',
-    'NAME':'Birmingham-Hoover, AL',
+    GEOID: '13820',
+    NAME: 'Birmingham-Hoover, AL'
 };
 
 it('Location instance renders without crashing', () => {

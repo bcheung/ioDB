@@ -21,6 +21,4 @@ it('Test InstanceInfo', () => {
     expect(instanceinfo).toHaveProp('title', 'ArbTitle');
     expect(instanceinfo).toHaveProp('idLabel', 'Occupation Code');
     expect(instanceinfo).toHaveProp('id', 'arbID');
-
-    expect(instanceinfo).toHaveProp('id', 'arbID');
 });
