@@ -60,8 +60,20 @@ class ChoroplethMap extends Component {
         console.log('shouldComponentUpdate choropleth map', this.state);
         if (nextProps.data !== this.props.data) {
             console.log('true data', nextProps.data);
+            const newData = {
+                statesData: nextProps.data.reduce((obj, item) => {
+                    obj[item.states.id] = item;
+                    return obj;
+                }, {}),
+                maxquotient: getMaxLocQuotient(nextProps.data)
+            };
+            this.setState({ ...newData });
+            return false;
+        }
+        if (nextState.statesData !== this.state.statesData) {
             return true;
         }
+
         return false;
     }
 
