@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import { Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Row } from 'reactstrap';
 import { HashRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import HomePage from '../Home/HomePage';
 import AboutPage from '../About/AboutPage';
@@ -7,8 +7,9 @@ import IndustryInstancePage from '../IndustryInstance/IndustryInstancePage';
 import OccupationInstancePage from '../OccupationInstance/OccupationInstancePage';
 import LocationInstancePage from '../LocationInstance/LocationInstancePage';
 import './App.css';
-import { RoutingSearchBar, TopTenWidget } from '../../components';
+import { RoutingSearchBar, RoutingTopTenWidget } from '../../components';
 import { modelOptions } from '../../constants';
+import TestPage from '../TestPage';
 
 class App extends Component {
     constructor(props) {
@@ -36,7 +37,7 @@ class App extends Component {
             <Router>
                 <div>
                     <Navbar color="light" light expand="md">
-                        <NavbarBrand href="/">ioDB</NavbarBrand>
+                        <NavbarBrand href="#/">ioDB</NavbarBrand>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
                                 <NavLink href="#/">Home</NavLink>
@@ -47,6 +48,9 @@ class App extends Component {
                             <NavItem>
                                 <NavLink href="#/about">About Us</NavLink>
                             </NavItem>
+                            {/* <NavItem>
+                                <NavLink href="#/test">Test</NavLink>
+                            </NavItem> */}
                         </Nav>
                     </Navbar>
 
@@ -59,6 +63,7 @@ class App extends Component {
                     <Switch>
                         <Route exact path="/" render={props => <HomePage tablename={selectedModel.tablename} />} />
                         <Route path="/about" component={AboutPage} />
+                        {/* <Route path="/test" component={TestPage} /> */}
 
                         <Route path="/industry/:tablename/:id" component={IndustryInstancePage} />
 
@@ -66,6 +71,7 @@ class App extends Component {
                         <Route path="/location/:tablename/:id" component={LocationInstancePage} />
                         <Route path="/location" component={LocationInstancePage} />
                     </Switch>
+                    <Row style={{ height: '200px' }} />
                 </div>
             </Router>
         );

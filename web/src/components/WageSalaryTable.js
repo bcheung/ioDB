@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
 import BootstrapTable from 'react-bootstrap-table-next';
+import { formatSalary, formatWage } from '../constants';
 
 const WageSalaryTable = ({ data }) => {
     const tableData = getTableData(data);
@@ -32,10 +33,7 @@ function getTableData(data) {
                 dataField: 'mean',
                 text: 'Mean'
             },
-            {
-                dataField: 'median',
-                text: 'Median'
-            },
+
             {
                 dataField: '10',
                 text: '10th Percentile'
@@ -43,6 +41,10 @@ function getTableData(data) {
             {
                 dataField: '25',
                 text: '25th Percentile'
+            },
+            {
+                dataField: 'median',
+                text: 'Median'
             },
             {
                 dataField: '75',
@@ -56,21 +58,21 @@ function getTableData(data) {
         rows: [
             {
                 type: 'Annual Salary',
-                mean: data.annual_mean,
-                median: data.annual_median,
-                '10': data.annual_10,
-                '25': data.annual_25,
-                '75': data.annual_75,
-                '90': data.annual_90
+                mean: formatSalary(data.annual_mean),
+                median: formatSalary(data.annual_median),
+                '10': formatSalary(data.annual_10),
+                '25': formatSalary(data.annual_25),
+                '75': formatSalary(data.annual_75),
+                '90': formatSalary(data.annual_90)
             },
             {
                 type: 'Hourly Wage',
-                mean: data.hourly_mean,
-                median: data.hourly_median,
-                '10': data.hourly_10,
-                '25': data.hourly_25,
-                '75': data.hourly_75,
-                '90': data.hourly_90
+                mean: formatWage(data.hourly_mean),
+                median: formatWage(data.hourly_median),
+                '10': formatWage(data.hourly_10),
+                '25': formatWage(data.hourly_25),
+                '75': formatWage(data.hourly_75),
+                '90': formatWage(data.hourly_90)
             }
         ]
     };

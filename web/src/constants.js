@@ -67,21 +67,98 @@ const joinedTablePrimaryKeys = {
     }
 };
 
-export const stats = [
-    { label: 'Hourly Wage Median', value: 'hourly_median' },
-    { label: 'Hourly Wage Mean', value: 'hourly_mean' },
-    { label: 'Annual Salary Median', value: 'annual_median' },
-    { label: 'Annual Salary Mean', value: 'annual_mean' },
-    { label: 'Employment', value: 'total_employment' }
+const wageFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+});
+
+const salaryFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0
+});
+
+const numFormatter = new Intl.NumberFormat('en-US');
+
+export function formatWage(wage) {
+    const formattedWage = wageFormatter.format(wage);
+    if (wage === 100) {
+        return `≥ ${formattedWage}`;
+    }
+    if (wage === -1) {
+        return 'Not Available';
+    }
+    return formattedWage;
+}
+
+export function formatSalary(salary) {
+    const formattedSalary = salaryFormatter.format(salary);
+    if (salary === 208000) {
+        return `≥ ${formattedSalary}`;
+    }
+    if (salary === -1) {
+        return 'Not Available';
+    }
+    return formattedSalary;
+}
+
+export function formatNum(num) {
+    if (num === -1) {
+        return 'Not Available';
+    }
+    const formattednum = numFormatter.format(num);
+
+    return formattednum;
+}
+
+export const formatterType = {
+    hourly_10: formatWage,
+    hourly_25: formatWage,
+    hourly_median: formatWage,
+    hourly_75: formatWage,
+    hourly_90: formatWage,
+    hourly_mean: formatWage,
+    annual_10: formatSalary,
+    annual_25: formatSalary,
+    annual_median: formatSalary,
+    annual_75: formatSalary,
+    annual_90: formatSalary,
+    annual_mean: formatSalary,
+    total_employment: formatNum,
+    total_population: formatNum
+};
+
+export const wageStats = [
+    { label: 'Hourly Median', value: 'hourly_median' },
+    { label: 'Hourly Mean', value: 'hourly_mean' }
 ];
 
-export const statsWithPop = [
-    { label: 'Hourly Wage Median', value: 'hourly_median' },
-    { label: 'Hourly Wage Mean', value: 'hourly_mean' },
-    { label: 'Annual Salary Median', value: 'annual_median' },
-    { label: 'Annual Salary Mean', value: 'annual_mean' },
-    { label: 'Employment', value: 'total_employment' },
-    { label: 'Population', value: 'total_population' }
+export const salaryStats = [
+    { label: 'Annual Median', value: 'annual_median' },
+    { label: 'Annual Mean', value: 'annual_mean' }
+];
+
+export const employmentStats = { label: 'Employment', value: 'total_employment' };
+
+export const popStats = { label: 'Population', value: 'population' };
+
+export const generalStats = [employmentStats, popStats];
+
+export const stats = [...wageStats, ...salaryStats, employmentStats];
+
+export const statsWithPop = [...stats, popStats];
+
+export const groupedStats = [
+    employmentStats,
+    {
+        label: 'Wage',
+        options: wageStats
+    },
+    {
+        label: 'Salary',
+        options: salaryStats
+    }
 ];
 
 export const graphType = {
