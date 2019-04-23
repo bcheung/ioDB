@@ -5,7 +5,7 @@ import { Bar, Doughnut } from 'react-chartjs-2';
 import { fetchTopTenData, fetchJoinedTopTenData } from '../fetchAPI';
 import { stats, statsWithPop, graphType } from '../constants';
 
-export default class TopTenWidget extends Component {
+class TopTenWidget extends Component {
     state = {
         instanceData: {},
         selectedColumn: stats[0],
@@ -167,4 +167,4 @@ const styles = {
     }
 };
 
-// export { TopTenWidget };
+export { TopTenWidget };
