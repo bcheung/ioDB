@@ -143,7 +143,7 @@ class AboutPage extends Component {
                 // we use await to make the main thread wait until the asynchronous thread terminates and returns a value
                 const response = await fetch(url); // make get request to url and wait until response is returned
                 console.log('fetch response', response);
-                if (response.ok) {
+                if (response.status === 200) {
                     const data = await response.json(); // convert response to a json object and wait until the data is returned
                     console.log('data', data);
                     return data;
