@@ -84,7 +84,7 @@ const contributorInfo = {
         bio:
             'John is studying Electrical and Computer Engineering with a focus in Software Engineering and Design. His interests lie in startups and his plans after graduation is to start his own company.',
         responsibilities:
-            'Create 3 static web pages for 3 different industry instances and deploy onto GCP. Worked on Industry instance page and chart components. Researched React-ChartJS-2 and Reactstrap UI libraries. Verified REST API documentation.'
+            'Create 3 static web pages for 3 different industry instances and deploy onto GCP. Worked on Industry instance page and chart components. Researched React-ChartJS-2 and Reactstrap UI libraries. Verified REST API documentation. Created Testing Plan for Phase 3'
     }
 };
 const contributorStats = {
@@ -135,48 +135,72 @@ class AboutPage extends Component {
         this.fetchGithubStats();
     }
 
-    fetchGithubStats() {
-        this.fetchIssues();
-        this.fetchCommits();
-        this.calculateUnitTests();
-        this.setState({ contributorStats });
-    }
+    attemptFetch = async (url, n) => {
+        let error;
+        for (let i = 0; i < n; i++) {
+            try {
+                // fetch() and json() are asynchronous
+                // we use await to make the main thread wait until the asynchronous thread terminates and returns a value
+                const response = await fetch(url); // make get request to url and wait until response is returned
+                console.log('fetch response', response);
+                if (response.status === 200) {
+                    const data = await response.json(); // convert response to a json object and wait until the data is returned
+                    console.log('data', data);
+                    return data;
+                }
+            } catch (err) {
+                error = err;
+            }
+        }
+        throw error;
+    };
 
     async fetchCommits() {
         let commitsTotal = 0;
         const url = 'https://api.github.com/repos/bcheung/ioDB/stats/contributors';
 
-        // fetch() and json() are asynchronous
-        // we use await to make the main thread wait until the asynchronous thread terminates and returns a value
-        const response = await fetch(url); // make get request to url and wait until response is returned
-        const data = await response.json(); // convert response to a json object and wait until the data is returned
-        // loop through array
-        console.log('fetchCommits', data);
-        data.forEach(contributor => {
-            // for each element in array (contributor is the variable for the element)
-            // do something
-            const username = contributor.author.login;
-            contributorStats[username].commits = contributor.total;
-            commitsTotal += contributor.total;
-        });
+        try {
+            const data = await this.attemptFetch(url, 3);
+            // loop through array
+            console.log('fetchCommits', data);
+            data.forEach(contributor => {
+                // for each element in array (contributor is the variable for the element)
+                // do something
+                const username = contributor.author.login;
+                contributorStats[username].commits = contributor.total;
+                commitsTotal += contributor.total;
+            });
 
-        this.setState({ commitsTotal });
+            this.setState({ commitsTotal });
+        } catch (err) {
+            console.log('error fetching stats check connection');
+        }
     }
 
     async fetchIssues() {
         let issuesTotal = 0;
         const url = 'https://api.github.com/repos/bcheung/ioDB/issues';
 
-        const response = await fetch(url);
-        const data = await response.json();
-        console.log('fetchIssues', data);
-        data.forEach(issue => {
-            const username = issue.user.login;
-            contributorStats[username].issues++;
-            issuesTotal++;
-        });
+        try {
+            const data = await this.attemptFetch(url, 3);
+            console.log('fetchIssues', data);
+            data.forEach(issue => {
+                const username = issue.user.login;
+                contributorStats[username].issues++;
+                issuesTotal++;
+            });
 
-        this.setState({ issuesTotal });
+            this.setState({ issuesTotal });
+        } catch (err) {
+            console.log('error fetching stats check connection');
+        }
+    }
+
+    fetchGithubStats() {
+        this.fetchIssues();
+        this.fetchCommits();
+        this.calculateUnitTests();
+        this.setState({ contributorStats });
     }
 
     calculateUnitTests() {
@@ -190,7 +214,7 @@ class AboutPage extends Component {
     renderProfile(id) {
         const username = this.contributorKeys[id];
         const { contributorStats } = this.state;
-        console.log('renderProfile', id, username, contributorStats[username]);
+        // console.log('renderProfile', id, username, contributorStats[username]);
 
         return (
             <Card
