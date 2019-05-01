@@ -2,7 +2,17 @@ import React, { Component } from 'react';
 import { Route, withRouter } from 'react-router-dom';
 // import './Home-page.css';
 import Select from 'react-select';
-import { Button, Container, Row, Col, UncontrolledCollapse, Input } from 'reactstrap';
+import {
+    Button,
+    Container,
+    Row,
+    Col,
+    UncontrolledCollapse,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupText
+} from 'reactstrap';
 import { fetchListData } from '../fetchAPI';
 import { FilterColumnComponent } from './FilterColumnComponent';
 
@@ -101,7 +111,94 @@ class SearchBar extends Component {
                     <UncontrolledCollapse toggler="#toggler">
                         <h4>Advanced Search Filters</h4>
                         <hr />
-                        {this.state.filters.map(filter => (
+
+                        <Row>
+                            <Col md="2">
+                                <h5>Hourly Mean</h5>
+                            </Col>
+                            <Col md="1.5">
+                                <FilterColumnComponent id="operation-0" />
+                            </Col>
+                            <Col md="3">
+                                <Input
+                                    type="number"
+                                    name="filter-quantity"
+                                    id="quantity-0"
+                                    placeholder="Filter Quantity"
+                                />
+                                <br />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md="2">
+                                <h5>Hourly Median</h5>
+                            </Col>
+                            <Col md="1.5">
+                                <FilterColumnComponent id="operation-0" />
+                            </Col>
+                            <Col md="3">
+                                <Input
+                                    type="number"
+                                    name="filter-quantity"
+                                    id="quantity-0"
+                                    placeholder="Filter Quantity"
+                                />
+                                <br />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md="2">
+                                <h5>Annual Mean</h5>
+                            </Col>
+                            <Col md="1.5">
+                                <FilterColumnComponent id="operation-0" />
+                            </Col>
+                            <Col md="3">
+                                <Input
+                                    type="number"
+                                    name="filter-quantity"
+                                    id="quantity-0"
+                                    placeholder="Filter Quantity"
+                                />
+                                <br />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md="2">
+                                <h5>Annual Median</h5>
+                            </Col>
+                            <Col md="1.5">
+                                <FilterColumnComponent id="operation-0" />
+                            </Col>
+                            <Col md="3">
+                                <Input
+                                    type="number"
+                                    name="filter-quantity"
+                                    id="quantity-0"
+                                    placeholder="Filter Quantity"
+                                />
+                                <br />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md="2">
+                                <h5>Total Employment</h5>
+                            </Col>
+                            <Col md="1.5">
+                                <FilterColumnComponent id="operation-0" />
+                            </Col>
+                            <Col md="3">
+                                <Input
+                                    type="number"
+                                    name="filter-quantity"
+                                    id="quantity-0"
+                                    placeholder="Filter Quantity"
+                                />
+                                <br />
+                            </Col>
+                        </Row>
+
+                        {/* {this.state.filters.map(filter => (
                             <Row>
                                 <Col md="5">
                                     <Input type="select" name="select" id={`filter-${filter}`}>
@@ -125,46 +222,12 @@ class SearchBar extends Component {
                                     <br />
                                 </Col>
                             </Row>
-                        ))}
+                        ))} */}
 
-                        {/* <Row form>
-                            <Col md="5">
-                                <p>Filter</p>
-                            </Col>
-                            <Col md="1.5">
-                                <FormGroup>
-                                    <p>Operation</p>
-                                </FormGroup>
-                            </Col>
-                            <Col md="3">
-                                <p>Filter Quantity</p>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md="5">
-                                <Select
-                                    className="dropDown"
-                                    options={modelOptions}
-                                    value={selectedModel}
-                                    onChange={this.handleModelChange}
-                                    isSearchable={false}
-                                    getOptionLabel={option => option.title}
-                                    getOptionValue={option => option.tablename}
-                                />
-                            </Col>
-                            <Col md="1.5">
-                                <FilterColumnComponent />
-                            </Col>
-                            <Col md="3">
-                                <Input type="number" name="email" id="exampleEmail" placeholder="with a placeholder" />
-                            </Col>
-                        </Row> */}
                         <br />
                         <Row>
                             <Col md="1.5">
-                                <Button color="primary" onClick={() => this.appendFilter()}>
-                                    Add Filter
-                                </Button>
+                                <Button color="danger">Clear All</Button>
                             </Col>
                             <Col md="1">
                                 <Button color="primary">Search</Button>
