@@ -59,12 +59,12 @@ class SearchBar extends Component {
         });
     }
 
-    appendFilter() {
-        const newFilter = `filter-${this.state.filters.length}`;
-        this.setState(prevState => ({
-            filters: prevState.filters.concat([newFilter])
-        }));
-    }
+    // appendFilter() {
+    //     const newFilter = `filter-${this.state.filters.length}`;
+    //     this.setState(prevState => ({
+    //         filters: prevState.filters.concat([newFilter])
+    //     }));
+    // }
 
     render() {
         const { instanceOptions, selectedInstance, selectedModel } = this.state;
