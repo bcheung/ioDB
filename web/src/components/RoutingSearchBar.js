@@ -6,6 +6,8 @@ import { Button, Container, Row, Col, UncontrolledCollapse, Input } from 'reacts
 import { fetchListData } from '../fetchAPI';
 import { FilterColumnComponent } from './FilterColumnComponent';
 
+const filterOptions = ['Median Wage', 'Mean Wage', 'Total Employment'];
+
 class SearchBar extends Component {
     state = {
         instanceOptions: [],
@@ -102,16 +104,13 @@ class SearchBar extends Component {
                         {this.state.filters.map(filter => (
                             <Row>
                                 <Col md="5">
-                                    <Select
-                                        className="dropDown"
-                                        options={modelOptions}
-                                        value={selectedModel}
-                                        onChange={this.handleModelChange}
-                                        isSearchable={false}
-                                        getOptionLabel={option => option.title}
-                                        getOptionValue={option => option.tablename}
-                                        id={`filter-${filter}`}
-                                    />
+                                    <Input type="select" name="select" id={`filter-${filter}`}>
+                                        <option>Hourly Median</option>
+                                        <option>Hourly Mean</option>
+                                        <option>Annual Median</option>
+                                        <option>Annual Mean</option>
+                                        <option>Total Employment</option>
+                                    </Input>
                                 </Col>
                                 <Col md="1.5">
                                     <FilterColumnComponent id={`operation-${filter}`} />
