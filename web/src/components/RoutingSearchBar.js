@@ -15,6 +15,7 @@ import {
 } from 'reactstrap';
 import { fetchListData } from '../fetchAPI';
 import { FilterColumnComponent } from './FilterColumnComponent';
+import { AdvancedSearchFilter } from './AdvancedSearchFilter';
 
 const filterOptions = ['Median Wage', 'Mean Wage', 'Total Employment'];
 
@@ -111,7 +112,7 @@ class SearchBar extends Component {
                     <UncontrolledCollapse toggler="#toggler">
                         <h4>Advanced Search Filters</h4>
                         <hr />
-
+                        <AdvancedSearchFilter />
                         <Row>
                             <Col md="2">
                                 <h5>Hourly Mean</h5>
@@ -120,12 +121,17 @@ class SearchBar extends Component {
                                 <FilterColumnComponent id="operation-0" />
                             </Col>
                             <Col md="3">
-                                <Input
-                                    type="number"
-                                    name="filter-quantity"
-                                    id="quantity-0"
-                                    placeholder="Filter Quantity"
-                                />
+                                <InputGroup>
+                                    <Input
+                                        type="number"
+                                        name="filter-quantity"
+                                        id="quantity-0"
+                                        placeholder="Filter Quantity"
+                                    />
+                                    <InputGroupAddon addonType="append">
+                                        <Button color="secondary">X</Button>
+                                    </InputGroupAddon>
+                                </InputGroup>
                                 <br />
                             </Col>
                         </Row>
@@ -137,12 +143,17 @@ class SearchBar extends Component {
                                 <FilterColumnComponent id="operation-0" />
                             </Col>
                             <Col md="3">
-                                <Input
-                                    type="number"
-                                    name="filter-quantity"
-                                    id="quantity-0"
-                                    placeholder="Filter Quantity"
-                                />
+                                <InputGroup>
+                                    <Input
+                                        type="number"
+                                        name="filter-quantity"
+                                        id="quantity-0"
+                                        placeholder="Filter Quantity"
+                                    />
+                                    <InputGroupAddon addonType="append">
+                                        <Button color="secondary">X</Button>
+                                    </InputGroupAddon>
+                                </InputGroup>
                                 <br />
                             </Col>
                         </Row>
@@ -154,29 +165,39 @@ class SearchBar extends Component {
                                 <FilterColumnComponent id="operation-0" />
                             </Col>
                             <Col md="3">
-                                <Input
-                                    type="number"
-                                    name="filter-quantity"
-                                    id="quantity-0"
-                                    placeholder="Filter Quantity"
-                                />
+                                <InputGroup>
+                                    <Input
+                                        type="number"
+                                        name="filter-quantity"
+                                        id="quantity-0"
+                                        placeholder="Filter Quantity"
+                                    />
+                                    <InputGroupAddon addonType="append">
+                                        <Button color="secondary">X</Button>
+                                    </InputGroupAddon>
+                                </InputGroup>
                                 <br />
                             </Col>
                         </Row>
                         <Row>
                             <Col md="2">
-                                <h5>Annual Median</h5>
+                                <h5>{this.props.filterName}</h5>
                             </Col>
                             <Col md="1.5">
                                 <FilterColumnComponent id="operation-0" />
                             </Col>
                             <Col md="3">
-                                <Input
-                                    type="number"
-                                    name="filter-quantity"
-                                    id="quantity-0"
-                                    placeholder="Filter Quantity"
-                                />
+                                <InputGroup>
+                                    <Input
+                                        type="number"
+                                        name="filter-quantity"
+                                        id="quantity-0"
+                                        placeholder="Filter Quantity"
+                                    />
+                                    <InputGroupAddon addonType="append">
+                                        <Button color="secondary">X</Button>
+                                    </InputGroupAddon>
+                                </InputGroup>
                                 <br />
                             </Col>
                         </Row>
@@ -188,12 +209,17 @@ class SearchBar extends Component {
                                 <FilterColumnComponent id="operation-0" />
                             </Col>
                             <Col md="3">
-                                <Input
-                                    type="number"
-                                    name="filter-quantity"
-                                    id="quantity-0"
-                                    placeholder="Filter Quantity"
-                                />
+                                <InputGroup>
+                                    <Input
+                                        type="number"
+                                        name="filter-quantity"
+                                        id="quantity-0"
+                                        placeholder="Filter Quantity"
+                                    />
+                                    <InputGroupAddon addonType="append">
+                                        <Button color="secondary">X</Button>
+                                    </InputGroupAddon>
+                                </InputGroup>
                                 <br />
                             </Col>
                         </Row>
