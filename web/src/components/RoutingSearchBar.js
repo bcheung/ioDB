@@ -2,23 +2,7 @@ import React, { Component } from 'react';
 import { Route, withRouter } from 'react-router-dom';
 // import './Home-page.css';
 import Select from 'react-select';
-import {
-    Button,
-    Container,
-    Row,
-    Col,
-    UncontrolledCollapse,
-    Form,
-    FormGroup,
-    Label,
-    Input,
-    InputGroup,
-    InputGroupButtonDropdown,
-    InputGroupAddon,
-    DropdownMenu,
-    DropdownItem,
-    DropdownToggle
-} from 'reactstrap';
+import { Button, Container, Row, Col, UncontrolledCollapse, Input } from 'reactstrap';
 import { fetchListData } from '../fetchAPI';
 import { FilterColumnComponent } from './FilterColumnComponent';
 
@@ -26,7 +10,8 @@ class SearchBar extends Component {
     state = {
         instanceOptions: [],
         selectedInstance: null,
-        selectedModel: this.props.selectedModel
+        selectedModel: this.props.selectedModel,
+        filters: ['filter-0']
     };
 
     componentDidMount() {
@@ -60,6 +45,13 @@ class SearchBar extends Component {
         fetchListData(tablename).then(data => {
             this.setState({ instanceOptions: data });
         });
+    }
+
+    appendFilter() {
+        const newFilter = `filter-${this.state.filters.length}`;
+        this.setState(prevState => ({
+            filters: prevState.filters.concat([newFilter])
+        }));
     }
 
     render() {
@@ -106,7 +98,36 @@ class SearchBar extends Component {
                 <Container style={styles.containerStyle}>
                     <UncontrolledCollapse toggler="#toggler">
                         <hr />
-                        <Row form>
+                        {this.state.filters.map(filter => (
+                            <Row>
+                                <Col md="5">
+                                    <Select
+                                        className="dropDown"
+                                        options={modelOptions}
+                                        value={selectedModel}
+                                        onChange={this.handleModelChange}
+                                        isSearchable={false}
+                                        getOptionLabel={option => option.title}
+                                        getOptionValue={option => option.tablename}
+                                        id={`filter-${filter}`}
+                                    />
+                                </Col>
+                                <Col md="1.5">
+                                    <FilterColumnComponent id={`operation-${filter}`} />
+                                </Col>
+                                <Col md="3">
+                                    <Input
+                                        type="number"
+                                        name="email"
+                                        id={`quantity-${filter}`}
+                                        placeholder="with a placeholder"
+                                    />
+                                    <br />
+                                </Col>
+                            </Row>
+                        ))}
+
+                        {/* <Row form>
                             <Col md="5">
                                 <p>Filter</p>
                             </Col>
@@ -137,14 +158,16 @@ class SearchBar extends Component {
                             <Col md="3">
                                 <Input type="number" name="email" id="exampleEmail" placeholder="with a placeholder" />
                             </Col>
-                        </Row>
+                        </Row> */}
                         <br />
                         <Row>
                             <Col md="1.5">
-                                <Button>Add Filter</Button>
+                                <Button color="primary" onClick={() => this.appendFilter()}>
+                                    Add Filter
+                                </Button>
                             </Col>
                             <Col md="1">
-                                <Button>Search</Button>
+                                <Button color="primary">Search</Button>
                             </Col>
                         </Row>
                         <hr />
