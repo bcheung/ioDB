@@ -97,6 +97,7 @@ class SearchBar extends Component {
                 </Container>
                 <Container style={styles.containerStyle}>
                     <UncontrolledCollapse toggler="#toggler">
+                        <h4>Advanced Search Filters</h4>
                         <hr />
                         {this.state.filters.map(filter => (
                             <Row>
@@ -118,9 +119,9 @@ class SearchBar extends Component {
                                 <Col md="3">
                                     <Input
                                         type="number"
-                                        name="email"
+                                        name="filter-quantity"
                                         id={`quantity-${filter}`}
-                                        placeholder="with a placeholder"
+                                        placeholder="Filter Quantity"
                                     />
                                     <br />
                                 </Col>
