@@ -139,7 +139,14 @@ class SearchBar extends Component {
                             </Col>
                         </Row>
                         <br />
-                        <Button>Add Filter</Button>
+                        <Row>
+                            <Col md="1.5">
+                                <Button>Add Filter</Button>
+                            </Col>
+                            <Col md="1">
+                                <Button>Search</Button>
+                            </Col>
+                        </Row>
                         <hr />
                     </UncontrolledCollapse>
                 </Container>
