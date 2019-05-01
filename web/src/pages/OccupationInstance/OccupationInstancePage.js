@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Collapse, Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
-import BootstrapTable from 'react-bootstrap-table-next';
+import { Container, Row, Col, Card } from 'reactstrap';
+import PropTypes from 'prop-types';
 import { fetchInstanceData, fetchJoinedInstanceData } from '../../fetchAPI';
 import './occupation-instance-page.css';
 import { isMajorModel } from '../../constants';
@@ -17,6 +17,7 @@ import {
 class OccupationInstancePage extends Component {
     constructor(props) {
         super(props);
+        console.log('Props', props);
         this.state = {
             occupationData: null,
             industryData: null,
@@ -25,6 +26,32 @@ class OccupationInstancePage extends Component {
             isDataLoaded: false,
             collapse: false
         };
+    }
+
+    componentDidMount() {
+        const { match } = this.props;
+        const { tablename, id } = match.params;
+        this.fetchData(tablename, id);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        const { match } = this.props;
+        if (
+            nextProps.match.params.tablename !== match.params.tablename ||
+            nextProps.match.params.id !== match.params.id
+        ) {
+            this.setState({ isDataLoaded: false });
+            console.log('shouldComponentUpdate false fetch', nextProps.match.params.tablename);
+            const { tablename, id } = nextProps.match.params;
+            this.fetchData(tablename, id);
+            return false;
+        }
+        if (nextState.isDataLoaded || nextState.isMapLoaded) {
+            console.log('shouldComponentUpdate true', nextProps, nextState);
+            return true;
+        }
+        console.log('shouldComponentUpdate false', nextState);
+        return false;
     }
 
     // Finding the maximum loc_quotient value for this locationData set
@@ -63,31 +90,6 @@ class OccupationInstancePage extends Component {
         return expression;
     };
 
-    componentDidMount() {
-        const { tablename, id } = this.props.match.params;
-        console.log('componentDidMount');
-        this.fetchData(tablename, id);
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        if (
-            nextProps.match.params.tablename !== this.props.match.params.tablename ||
-            nextProps.match.params.id !== this.props.match.params.id
-        ) {
-            this.setState({ isDataLoaded: false });
-            console.log('shouldComponentUpdate false fetch', nextProps.match.params.tablename);
-            const { tablename, id } = nextProps.match.params;
-            this.fetchData(tablename, id);
-            return false;
-        }
-        if (nextState.isDataLoaded || nextState.isMapLoaded) {
-            console.log('shouldComponentUpdate true', nextProps, nextState);
-            return true;
-        }
-        console.log('shouldComponentUpdate false', nextState);
-        return false;
-    }
-
     fetchData = async (tablename, id) => {
         // const { tablename, id } = this.props.match.params;
         console.log('fetchData', tablename, id);
@@ -110,7 +112,8 @@ class OccupationInstancePage extends Component {
 
     render() {
         console.log('render');
-        const { tablename, id } = this.props.match.params;
+        const { match } = this.props;
+        const { tablename, id } = match.params;
         const { isDataLoaded, occupationData, locationData, industryData, collapse } = this.state;
         console.log(this.mapContainer);
         return (
@@ -182,5 +185,15 @@ class OccupationInstancePage extends Component {
         );
     }
 }
+
+// Prop type validation: checking if tablename and id are of type string
+OccupationInstancePage.propTypes = {
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            tablename: PropTypes.string,
+            id: PropTypes.string
+        })
+    })
+};
 
 export default OccupationInstancePage;

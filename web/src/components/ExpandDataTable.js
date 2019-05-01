@@ -1,26 +1,10 @@
-import React, { Component } from 'react';
-import { Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
+import React from 'react';
+import { Row } from 'reactstrap';
+import PropTypes from 'prop-types';
 import BootstrapTable from 'react-bootstrap-table-next';
-import { formatSalary, formatWage } from '../constants';
-
-const ExpandDataTable = ({ data }) => {
-    const tableData = getTableData(data);
-    console.log('table data', data);
-
-    return (
-        <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-            <BootstrapTable hover keyField="type" data={tableData.rows} columns={tableData.columns} />
-        </Row>
-    );
-};
-
-const styles = {
-    style: {}
-};
-
-export { ExpandDataTable };
 
 function getTableData(data) {
+    console.log('table data', data);
     return {
         title: data.title,
         total_employment: data.total_employment,
@@ -77,3 +61,29 @@ function getTableData(data) {
         ]
     };
 }
+
+const ExpandDataTable = ({ data }) => {
+    const tableData = getTableData(data);
+    return (
+        <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
+            <BootstrapTable hover keyField="type" data={tableData.rows} columns={tableData.columns} />
+        </Row>
+    );
+};
+
+// Prop type validation: checking if title and total_employment are of type string
+// and checking if array of salary and mean data are objects of strings or numbers
+ExpandDataTable.propTypes = {
+    data: PropTypes.shape({
+        title: PropTypes.string,
+        total_employment: PropTypes.string,
+        original: PropTypes.objectOf(
+            PropTypes.oneOfType([
+                PropTypes.number,
+                PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+            ])
+        )
+    })
+};
+
+export { ExpandDataTable };
