@@ -7,6 +7,8 @@ import { WageSalaryTable } from '../WageSalaryTable';
 Enzyme.configure({ adapter: new Adapter() });
 
 // routing table
+
+/** Hard Coded Data provided for Tests */
 const industryDataForRoutingTable = {
     annual_10: { value: 42590, label: '$42,590' },
     annual_25: { value: 69450, label: '$69,450' },
@@ -50,6 +52,16 @@ const industryData = {
 };
 
 const nullData = {};
+
+/** Test:
+ *
+ *  Tests if component
+ *
+ *  1. Renders
+ *  2. Given Null
+ *  3. Given Non Null
+ 
+ */
 
 it('Instance Info Component renders without crashing', () => {
     const div = document.createElement('div');

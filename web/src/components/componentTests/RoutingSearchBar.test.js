@@ -16,6 +16,16 @@ Enzyme.configure({ adapter: new Adapter() });
 
 const selectedModel = modelOptions[0];
 
+/** Test:
+ *
+ *  Tests if component
+ *
+ *  1. Renders
+ *  2. Given Null
+ *  3. Given Non Null
+ 
+ */
+
 it('Instance Info Component renders without crashing', () => {
     const div = document.createElement('div');
 

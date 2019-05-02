@@ -16,6 +16,7 @@ import { TopTenWidget } from '../TopTenWidget';
 Enzyme.configure({ adapter: new Adapter() });
 // Before Each Test could fit in here and will give hardcoded data
 
+/** Hard Coded Data provided for Tests */
 const industryData = {
     annual_10: { value: 42590, label: '$42,590' },
     annual_25: { value: 69450, label: '$69,450' },
@@ -96,6 +97,16 @@ const dataTest = {
         }
     ]
 };
+
+/** Test:
+ *
+ *  Tests if component
+ *
+ *  1. Renders
+ *  2. Given Null
+ *  3. Given Non Null
+ 
+ */
 
 it('Top Ten Widget Component renders without crashing', () => {
     const div = document.createElement('div');

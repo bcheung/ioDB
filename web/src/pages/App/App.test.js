@@ -10,6 +10,14 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
     // },
 }));
 
+/** Test:
+ *
+ *  Tests if Page:
+ * 
+ * 1. Renders Given tests
+ 
+ */
+
 it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(<App />, div);

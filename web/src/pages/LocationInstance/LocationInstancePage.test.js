@@ -4,6 +4,7 @@ import { shallow } from 'enzyme';
 import ReactToolTip from 'react-tooltip';
 import LocationInstancePage from './LocationInstancePage';
 
+/** Hard Coded data for tests */
 const match = {
     params: {
         tablename: 'states',
@@ -29,6 +30,14 @@ const MSAGeoData = {
     GEOID: '13820',
     NAME: 'Birmingham-Hoover, AL'
 };
+
+/** Test:
+ *
+ *  Tests if Page:
+ * 
+ * 1. Renders Given tests
+   2. Renders when component inside is clicked
+ */
 
 it('Location instance renders without crashing', () => {
     const div = document.createElement('div');

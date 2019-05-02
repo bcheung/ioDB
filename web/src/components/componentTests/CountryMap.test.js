@@ -13,11 +13,15 @@ import CountryMap from '../CountryMap';
  *  3. Given Non Null
  *' <DetailedInstanceList majorModel={tablename} data={industryData.industries_4d} />
  */
+
+// Need this line for Enzyme
 Enzyme.configure({ adapter: new Adapter() });
-// Before Each Test could fit in here and will give hardcoded data
+
+// Before Each Test fits in here and will be given hardcoded data
 
 console.log = function() {};
 
+/** Hard Coded Data provided for Tests */
 const state = {
     initial: {
         done: false,
@@ -60,6 +64,9 @@ const match = {
     }
 };
 
+/** Tests Rendering of Components
+ *
+ */
 it('Detailed Instance Component renders without crashing', () => {
     const div = document.createElement('div');
 
