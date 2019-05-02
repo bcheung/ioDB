@@ -67,9 +67,7 @@ def get_table(tablename):
     if model != None and schema != None:
         for instance in model.query.all():
             data.append(schema().dump(instance).data)
-        resp = jsonify(data)
-        resp.status_code = 200
-        return resp
+        return server_ok(data)
     else:
         return invalid_table(tablename)
 
@@ -84,9 +82,7 @@ def get_instance(tablename, id):
         if instance == None:
             return invalid_ID(id)
         data = schema().dump(instance).data
-        resp = jsonify(data)
-        resp.status_code = 200
-        return resp
+        return server_ok(data)
     else:
         return invalid_table(tablename)
     
@@ -103,9 +99,7 @@ def get_joined_instance(tablename, key_model, id):
             data.append(schema().dump(instance).data)
         if len(data) == 0:
             return invalid_ID(id)
-        resp = jsonify(data)
-        resp.status_code = 200
-        return resp
+        return server_ok(data)
     elif model == None:
         return invalid_table(tablename)
     else:
@@ -123,9 +117,7 @@ def get_joined_row(tablename, id_1, id_2):
         if instance == None:
             return invalid_IDSet(id_1, id_2)
         data = schema().dump(instance).data
-        resp = jsonify(data)
-        resp.status_code = 200
-        return resp
+        return server_ok(data)
     else:
         return invalid_table(tablename)
 
@@ -137,9 +129,7 @@ def get_list(tablename):
     if model != None:
         for instance in model.query.with_entities(model.id, model.title):
             data.append({'id': instance.id, 'title': instance.title})
-        resp = jsonify(data)
-        resp.status_code = 200
-        return resp
+        return server_ok(data)
     else:
         return invalid_table(tablename)
 
@@ -153,9 +143,7 @@ def get_top_ten(tablename, column_name):
         for instance in model.query.with_entities(model.id, model.title, column_name).order_by(desc(column_name)).limit(10):
             data.append({'id': instance.id, 'title': instance.title,
                          column_name: getattr(instance, column_name)})
-        resp = jsonify(data)
-        resp.status_code = 200
-        return resp
+        return server_ok(data)
     elif model == None:
         return invalid_table(tablename)
     else:
@@ -174,9 +162,7 @@ def get_joined_top_ten(tablename, key_model, id, column_name):
             data.append(schema().dump(instance).data)
         if len(data) == 0:
             return invalid_ID(id)
-        resp = jsonify(data)
-        resp.status_code = 200
-        return resp
+        return server_ok(data)
     elif model == None:
         return invalid_table(tablename)
     elif key == None:
@@ -185,32 +171,38 @@ def get_joined_top_ten(tablename, key_model, id, column_name):
         return invalid_column(column_name)
 
 
-@app.route('/api/filter/<tablename>/<column_name>/<operator>/<value>')
-def get_filtered(tablename, column_name, operator, value):
+@app.route('/api/filter', methods=["POST"])
+def get_filtered():
     data = []
+    filters = request.get_json()
+    tablename = filters['table']
     model = model_switcher.get(tablename, None)
     schema = schema_switcher.get(tablename, None)
-    column = column_switcher.get(column_name, None)
-    v = float(value)
-    if model != None and schema != None and column != None:
-        for instance in model.query.with_entities(model.id, model.title, column_name).order_by(desc(column_name)).all():
-            if operator == 'gt':
-                if(getattr(instance, column_name) > v):
-                    data.append(schema().dump(instance).data)
-            elif operator == 'gte':
-                if(getattr(instance, column_name) >= v):
-                    data.append(schema().dump(instance).data)
-            elif operator == 'lt':
-                if(getattr(instance, column_name) < v):
-                    data.append(schema().dump(instance).data)
-            elif operator == 'lte':
-                if(getattr(instance, column_name) <= v):
-                    data.append(schema().dump(instance).data)
-            elif operator == 'eq':
-                if(getattr(instance, column_name) == v):
-                    data.append(schema().dump(instance).data)
-    return jsonify(data)
+    if model != None and schema != None:
+        query = model.query
+        for key in filters:
+            if filters[key] != None and key != "table":
+                operator = filters[key]['operator']
+                value = filters[key]['value']
+                if operator == 'gt':
+                    query = query.filter(getattr(model, key) > value)
+                elif operator == 'gte':
+                    query = query.filter(getattr(model, key) >= value)
+                elif operator == 'eq':
+                    query = query.filter(getattr(model, key) == value)
+                elif operator == 'lt':
+                    query = query.filter(getattr(model, key) < value)
+                elif operator == 'lte':
+                    query = query.filter(getattr(model, key) <= value)
+        for instance in query.all():
+            data.append(schema().dump(instance).data)
+    return server_ok(data)
 
+
+def server_ok(data):
+    resp = jsonify(data)
+    resp.status_code = 200
+    return resp
 
 @app.errorhandler(500)
 def server_error(e):
