@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Row, Container, Col, ButtonGroup, Button } from 'reactstrap';
+import { Row, Container, ButtonGroup, Button } from 'reactstrap';
+import { PropTypes } from 'prop-types';
 
 class FilterColumnComponent extends Component {
     state = { option: 0 };
 
     handleOptionClick = buttonID => {
         const { filter, onChange } = this.props;
+        console.log('onChange prop', onChange);
         const { option } = this.state;
         const newOption = option !== buttonID ? buttonID : 0;
         this.setState({ option: newOption });
@@ -54,5 +56,16 @@ class FilterColumnComponent extends Component {
         );
     }
 }
+
+FilterColumnComponent.propTypes = {
+    filter: PropTypes.shape({
+        id: PropTypes.string,
+        value: PropTypes.shape({
+            option: PropTypes.number,
+            value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+        })
+    }),
+    onChange: PropTypes.func
+};
 
 export { FilterColumnComponent };
