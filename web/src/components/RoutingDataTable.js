@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Row } from 'reactstrap';
+import PropTypes from 'prop-types';
 import ReactTable, { toggleRowSubComponent } from 'react-table';
 import matchSorter from 'match-sorter';
 import {
@@ -127,7 +128,7 @@ function createColumns(secondaryTable, population) {
 
 const DataTable = props => {
     const { title, data, instanceTitle, primaryTable, secondaryTable, history, population } = props;
-
+    console.log('history location props', history.location);
     const columns = createColumns(secondaryTable, population);
     let header;
     if (title) {
@@ -199,6 +200,27 @@ const styles = {
 };
 
 const RoutingDataTable = withRouter(DataTable);
+
+// Prop type validation
+DataTable.propTypes = {
+    title: PropTypes.string,
+    data: PropTypes.arrayOf(
+        PropTypes.objectOf(
+            PropTypes.oneOfType([
+                PropTypes.number,
+                PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+            ])
+        )
+    ),
+    instanceTitle: PropTypes.string,
+    primaryTable: PropTypes.string,
+    secondaryTable: PropTypes.string,
+    history: PropTypes.objectOf(
+        PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.func, PropTypes.objectOf(PropTypes.string)])
+    ),
+    population: PropTypes.string
+};
+
 export { RoutingDataTable };
 
 /* <div>
