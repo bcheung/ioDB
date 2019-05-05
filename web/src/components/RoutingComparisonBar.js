@@ -3,7 +3,12 @@ import { Route, withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import { Button, Container, Row, Col } from 'reactstrap';
 import { modelOptions } from '../constants';
-import { fetchListData, fetchInstanceData } from '../fetchAPI';
+import { fetchListData, fetchInstanceData, fetchJoinedInstanceData } from '../fetchAPI';
+import { WageSalaryTable } from './WageSalaryTable';
+import OccupationInstancePage from '../pages/OccupationInstance/OccupationInstancePage';
+import { RoutingChoroplethMap } from './RoutingChoroplethMap';
+import { RoutingTopTenWidget } from './RoutingTopTenWidget';
+import ComparisonOccupation from './ComparisonOccupation';
 
 class ComparisonBar extends Component {
     state = {
@@ -11,8 +16,8 @@ class ComparisonBar extends Component {
         selectedInstance_1: null,
         selectedInstance_2: null,
         selectedModel: this.props.selectedModel,
-        data_1: null,
-        data_2: null,
+        instance_1: null,
+        instance_2: null,
         isDataLoaded: false,
     };
 
@@ -49,19 +54,49 @@ class ComparisonBar extends Component {
             const id_1 = selectedInstance_1.id;
             const id_2 = selectedInstance_2.id;
             const { tablename, route } = selectedModel;
-            const data_1 = await fetchInstanceData(tablename, id_1);
-            const data_2 = await fetchInstanceData(tablename, id_2);
+            var instance_1 = null;
+            var instance_2 = null;
+            if(tablename === "occupations_major") {
+                instance_1 = {
+                    data: await fetchInstanceData(tablename, id_1),
+                    industryData: await fetchJoinedInstanceData(tablename, 'industries_3d', id_1),
+                    locationData: await fetchJoinedInstanceData(tablename, 'states', id_1),
+                }
+                instance_2 = {
+                    data: await fetchInstanceData(tablename, id_2),
+                    industryData: await fetchJoinedInstanceData(tablename, 'industries_3d', id_2),
+                    locationData: await fetchJoinedInstanceData(tablename, 'states', id_2),
+                }
+            }
             this.setState({
-                data_1,
-                data_2,
+                instance_1,
+                instance_2,
                 isDataLoaded: true
             });
         }
     }
 
     render() {
-        const { instanceOptions, selectedInstance_1, selectedInstance_2, selectedModel } = this.state;
+        const { instanceOptions, selectedInstance_1, selectedInstance_2, selectedModel, 
+            isDataLoaded, instance_1, instance_2 } = this.state;
         const { modelOptions } = this.props;
+        var routes = null;
+        if(isDataLoaded) {
+            routes = {
+                match1: {
+                    params: {
+                        tablename: selectedModel.tablename,
+                        id: selectedInstance_1.id
+                    }
+                },
+                match2: {
+                    params: {
+                        tablename: selectedModel.tablename,
+                        id: selectedInstance_2.id
+                    }
+                }
+            }
+        }
         return (
             <div>
                 <Container style={styles.containerStyle}>
@@ -106,6 +141,23 @@ class ComparisonBar extends Component {
                         </Col>
                     </Row>
                 </Container>
+                {isDataLoaded ?
+                (selectedModel.tablename === "occupations_major" ? 
+                    <ComparisonOccupation 
+                        instance_1={instance_1}
+                        instance_2={instance_2}
+                        selectedInstance_1={selectedInstance_1}
+                        selectedInstance_2={selectedInstance_2}
+                        selectedModel={selectedModel}
+                    />
+                    : null) 
+                (selectedModel.tablename === "industries_3d" ?
+                    <div>something</div>
+                    : null)
+                (selectedModel.tablename === "states" ?
+                    <div>something</div>
+                    : null)
+                : null}
             </div>
         );
     }
@@ -117,7 +169,7 @@ const styles = {
     },
     containerStyle: {
         margin: 30
-    }
+    },
 };
 
 const RoutingComparisonBar = withRouter(ComparisonBar);
