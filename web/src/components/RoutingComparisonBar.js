@@ -10,6 +10,7 @@ import { RoutingChoroplethMap } from './RoutingChoroplethMap';
 import { RoutingTopTenWidget } from './RoutingTopTenWidget';
 import ComparisonOccupation from './ComparisonOccupation';
 import ComparisonLocation from './ComparisonLocation';
+import ComparisonIndustry from './ComparisonIndustry';
 
 class ComparisonBar extends Component {
     state = {
@@ -78,7 +79,7 @@ class ComparisonBar extends Component {
                 instance_2 = {
                     data: await fetchInstanceData(tablename, id_2),
                 }
-            } else if ( tablename === "industry") {
+            } else if (tablename === "industries_3d") {
                 instance_1 = {
                     data: await fetchInstanceData(tablename, id_1),
                 }
@@ -109,7 +110,15 @@ class ComparisonBar extends Component {
                     />
                 );
             case 'industries_3d':
-                return null;
+                return (
+                    <ComparisonIndustry
+                        instance_1={instance_1}
+                        instance_2={instance_2}
+                        selectedInstance_1={selectedInstance_1}
+                        selectedInstance_2={selectedInstance_2}
+                        selectedModel={selectedModel}
+                    />
+                );
             case 'states':
                 return (
                     <ComparisonLocation
