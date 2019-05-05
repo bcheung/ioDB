@@ -19,7 +19,6 @@ import {
 } from 'reactstrap';
 import axios from 'axios';
 import { fetchListData } from '../fetchAPI';
-import { FilterColumnComponent } from './FilterColumnComponent';
 import { AdvancedSearchFilter } from './AdvancedSearchFilter';
 import { stats } from '../constants';
 
@@ -74,9 +73,10 @@ class SearchBar extends Component {
 
     onAdvancedSearchRequest = e => {
         const { selectedModel, filters } = this.state;
-        const reqData = { tablename: selectedModel, ...filters };
+        const reqData = { tablename: selectedModel.tablename, ...filters };
+        console.log('onAdvancedSearchRequest', reqData);
         axios
-            .post('http://www.iodb.info/api/filter/', reqData)
+            .post('http://www.iodb.info/api/filter', reqData)
             .then(function(response) {
                 console.log(response);
             })
