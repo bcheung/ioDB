@@ -15,6 +15,7 @@ import {
 } from '../../components';
 
 class OccupationInstancePage extends Component {
+    // initializing the state
     constructor(props) {
         super(props);
         console.log('Props', props);
@@ -28,12 +29,14 @@ class OccupationInstancePage extends Component {
         };
     }
 
+    // fetching data and initializing constants from props once mounted
     componentDidMount() {
         const { match } = this.props;
         const { tablename, id } = match.params;
         this.fetchData(tablename, id);
     }
 
+    // when a new occupation is selected from the dropdown menu
     shouldComponentUpdate(nextProps, nextState) {
         const { match } = this.props;
         if (
@@ -66,6 +69,7 @@ class OccupationInstancePage extends Component {
         return maxLocQuotient;
     };
 
+    // using locationData passed in from api fetch request to color choropleth map
     createHeatMapping = locationData => {
         // For use to calculate state fill shade color
         const expression = ['match', ['get', 'STATE_ID']];
@@ -90,13 +94,18 @@ class OccupationInstancePage extends Component {
         return expression;
     };
 
+    // fetching the occupation, industry, and location data from the api using
+    // the specific tablename and id passed in through props
     fetchData = async (tablename, id) => {
-        // const { tablename, id } = this.props.match.params;
         console.log('fetchData', tablename, id);
+        // retreiving occupation data for tablename and id from props
         const occupationData = await fetchInstanceData(tablename, id);
+        // retreiving industry data for major industries
         const industryData = await fetchJoinedInstanceData(tablename, 'industries_3d', id);
+        // retreiving location data for all states
         const locationData = await fetchJoinedInstanceData(tablename, 'states', id);
 
+        // data is loaded
         this.setState({
             occupationData,
             industryData,
@@ -110,6 +119,8 @@ class OccupationInstancePage extends Component {
         this.setState(state => ({ collapse: !state.collapse }));
     };
 
+    // rendering components onto page:
+    // Header, wage and salary table, choropleth map, circle graph, and table
     render() {
         console.log('render');
         const { match } = this.props;
