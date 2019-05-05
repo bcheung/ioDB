@@ -57,6 +57,7 @@ const styles = {
     containerStyle: {}
 };
 
+// Prop types validation
 DetailedInstanceList.propTypes = {
     majorModel: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),

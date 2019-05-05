@@ -57,6 +57,7 @@ class FilterColumnComponent extends Component {
     }
 }
 
+// Prop types validation
 FilterColumnComponent.propTypes = {
     filter: PropTypes.shape({
         id: PropTypes.string,

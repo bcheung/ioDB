@@ -53,6 +53,7 @@ class LocationData extends Component {
     }
 }
 
+// Prop types validation
 LocationData.propTypes = {
     instanceData: PropTypes.objectOf(
         PropTypes.oneOfType([

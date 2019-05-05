@@ -73,6 +73,7 @@ const WageSalaryTable = ({ data }) => {
     );
 };
 
+// Prop types validation
 WageSalaryTable.propTypes = {
     data: PropTypes.objectOf(
         PropTypes.oneOfType([

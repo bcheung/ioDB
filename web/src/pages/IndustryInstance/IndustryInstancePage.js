@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
+import { Container, Col, Card } from 'reactstrap';
+import { PropTypes } from 'prop-types';
 import { fetchInstanceData, fetchJoinedInstanceData } from '../../fetchAPI';
 import './industry-instance-page.css';
 import { isMajorModel } from '../../constants';
@@ -21,14 +22,16 @@ class IndustryInstancePage extends Component {
     };
 
     componentDidMount() {
-        const { tablename, id } = this.props.match.params;
+        const { match } = this.props;
+        const { tablename, id } = match.params;
         this.fetchData(tablename, id);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
+        const { match } = this.props;
         if (
-            nextProps.match.params.tablename !== this.props.match.params.tablename ||
-            nextProps.match.params.id !== this.props.match.params.id
+            nextProps.match.params.tablename !== match.params.tablename ||
+            nextProps.match.params.id !== match.params.id
         ) {
             this.setState({ isDataLoaded: false });
             console.log('shouldComponentUpdate false fetch', nextProps.match.params.tablename);
@@ -62,7 +65,8 @@ class IndustryInstancePage extends Component {
     };
 
     renderDetailedInstanceList = () => {
-        const { tablename } = this.props.match.params;
+        const { match } = this.props;
+        const { tablename } = match.params;
         const { industryData } = this.state;
 
         if (industryData) {
@@ -72,7 +76,8 @@ class IndustryInstancePage extends Component {
 
     render() {
         console.log('render');
-        const { tablename, id } = this.props.match.params;
+        const { match } = this.props;
+        const { tablename, id } = match.params;
         const { isDataLoaded, occupationData, industryData, collapse } = this.state;
 
         const renderLegend = (stop, i) => (
@@ -131,5 +136,15 @@ class IndustryInstancePage extends Component {
         return <LoadingComponent />;
     }
 }
+
+// Prop type validation: checking if tablename and id are of type string
+IndustryInstancePage.propTypes = {
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            tablename: PropTypes.string,
+            id: PropTypes.string
+        })
+    })
+};
 
 export default IndustryInstancePage;

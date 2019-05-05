@@ -170,6 +170,7 @@ const styles = {
     }
 };
 
+// Prop types validation
 TopTenWidget.propTypes = {
     primaryTable: PropTypes.string,
     secondaryTable: PropTypes.string,

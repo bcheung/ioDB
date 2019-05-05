@@ -270,6 +270,7 @@ const styles = {
 
 const RoutingTopTenWidget = withRouter(TopTenWidget);
 
+// Prop types validation
 TopTenWidget.propTypes = {
     title: PropTypes.string,
     instanceTitle: PropTypes.string,

@@ -98,6 +98,7 @@ class SearchBar extends Component {
 
 const RoutingSearchBar = withRouter(SearchBar);
 
+// Prop types validation
 SearchBar.propTypes = {
     setSelectedModel: PropTypes.func,
     history: PropTypes.objectOf(

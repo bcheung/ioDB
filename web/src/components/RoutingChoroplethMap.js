@@ -193,6 +193,7 @@ class ChoroplethMap extends Component {
 }
 
 const RoutingChoroplethMap = withRouter(ChoroplethMap);
+
 // Prop type validation
 ChoroplethMap.propTypes = {
     width: PropTypes.number,

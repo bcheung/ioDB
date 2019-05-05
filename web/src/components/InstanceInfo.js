@@ -23,6 +23,7 @@ const InstanceInfo = ({ title, idLabel, id, description, totalEmployment, totalP
     </Jumbotron>
 );
 
+// Prop types validation
 InstanceInfo.propTypes = {
     title: PropTypes.string,
     idLabel: PropTypes.string,
