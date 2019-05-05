@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import { Button, Container, Row, Col } from 'reactstrap';
-import { modelOptions } from '../constants';
 import { fetchListData, fetchInstanceData, fetchJoinedInstanceData } from '../fetchAPI';
-import { WageSalaryTable } from './WageSalaryTable';
-import OccupationInstancePage from '../pages/OccupationInstance/OccupationInstancePage';
-import { RoutingChoroplethMap } from './RoutingChoroplethMap';
-import { RoutingTopTenWidget } from './RoutingTopTenWidget';
 import ComparisonOccupation from './ComparisonOccupation';
 import ComparisonLocation from './ComparisonLocation';
 import ComparisonIndustry from './ComparisonIndustry';
@@ -136,25 +131,8 @@ class ComparisonBar extends Component {
 
     render() {
         const { instanceOptions, selectedInstance_1, selectedInstance_2, selectedModel, 
-            isDataLoaded, instance_1, instance_2 } = this.state;
+            isDataLoaded } = this.state;
         const { modelOptions } = this.props;
-        // var routes =
-        // if(isDataLoaded) {
-        //     routes = {
-        //         match1: {
-        //             params: {
-        //                 tablename: selectedModel.tablename,
-        //                 id: selectedInstance_1.id
-        //             }
-        //         },
-        //         match2: {
-        //             params: {
-        //                 tablename: selectedModel.tablename,
-        //                 id: selectedInstance_2.id
-        //             }
-        //         }
-        //     }
-        // }
         return (
             <div>
                 <Container style={styles.containerStyle}>
@@ -199,32 +177,7 @@ class ComparisonBar extends Component {
                         </Col>
                     </Row>
                 </Container>
-                {isDataLoaded ?
-                    this.getComparison()
-                    /* <div>
-                    {(selectedModel.tablename === "occupations_major" ? 
-                        <ComparisonOccupation 
-                            instance_1={instance_1}
-                            instance_2={instance_2}
-                            selectedInstance_1={selectedInstance_1}
-                            selectedInstance_2={selectedInstance_2}
-                            selectedModel={selectedModel}
-                        />
-                        : null) 
-                    (selectedModel.tablename === "industries_3d" ?
-                        <div>something</div>
-                        : null)
-                    (selectedModel.tablename === "states" ?
-                        <ComparisonLocation
-                            instance_1={instance_1}
-                            instance_2={instance_2}
-                            selectedInstance_1={selectedInstance_1}
-                            selectedInstance_2={selectedInstance_2}
-                            selectedModel={selectedModel}
-                        />
-                        : null)}
-                    </div> */
-                : null}
+                {isDataLoaded ? this.getComparison() : null}
             </div>
         );
     }
