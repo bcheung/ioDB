@@ -3,10 +3,10 @@ import { withRouter } from 'react-router-dom';
 import { ComposableMap, ZoomableGroup, Geographies, Geography } from 'react-simple-maps';
 import ReactTooltip from 'react-tooltip';
 import { scaleLinear } from 'd3-scale';
-import { Button, Row } from 'reactstrap';
-import { geoAlbersUsa, geoPath } from 'd3-geo';
+import { Row } from 'reactstrap';
+import { geoAlbersUsa } from 'd3-geo';
 import { geoTimes } from 'd3-geo-projection';
-import { Motion, spring } from 'react-motion';
+import { PropTypes } from 'prop-types';
 import stateJSON from '../static/usa-map.json';
 import dcJSON from '../static/dc-map.json';
 
@@ -57,8 +57,9 @@ class ChoroplethMap extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
+        const { data } = this.props;
         console.log('shouldComponentUpdate choropleth map', this.state);
-        if (nextProps.data !== this.props.data) {
+        if (nextProps.data !== data) {
             console.log('true data', nextProps.data);
             const newData = {
                 statesData: nextProps.data.reduce((obj, item) => {
@@ -70,7 +71,8 @@ class ChoroplethMap extends Component {
             this.setState({ ...newData });
             return false;
         }
-        if (nextState.statesData !== this.state.statesData) {
+        const { statesData } = this.state;
+        if (nextState.statesData !== statesData) {
             return true;
         }
 
@@ -151,7 +153,7 @@ class ChoroplethMap extends Component {
         const { instanceTitle, width, height, data, history } = this.props;
         const { zoom, center, statesData } = this.state;
 
-        console.log('props data', data);
+        console.log('choropleth props data', data);
         return (
             <div style={wrapperStyles}>
                 <Row>{<h1 style={{ margin: 'auto' }}>Where are {instanceTitle} located?</h1>}</Row>
@@ -191,4 +193,22 @@ class ChoroplethMap extends Component {
 }
 
 const RoutingChoroplethMap = withRouter(ChoroplethMap);
+// Prop type validation
+ChoroplethMap.propTypes = {
+    width: PropTypes.number,
+    height: PropTypes.number,
+    data: PropTypes.arrayOf(
+        PropTypes.objectOf(
+            PropTypes.oneOfType([
+                PropTypes.number,
+                PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+            ])
+        )
+    ),
+    instanceTitle: PropTypes.string,
+    history: PropTypes.objectOf(
+        PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.func, PropTypes.objectOf(PropTypes.string)])
+    )
+};
+
 export { RoutingChoroplethMap };

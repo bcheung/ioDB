@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
+import { PropTypes } from 'prop-types';
 import Select from 'react-select';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { fetchTopTenData, fetchJoinedTopTenData } from '../fetchAPI';
@@ -27,10 +28,12 @@ class TopTenWidget extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        const { primaryTable, id } = this.props;
+        const { selectedColumn } = this.state;
         if (
-            prevProps.primaryTable !== this.props.primaryTable ||
-            prevProps.id !== this.props.id ||
-            prevState.selectedColumn !== this.state.selectedColumn
+            prevProps.primaryTable !== primaryTable ||
+            prevProps.id !== id ||
+            prevState.selectedColumn !== selectedColumn
         ) {
             // console.log('componentDidUpdate', prevProps.primaryTable, this.props.primaryTable);
             this.fetchStats();
@@ -266,5 +269,19 @@ const styles = {
 };
 
 const RoutingTopTenWidget = withRouter(TopTenWidget);
+
+TopTenWidget.propTypes = {
+    title: PropTypes.string,
+    instanceTitle: PropTypes.string,
+    primaryTable: PropTypes.string,
+    secondaryTable: PropTypes.string,
+    population: PropTypes.bool,
+    id: PropTypes.string,
+    joined: PropTypes.bool,
+    history: PropTypes.objectOf(
+        PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.func, PropTypes.objectOf(PropTypes.string)])
+    ),
+    totalEmployment: PropTypes.number
+};
 
 export { RoutingTopTenWidget };

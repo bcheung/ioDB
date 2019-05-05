@@ -1,21 +1,30 @@
 import React, { Component } from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 // import './Home-page.css';
 import Select from 'react-select';
+import PropTypes from 'prop-types';
 import { Button, Container, Row, Col } from 'reactstrap';
 import { fetchListData } from '../fetchAPI';
 
+const styles = {
+    dropDown: {
+        width: 150
+    },
+    containerStyle: {
+        margin: 30
+    }
+};
 class SearchBar extends Component {
     state = {
         instanceOptions: [],
         selectedInstance: null,
-        selectedModel: this.props.selectedModel
+        thisSelectedModel: this.props.selectedModel
     };
 
     componentDidMount() {
-        const { selectedModel } = this.state;
-        console.log(selectedModel);
-        const { tablename } = selectedModel;
+        const { thisSelectedModel } = this.state;
+        console.log(thisSelectedModel);
+        const { tablename } = thisSelectedModel;
         this.fetchInstances(tablename);
     }
 
@@ -23,19 +32,21 @@ class SearchBar extends Component {
         this.setState({ selectedInstance });
     };
 
-    handleModelChange = selectedModel => {
-        this.setState({ selectedModel, selectedInstance: null });
-        const { tablename } = selectedModel;
+    handleModelChange = thisSelectedModel => {
+        this.setState({ thisSelectedModel, selectedInstance: null });
+        const { tablename } = thisSelectedModel;
+        const { setSelectedModel } = this.props;
         this.fetchInstances(tablename);
-        this.props.setSelectedModel(selectedModel);
+        setSelectedModel(thisSelectedModel);
     };
 
     onSearchRequest = () => {
-        const { selectedInstance, selectedModel } = this.state;
+        const { selectedInstance, thisSelectedModel } = this.state;
+        const { history } = this.props;
         if (selectedInstance !== null) {
             const { id } = selectedInstance;
-            const { tablename, route } = selectedModel;
-            this.props.history.push(`/${route}/${tablename}/${id}`);
+            const { tablename, route } = thisSelectedModel;
+            history.push(`/${route}/${tablename}/${id}`);
         }
     };
 
@@ -46,8 +57,9 @@ class SearchBar extends Component {
     }
 
     render() {
-        const { instanceOptions, selectedInstance, selectedModel } = this.state;
+        const { instanceOptions, selectedInstance, thisSelectedModel } = this.state;
         const { modelOptions } = this.props;
+        console.log('modelOptions', modelOptions);
         return (
             <Container style={styles.containerStyle}>
                 <Row>
@@ -59,14 +71,14 @@ class SearchBar extends Component {
                             onChange={this.handleInstanceChange}
                             getOptionLabel={option => option.title}
                             getOptionValue={option => option.id}
-                            placeholder={`Search ${selectedModel.title}`}
+                            placeholder={`Search ${thisSelectedModel.title}`}
                         />
                     </Col>
                     <Col md="2">
                         <Select
                             className="dropDown"
                             options={modelOptions}
-                            value={selectedModel}
+                            value={thisSelectedModel}
                             onChange={this.handleModelChange}
                             isSearchable={false}
                             getOptionLabel={option => option.title}
@@ -84,14 +96,14 @@ class SearchBar extends Component {
     }
 }
 
-const styles = {
-    dropDown: {
-        width: 150
-    },
-    containerStyle: {
-        margin: 30
-    }
+const RoutingSearchBar = withRouter(SearchBar);
+
+SearchBar.propTypes = {
+    setSelectedModel: PropTypes.func,
+    history: PropTypes.objectOf(
+        PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.func, PropTypes.objectOf(PropTypes.string)])
+    ),
+    modelOptions: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
 };
 
-const RoutingSearchBar = withRouter(SearchBar);
 export { RoutingSearchBar };
