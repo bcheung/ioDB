@@ -21,7 +21,7 @@ class App extends Component {
         this.state = {
             isOpen: false,
             selectedModel: modelOptions[0],
-            isCompare: true
+            isCompare: false,
         };
     }
 
@@ -60,19 +60,7 @@ class App extends Component {
                         </Nav>
                     </Navbar>
                     
-                    {/* {(this.state.isCompare) ? 
-                        <RoutingSearchBar
-                            modelOptions={modelOptions}
-                            selectedModel={selectedModel}
-                            setSelectedModel={this.setSelectedModel}
-                        /> :
-                        <RoutingComparisonBar
-                            modelOptions={modelOptions}
-                            selectedModel={selectedModel}
-                            setSelectedModel={this.setSelectedModel}
-                        />
-                    } */}
-                    <RoutingComparisonBar
+                    <RoutingSearchBar
                         modelOptions={modelOptions}
                         selectedModel={selectedModel}
                         setSelectedModel={this.setSelectedModel}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import Select from 'react-select';
 import { Button, Container, Row, Col } from 'reactstrap';
 import { fetchListData, fetchInstanceData, fetchJoinedInstanceData } from '../fetchAPI';
@@ -136,6 +136,7 @@ class ComparisonBar extends Component {
         return (
             <div>
                 <Container style={styles.containerStyle}>
+                    <h1>Select two {selectedModel.title} to compare:</h1>
                     <Row>
                         <Col>
                             <Select

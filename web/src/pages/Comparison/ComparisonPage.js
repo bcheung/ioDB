@@ -1,14 +1,26 @@
 import React, { Component } from 'react';
-import { Row } from 'reactstrap';
-import { RoutingSearchBar } from '../../components';
 import { modelOptions } from '../../constants';
-import { fetchListData } from '../../fetchAPI';
 import { RoutingComparisonBar } from '../../components/RoutingComparisonBar';
 
 class ComparisonPage extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            selectedModel: modelOptions[0],
+        }
+    }
+    setSelectedModel = selectedModel => {
+        this.setState({ selectedModel });
+    };
     render() {
+        const { selectedModel } = this.state;
         return (
-            <div></div>
+            <RoutingComparisonBar
+                modelOptions={modelOptions}
+                selectedModel={selectedModel}
+                setSelectedModel={this.setSelectedModel}
+            />
         );
     }
 }
