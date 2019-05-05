@@ -85,7 +85,6 @@ def get_instance(tablename, id):
         return server_ok(data)
     else:
         return invalid_table(tablename)
-    
 
 
 @app.route('/api/joined_instance/<tablename>/<key_model>/<id>')
@@ -104,7 +103,6 @@ def get_joined_instance(tablename, key_model, id):
         return invalid_table(tablename)
     else:
         return invalid_table(key_model)
-    
 
 
 @app.route('/api/joined_row/<tablename>/<id_1>/<id_2>')
@@ -174,26 +172,26 @@ def get_joined_top_ten(tablename, key_model, id, column_name):
 @app.route('/api/filter', methods=["POST"])
 def get_filtered():
     data = []
-    filters = request.get_json()
-    tablename = filters['tablename']
+    req_data = request.get_json()
+    tablename = req_data['tablename']
     model = model_switcher.get(tablename, None)
     schema = schema_switcher.get(tablename, None)
     if model != None and schema != None:
         query = model.query
-        for key in filters:
-            if filters[key] != None and key != "tablename":
-                operator = filters[key]['operator']
-                value = filters[key]['value']
+        for column_name in req_data:
+            if req_data[column_name] != None and column_name != "tablename":
+                operator = req_data[column_name]['operator']
+                value = req_data[column_name]['value']
                 if operator == 'gt':
-                    query = query.filter(getattr(model, key) > value)
+                    query = query.filter(getattr(model, column_name) > value)
                 elif operator == 'gte':
-                    query = query.filter(getattr(model, key) >= value)
+                    query = query.filter(getattr(model, column_name) >= value)
                 elif operator == 'eq':
-                    query = query.filter(getattr(model, key) == value)
+                    query = query.filter(getattr(model, column_name) == value)
                 elif operator == 'lt':
-                    query = query.filter(getattr(model, key) < value)
+                    query = query.filter(getattr(model, column_name) < value)
                 elif operator == 'lte':
-                    query = query.filter(getattr(model, key) <= value)
+                    query = query.filter(getattr(model, column_name) <= value)
         for instance in query.all():
             data.append(schema().dump(instance).data)
     return server_ok(data)
@@ -203,6 +201,7 @@ def server_ok(data):
     resp = jsonify(data)
     resp.status_code = 200
     return resp
+
 
 @app.errorhandler(500)
 def server_error(e):
