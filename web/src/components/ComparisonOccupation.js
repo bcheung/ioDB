@@ -6,7 +6,6 @@ import { Row, Col } from 'reactstrap';
 
 class ComparisonOccupation extends Component {
     render() {
-        console.log(instance_2);
         const { instance_1, instance_2, 
             selectedInstance_1, selectedInstance_2, selectedModel
         } = this.props;

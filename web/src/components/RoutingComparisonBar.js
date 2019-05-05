@@ -9,6 +9,7 @@ import OccupationInstancePage from '../pages/OccupationInstance/OccupationInstan
 import { RoutingChoroplethMap } from './RoutingChoroplethMap';
 import { RoutingTopTenWidget } from './RoutingTopTenWidget';
 import ComparisonOccupation from './ComparisonOccupation';
+import ComparisonLocation from './ComparisonLocation';
 
 class ComparisonBar extends Component {
     state = {
@@ -34,7 +35,12 @@ class ComparisonBar extends Component {
     };
 
     handleModelChange = selectedModel => {
-        this.setState({ selectedModel, selectedInstance_1: null, selectedInstance_2: null });
+        this.setState({ 
+            selectedModel, 
+            selectedInstance_1: null, 
+            selectedInstance_2: null,
+            isDataLoaded: false,
+        });
         const { tablename } = selectedModel;
         this.fetchInstances(tablename);
         this.props.setSelectedModel(selectedModel);
@@ -59,13 +65,25 @@ class ComparisonBar extends Component {
             if(tablename === "occupations_major") {
                 instance_1 = {
                     data: await fetchInstanceData(tablename, id_1),
-                    industryData: await fetchJoinedInstanceData(tablename, 'industries_3d', id_1),
                     locationData: await fetchJoinedInstanceData(tablename, 'states', id_1),
                 }
                 instance_2 = {
                     data: await fetchInstanceData(tablename, id_2),
-                    industryData: await fetchJoinedInstanceData(tablename, 'industries_3d', id_2),
                     locationData: await fetchJoinedInstanceData(tablename, 'states', id_2),
+                }
+            } else if (tablename === "states") {
+                instance_1 = {
+                    data: await fetchInstanceData(tablename, id_1),
+                }
+                instance_2 = {
+                    data: await fetchInstanceData(tablename, id_2),
+                }
+            } else if ( tablename === "industry") {
+                instance_1 = {
+                    data: await fetchInstanceData(tablename, id_1),
+                }
+                instance_2 = {
+                    data: await fetchInstanceData(tablename, id_2),
                 }
             }
             this.setState({
@@ -76,27 +94,58 @@ class ComparisonBar extends Component {
         }
     }
 
+    getComparison = () => {
+        const { selectedInstance_1, selectedInstance_2, selectedModel, 
+            instance_1, instance_2 } = this.state;
+        switch(selectedModel.tablename) {
+            case 'occupations_major':
+                return (
+                    <ComparisonOccupation 
+                        instance_1={instance_1}
+                        instance_2={instance_2}
+                        selectedInstance_1={selectedInstance_1}
+                        selectedInstance_2={selectedInstance_2}
+                        selectedModel={selectedModel}
+                    />
+                );
+            case 'industries_3d':
+                return null;
+            case 'states':
+                return (
+                    <ComparisonLocation
+                        instance_1={instance_1}
+                        instance_2={instance_2}
+                        selectedInstance_1={selectedInstance_1}
+                        selectedInstance_2={selectedInstance_2}
+                        selectedModel={selectedModel}
+                    />
+                );
+            default:
+                return null;
+        }
+    }
+
     render() {
         const { instanceOptions, selectedInstance_1, selectedInstance_2, selectedModel, 
             isDataLoaded, instance_1, instance_2 } = this.state;
         const { modelOptions } = this.props;
-        var routes = null;
-        if(isDataLoaded) {
-            routes = {
-                match1: {
-                    params: {
-                        tablename: selectedModel.tablename,
-                        id: selectedInstance_1.id
-                    }
-                },
-                match2: {
-                    params: {
-                        tablename: selectedModel.tablename,
-                        id: selectedInstance_2.id
-                    }
-                }
-            }
-        }
+        // var routes =
+        // if(isDataLoaded) {
+        //     routes = {
+        //         match1: {
+        //             params: {
+        //                 tablename: selectedModel.tablename,
+        //                 id: selectedInstance_1.id
+        //             }
+        //         },
+        //         match2: {
+        //             params: {
+        //                 tablename: selectedModel.tablename,
+        //                 id: selectedInstance_2.id
+        //             }
+        //         }
+        //     }
+        // }
         return (
             <div>
                 <Container style={styles.containerStyle}>
@@ -142,21 +191,30 @@ class ComparisonBar extends Component {
                     </Row>
                 </Container>
                 {isDataLoaded ?
-                (selectedModel.tablename === "occupations_major" ? 
-                    <ComparisonOccupation 
-                        instance_1={instance_1}
-                        instance_2={instance_2}
-                        selectedInstance_1={selectedInstance_1}
-                        selectedInstance_2={selectedInstance_2}
-                        selectedModel={selectedModel}
-                    />
-                    : null) 
-                (selectedModel.tablename === "industries_3d" ?
-                    <div>something</div>
-                    : null)
-                (selectedModel.tablename === "states" ?
-                    <div>something</div>
-                    : null)
+                    this.getComparison()
+                    /* <div>
+                    {(selectedModel.tablename === "occupations_major" ? 
+                        <ComparisonOccupation 
+                            instance_1={instance_1}
+                            instance_2={instance_2}
+                            selectedInstance_1={selectedInstance_1}
+                            selectedInstance_2={selectedInstance_2}
+                            selectedModel={selectedModel}
+                        />
+                        : null) 
+                    (selectedModel.tablename === "industries_3d" ?
+                        <div>something</div>
+                        : null)
+                    (selectedModel.tablename === "states" ?
+                        <ComparisonLocation
+                            instance_1={instance_1}
+                            instance_2={instance_2}
+                            selectedInstance_1={selectedInstance_1}
+                            selectedInstance_2={selectedInstance_2}
+                            selectedModel={selectedModel}
+                        />
+                        : null)}
+                    </div> */
                 : null}
             </div>
         );
