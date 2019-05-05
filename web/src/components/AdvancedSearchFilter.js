@@ -2,39 +2,58 @@ import React, { Component } from 'react';
 import { Row, Col, Input, InputGroup, InputGroupAddon, Button, ButtonGroup } from 'reactstrap';
 import { FilterColumnComponent } from './FilterColumnComponent';
 
+function checkNull(filterValue) {
+    if (filterValue.operator === '' && filterValue.value === '') {
+        return null;
+    }
+    return filterValue;
+}
+
 class AdvancedSearchFilter extends Component {
-    state = { option: 0 };
+    state = { operator: '', value: '' };
 
     handleOptionClick = buttonID => {
-        const { filter, onChange } = this.props;
-        const { option } = this.state;
-        const newOption = option !== buttonID ? buttonID : 0;
-        this.setState({ option: newOption });
-        const val = {
-            option: newOption,
-            value: filter ? filter.value.value : ''
+        const { id, onChange } = this.props;
+        const { operator, value } = this.state;
+        const newOperator = operator !== buttonID ? buttonID : '';
+        this.setState({ operator: newOperator });
+        onChange(id, {
+            operator: newOperator,
+            value
+        });
+    };
+
+    handleInputChange = event => {
+        const { value } = event.target;
+        const newValue = value === '' ? '' : parseFloat(value);
+        const { id, onChange } = this.props;
+        const { operator } = this.state;
+        this.setState({ value: newValue });
+        const filterValue = {
+            operator,
+            value: newValue
         };
-        onChange(val);
+
+        onChange(id, checkNull(filterValue));
     };
 
     render() {
-        const { option } = this.state;
-        const { columnLabel, columnId } = this.props;
+        const { operator, value } = this.state;
+        const { label, id } = this.props;
         return (
             <Row>
                 <Col md="2">
-                    <h5>{columnLabel}</h5>
+                    <h5>{label}</h5>
                 </Col>
                 <Col md="1.5">
-                    {/* <FilterColumnComponent id={`operation-${columnId}`} /> */}
                     <ButtonGroup>
-                        <Button onClick={() => this.handleOptionClick(1)} active={option === 1}>
+                        <Button onClick={() => this.handleOptionClick('gte')} active={operator === 'gte'}>
                             ≥
                         </Button>
-                        <Button onClick={() => this.handleOptionClick(2)} active={option === 2}>
+                        <Button onClick={() => this.handleOptionClick('e')} active={operator === 'e'}>
                             =
                         </Button>
-                        <Button onClick={() => this.handleOptionClick(3)} active={option === 3}>
+                        <Button onClick={() => this.handleOptionClick('lte')} active={operator === 'lte'}>
                             ≤
                         </Button>
                     </ButtonGroup>
@@ -43,12 +62,12 @@ class AdvancedSearchFilter extends Component {
                     <InputGroup>
                         <Input
                             type="number"
-                            name="filter-quantity"
-                            id={`quantity-${columnId}`}
                             placeholder="Filter Quantity"
+                            value={value}
+                            onChange={this.handleInputChange}
                         />
                         <InputGroupAddon addonType="append">
-                            <Button color="secondary">X</Button>
+                            <Button color="secondary">x</Button>
                         </InputGroupAddon>
                     </InputGroup>
                     <br />

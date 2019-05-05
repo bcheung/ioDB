@@ -11,11 +11,17 @@ import {
     Input,
     InputGroup,
     InputGroupAddon,
-    InputGroupText
+    InputGroupText,
+    Form,
+    FormGroup,
+    DropdownToggle,
+    UncontrolledButtonDropdown
 } from 'reactstrap';
+import axios from 'axios';
 import { fetchListData } from '../fetchAPI';
 import { FilterColumnComponent } from './FilterColumnComponent';
 import { AdvancedSearchFilter } from './AdvancedSearchFilter';
+import { stats } from '../constants';
 
 const filterOptions = ['Median Wage', 'Mean Wage', 'Total Employment'];
 
@@ -24,7 +30,12 @@ class SearchBar extends Component {
         instanceOptions: [],
         selectedInstance: null,
         selectedModel: this.props.selectedModel,
-        filters: ['filter-0']
+        filters: Object.assign(
+            {},
+            ...stats.map(options => ({
+                [options.value]: null
+            }))
+        )
     };
 
     componentDidMount() {
@@ -45,6 +56,13 @@ class SearchBar extends Component {
         this.props.setSelectedModel(selectedModel);
     };
 
+    handleFilterChange = (id, filterValue) => {
+        const { filters } = this.state;
+        const newFilters = { ...filters, [id]: filterValue };
+        this.setState({ filters: newFilters });
+        console.log(newFilters);
+    };
+
     onSearchRequest = () => {
         const { selectedInstance, selectedModel } = this.state;
         if (selectedInstance !== null) {
@@ -52,6 +70,19 @@ class SearchBar extends Component {
             const { tablename, route } = selectedModel;
             this.props.history.push(`/${route}/${tablename}/${id}`);
         }
+    };
+
+    onAdvancedSearchRequest = e => {
+        const { selectedModel, filters } = this.state;
+        const reqData = { tablename: selectedModel, ...filters };
+        axios
+            .post('http://www.iodb.info/api/filter/', reqData)
+            .then(function(response) {
+                console.log(response);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
     };
 
     fetchInstances(tablename) {
@@ -102,9 +133,11 @@ class SearchBar extends Component {
                             </Button>
                         </Col>
                         <Col md="2">
-                            <Button color="primary" id="toggler" style={{ marginBottom: '1rem' }}>
-                                Advanced Search
-                            </Button>
+                            <UncontrolledButtonDropdown>
+                                <DropdownToggle id="toggler" style={{ marginBottom: '1rem' }} caret>
+                                    Advanced Search
+                                </DropdownToggle>
+                            </UncontrolledButtonDropdown>
                         </Col>
                     </Row>
                 </Container>
@@ -112,144 +145,17 @@ class SearchBar extends Component {
                     <UncontrolledCollapse toggler="#toggler">
                         <h4>Advanced Search Filters</h4>
                         <hr />
-                        <AdvancedSearchFilter />
-                        <Row>
-                            <Col md="2">
-                                <h5>Hourly Mean</h5>
-                            </Col>
-                            <Col md="1.5">
-                                <FilterColumnComponent id="operation-0" />
-                            </Col>
-                            <Col md="3">
-                                <InputGroup>
-                                    <Input
-                                        type="number"
-                                        name="filter-quantity"
-                                        id="quantity-0"
-                                        placeholder="Filter Quantity"
-                                    />
-                                    <InputGroupAddon addonType="append">
-                                        <Button color="secondary">X</Button>
-                                    </InputGroupAddon>
-                                </InputGroup>
-                                <br />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md="2">
-                                <h5>Hourly Median</h5>
-                            </Col>
-                            <Col md="1.5">
-                                <FilterColumnComponent id="operation-0" />
-                            </Col>
-                            <Col md="3">
-                                <InputGroup>
-                                    <Input
-                                        type="number"
-                                        name="filter-quantity"
-                                        id="quantity-0"
-                                        placeholder="Filter Quantity"
-                                    />
-                                    <InputGroupAddon addonType="append">
-                                        <Button color="secondary">X</Button>
-                                    </InputGroupAddon>
-                                </InputGroup>
-                                <br />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md="2">
-                                <h5>Annual Mean</h5>
-                            </Col>
-                            <Col md="1.5">
-                                <FilterColumnComponent id="operation-0" />
-                            </Col>
-                            <Col md="3">
-                                <InputGroup>
-                                    <Input
-                                        type="number"
-                                        name="filter-quantity"
-                                        id="quantity-0"
-                                        placeholder="Filter Quantity"
-                                    />
-                                    <InputGroupAddon addonType="append">
-                                        <Button color="secondary">X</Button>
-                                    </InputGroupAddon>
-                                </InputGroup>
-                                <br />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md="2">
-                                <h5>{this.props.filterName}</h5>
-                            </Col>
-                            <Col md="1.5">
-                                <FilterColumnComponent id="operation-0" />
-                            </Col>
-                            <Col md="3">
-                                <InputGroup>
-                                    <Input
-                                        type="number"
-                                        name="filter-quantity"
-                                        id="quantity-0"
-                                        placeholder="Filter Quantity"
-                                    />
-                                    <InputGroupAddon addonType="append">
-                                        <Button color="secondary">X</Button>
-                                    </InputGroupAddon>
-                                </InputGroup>
-                                <br />
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md="2">
-                                <h5>Total Employment</h5>
-                            </Col>
-                            <Col md="1.5">
-                                <FilterColumnComponent id="operation-0" />
-                            </Col>
-                            <Col md="3">
-                                <InputGroup>
-                                    <Input
-                                        type="number"
-                                        name="filter-quantity"
-                                        id="quantity-0"
-                                        placeholder="Filter Quantity"
-                                    />
-                                    <InputGroupAddon addonType="append">
-                                        <Button color="secondary">X</Button>
-                                    </InputGroupAddon>
-                                </InputGroup>
-                                <br />
-                            </Col>
-                        </Row>
-
-                        {/* {this.state.filters.map(filter => (
-                            <Row>
-                                <Col md="5">
-                                    <Input type="select" name="select" id={`filter-${filter}`}>
-                                        <option>Hourly Median</option>
-                                        <option>Hourly Mean</option>
-                                        <option>Annual Median</option>
-                                        <option>Annual Mean</option>
-                                        <option>Total Employment</option>
-                                    </Input>
-                                </Col>
-                                <Col md="1.5">
-                                    <FilterColumnComponent id={`operation-${filter}`} />
-                                </Col>
-                                <Col md="3">
-                                    <Input
-                                        type="number"
-                                        name="filter-quantity"
-                                        id={`quantity-${filter}`}
-                                        placeholder="Filter Quantity"
-                                    />
-                                    <br />
-                                </Col>
-                            </Row>
-                        ))} */}
-
+                        {stats.map(option => (
+                            <AdvancedSearchFilter
+                                key={option.value}
+                                label={option.label}
+                                id={option.value}
+                                onChange={this.handleFilterChange}
+                            />
+                        ))}
+                        <Button type="submit" color="primary" onClick={this.onAdvancedSearchRequest}>
+                            Submit
+                        </Button>
                         <br />
                         <Row>
                             <Col md="1.5">
