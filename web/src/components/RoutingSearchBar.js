@@ -79,9 +79,7 @@ class SearchBar extends Component {
         const data = await fetchFilteredData(reqData);
         console.log(data);
 
-        if (data.length > 0) {
-            this.setState({ filteredData: data });
-        }
+        this.setState({ filteredData: data });
     };
 
     // clearFilters = () => {
