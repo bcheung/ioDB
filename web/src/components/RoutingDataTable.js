@@ -35,15 +35,15 @@ function filterNum(filter, row) {
     }
 }
 
-function createColumns(secondaryTable, population) {
+function createColumns(joined, routingTable, population) {
     const columns = [
         {
-            Header: getInstanceNames[secondaryTable],
+            Header: getInstanceNames[routingTable],
             columns: [
                 {
                     id: 'id', // Required because our accessor is not a string
                     Header: 'ID',
-                    accessor: d => d[secondaryTable].id,
+                    accessor: d => (joined ? d[routingTable].id : d.id),
                     width: 100,
                     filterMethod: (filter, rows) => matchSorter(rows, filter.value, { keys: ['id'] }),
                     filterAll: true
@@ -51,7 +51,7 @@ function createColumns(secondaryTable, population) {
                 {
                     id: 'title',
                     Header: 'Title',
-                    accessor: d => d[secondaryTable].title,
+                    accessor: d => (joined ? d[routingTable].title : d.title),
                     filterMethod: (filter, rows) => matchSorter(rows, filter.value, { keys: ['title'] }),
                     filterAll: true
                 }
@@ -126,14 +126,14 @@ function createColumns(secondaryTable, population) {
 }
 
 const DataTable = props => {
-    const { title, data, instanceTitle, primaryTable, secondaryTable, history, population } = props;
+    const { title, data, instanceTitle, primaryTable, routingTable, history, population, joined } = props;
 
-    const columns = createColumns(secondaryTable, population);
+    const columns = createColumns(joined, routingTable, population);
     let header;
     if (title) {
         header = title;
-    } else if (secondaryTable) {
-        header = `Other ${getInstanceNames[secondaryTable]} for ${instanceTitle}`;
+    } else if (routingTable) {
+        header = `Other ${getInstanceNames[routingTable]} for ${instanceTitle}`;
     } else {
         header = `${getInstanceNames[primaryTable]}`;
     }
@@ -161,9 +161,9 @@ const DataTable = props => {
                 getTdProps={(state, rowInfo, column, instance) => ({
                     onClick: (e, handleOriginal) => {
                         if (column.id !== 'expand') {
-                            const route = getModelRoutes[secondaryTable];
-                            history.push(`/${route}/${secondaryTable}/${rowInfo.original[secondaryTable].id}`);
-
+                            const route = getModelRoutes[routingTable];
+                            const id = joined ? rowInfo.original[routingTable].id : rowInfo.original.id;
+                            history.push(`/${route}/${routingTable}/${id}`);
                             // console.log('A Td Element was clicked!', handleOriginal);
                             // console.log('it produced this event:', e);
                             // console.log('It was in this column:', column);

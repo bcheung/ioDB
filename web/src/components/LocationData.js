@@ -43,10 +43,11 @@ class LocationData extends Component {
                     totalEmployment={instanceData.total_employment}
                 />
                 <RoutingDataTable
+                    joined
                     data={occData}
                     instanceTitle={instanceData.title}
                     primaryTable={primaryTable}
-                    secondaryTable="occupations_major"
+                    routingTable="occupations_major"
                 />
             </Card>
         );
