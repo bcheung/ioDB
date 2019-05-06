@@ -168,10 +168,11 @@ class OccupationInstancePage extends Component {
                                 // total_population={occupationData.total_population}
                             />
                             <RoutingDataTable
+                                joined
                                 data={locationData}
                                 instanceTitle={occupationData.title}
                                 primaryTable={tablename}
-                                secondaryTable="states"
+                                routingTable="states"
                                 population
                             />
                             <RoutingTopTenWidget
@@ -183,9 +184,11 @@ class OccupationInstancePage extends Component {
                                 totalEmployment={occupationData.total_employment}
                             />
                             <RoutingDataTable
+                                joined
                                 data={industryData}
+                                primaryTable={tablename}
                                 instanceTitle={occupationData.title}
-                                secondaryTable="industries_3d"
+                                routingTable="industries_3d"
                             />
                         </Col>
                     </div>

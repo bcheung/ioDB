@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Row, Container, ButtonGroup, Button } from 'reactstrap';
 import { PropTypes } from 'prop-types';
+import { Row, Container, Col, ButtonGroup, Button, Input } from 'reactstrap';
 
 class FilterColumnComponent extends Component {
     state = { option: 0 };
@@ -39,7 +39,7 @@ class FilterColumnComponent extends Component {
                 </Row>
                 {option !== 0 ? (
                     <Row>
-                        <input
+                        <Input
                             type="number"
                             value={filter ? filter.value.value : ''}
                             onChange={event => {

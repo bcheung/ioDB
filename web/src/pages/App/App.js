@@ -10,6 +10,8 @@ import './App.css';
 import { RoutingSearchBar, RoutingTopTenWidget } from '../../components';
 import { modelOptions } from '../../constants';
 import TestPage from '../TestPage';
+import ComparisonPage from '../Comparison/ComparisonPage';
+import { RoutingComparisonBar } from '../../components/RoutingComparisonBar';
 
 class App extends Component {
     constructor(props) {
@@ -18,7 +20,8 @@ class App extends Component {
         this.toggle = this.toggle.bind(this);
         this.state = {
             isOpen: false,
-            selectedModel: modelOptions[0]
+            selectedModel: modelOptions[0],
+            isCompare: false
         };
     }
 
@@ -47,11 +50,14 @@ class App extends Component {
                                 <NavLink href="#/location">Explore</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/about">About Us</NavLink>
+                                <NavLink href="#/comparison">Compare</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink href="#/test">Test</NavLink>
+                                <NavLink href="#/about">About Us</NavLink>
                             </NavItem>
+                            {/* <NavItem>
+                                <NavLink href="#/test">Test</NavLink>
+                            </NavItem> */}
                         </Nav>
                     </Navbar>
 
@@ -64,13 +70,14 @@ class App extends Component {
                     <Switch>
                         <Route exact path="/" render={props => <HomePage tablename={selectedModel.tablename} />} />
                         <Route path="/about" component={AboutPage} />
-                        <Route path="/test" component={TestPage} />
+                        {/* <Route path="/test" component={TestPage} /> */}
 
                         <Route path="/industry/:tablename/:id" component={IndustryInstancePage} />
 
                         <Route path="/occupation/:tablename/:id" component={OccupationInstancePage} />
                         <Route path="/location/:tablename/:id" component={LocationInstancePage} />
                         <Route path="/location" component={LocationInstancePage} />
+                        <Route path="/comparison" component={ComparisonPage} />
                     </Switch>
                     <Row style={{ height: '200px' }} />
                 </div>

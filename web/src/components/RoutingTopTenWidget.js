@@ -173,7 +173,17 @@ class TopTenWidget extends Component {
 
     render() {
         const { selectedColumn, instanceData, isPieGraph } = this.state;
-        const { title, instanceTitle, primaryTable, secondaryTable, population } = this.props;
+        const {
+            title,
+            instanceTitle,
+            primaryTable,
+            secondaryTable,
+            population,
+            pieHeight,
+            pieWidth,
+            barHeight,
+            barWidth
+        } = this.props;
         let options = groupedStats;
         if (population) {
             options = [popStats, ...groupedStats];
@@ -212,8 +222,8 @@ class TopTenWidget extends Component {
                         <Doughnut
                             onElementsClick={elems => this.handleClick(elems)}
                             data={instanceData}
-                            width={600}
-                            height={600}
+                            width={pieWidth !== undefined ? pieWidth : 600}
+                            height={pieHeight !== undefined ? pieHeight : 600}
                             options={{
                                 maintainAspectRatio: false,
                                 tooltips: {
@@ -235,8 +245,8 @@ class TopTenWidget extends Component {
                         <Bar
                             onElementsClick={elems => this.handleClick(elems)}
                             data={instanceData}
-                            width={900}
-                            height={500}
+                            width={barWidth !== undefined ? barWidth : 900}
+                            height={barHeight !== undefined ? barHeight : 500}
                             options={{
                                 // Customize chart options
                                 legend: {
@@ -272,6 +282,10 @@ const RoutingTopTenWidget = withRouter(TopTenWidget);
 
 // Prop types validation
 TopTenWidget.propTypes = {
+    pieHeight: PropTypes.number,
+    pieWidth: PropTypes.number,
+    barHeight: PropTypes.number,
+    barWidth: PropTypes.number,
     title: PropTypes.string,
     instanceTitle: PropTypes.string,
     primaryTable: PropTypes.string,
