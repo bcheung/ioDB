@@ -13,6 +13,7 @@ import {
     popStats,
     formatterType
 } from '../constants';
+import { ExpandDataTable } from './ExpandDataTable';
 import { WageSalaryTable } from './WageSalaryTable';
 import { FilterColumnComponent } from './FilterColumnComponent';
 
@@ -163,7 +164,6 @@ const DataTable = props => {
                             const route = getModelRoutes[routingTable];
                             const id = joined ? rowInfo.original[routingTable].id : rowInfo.original.id;
                             history.push(`/${route}/${routingTable}/${id}`);
-
                             // console.log('A Td Element was clicked!', handleOriginal);
                             // console.log('it produced this event:', e);
                             // console.log('It was in this column:', column);
@@ -188,7 +188,7 @@ const DataTable = props => {
                         return row;
                     })
                 }
-                // SubComponent={rowData => <WageSalaryTable data={rowData} />}
+                SubComponent={rowData => <ExpandDataTable data={rowData} />}
             />
         </div>
     );
