@@ -173,7 +173,7 @@ class ComparisonBar extends Component {
                         </Col>
                         <Col md="1">
                             <Button color="primary" onClick={this.onSearchRequest}>
-                                Search
+                                Compare
                             </Button>
                         </Col>
                     </Row>
