@@ -37,6 +37,13 @@ class AdvancedSearchFilter extends Component {
         onChange(id, checkNull(filterValue));
     };
 
+    clearFilter = () => {
+        const { id, onChange } = this.props;
+        const filterValue = { operator: '', value: '' };
+        this.setState(filterValue);
+        onChange(id, checkNull(filterValue));
+    };
+
     render() {
         const { operator, value } = this.state;
         const { label, id } = this.props;
@@ -67,7 +74,9 @@ class AdvancedSearchFilter extends Component {
                             onChange={this.handleInputChange}
                         />
                         <InputGroupAddon addonType="append">
-                            <Button color="secondary">x</Button>
+                            <Button color="secondary" onClick={this.clearFilter}>
+                                x
+                            </Button>
                         </InputGroupAddon>
                     </InputGroup>
                     <br />

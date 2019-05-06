@@ -1,9 +1,12 @@
 export const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 export const modelOptions = [
-    { title: 'Industries', tablename: 'industries_3d', route: 'industry' },
+    { title: 'Major Industries', tablename: 'industries_3d', route: 'industry' },
+    { title: 'Specific Industries', tablename: 'industries_4d', route: 'industry' },
     { title: 'States', tablename: 'states', route: 'location' },
-    { title: 'Occupations', tablename: 'occupations_major', route: 'occupation' }
+    { title: 'Metropolitan Areas', tablename: 'metro_areas', route: 'location' },
+    { title: 'Major Occupations', tablename: 'occupations_major', route: 'occupation' },
+    { title: 'Specific Occupations', tablename: 'occupations_detailed', route: 'occupation' }
 ];
 
 export const getModelRoutes = {

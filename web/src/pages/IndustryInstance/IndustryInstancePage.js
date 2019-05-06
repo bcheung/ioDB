@@ -119,10 +119,11 @@ class IndustryInstancePage extends Component {
                             totalEmployment={industryData.total_employment}
                         />
                         <RoutingDataTable
+                            joined
                             data={occupationData}
                             instanceTitle={industryData.title}
                             primaryTable={tablename}
-                            secondaryTable="occupations_major"
+                            routingTable="occupations_major"
                         />
                     </Col>
                 </Container>
