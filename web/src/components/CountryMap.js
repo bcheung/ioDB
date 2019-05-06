@@ -5,6 +5,7 @@ import { Button } from 'reactstrap';
 import { geoAlbersUsa, geoPath } from 'd3-geo';
 import { geoTimes } from 'd3-geo-projection';
 import { Motion, spring } from 'react-motion';
+import PropTypes from 'prop-types';
 import stateData from '../static/usa-map.json';
 import dcData from '../static/dc-map.json';
 import msaData from '../static/msa-map.json';
@@ -50,17 +51,20 @@ class CountryMap extends Component {
             ReactTooltip.rebuild();
         }, 100);
 
-        if (nextProps.tablename !== this.props.tablename || nextProps.id !== this.props.id) {
+        const { tablename, id, metroAreas } = this.props;
+        console.log('propsvalidation', this.props);
+        if (nextProps.tablename !== tablename || nextProps.id !== id) {
             console.log('false props', nextProps.id);
             const { stateGeos } = this.state;
             this.handleStateClick(stateGeos[nextProps.id]);
             return false;
         }
-        if (nextState.state !== this.state.state) {
+        const { state } = this.state;
+        if (nextState.state !== state) {
             console.log('true state', nextState.state);
             return true;
         }
-        if (nextProps.metroAreas !== this.props.metroAreas) {
+        if (nextProps.metroAreas !== metroAreas) {
             return true;
         }
         return false;
@@ -197,33 +201,33 @@ class CountryMap extends Component {
                                                     style={
                                                         detail && state.id === stateGeo.properties.ID
                                                             ? {
-                                                                  default: {
-                                                                      fill: '#ECEFF1',
-                                                                      stroke: '#607D8B',
-                                                                      strokeWidth: 0.75,
-                                                                      outline: 'none'
-                                                                  }
-                                                              }
+                                                                default: {
+                                                                    fill: '#ECEFF1',
+                                                                    stroke: '#607D8B',
+                                                                    strokeWidth: 0.75,
+                                                                    outline: 'none'
+                                                                }
+                                                            }
                                                             : {
-                                                                  default: {
-                                                                      fill: '#ECEFF1',
-                                                                      stroke: '#607D8B',
-                                                                      strokeWidth: 0.75,
-                                                                      outline: 'none'
-                                                                  },
-                                                                  hover: {
-                                                                      fill: '#CFD8DC',
-                                                                      stroke: '#607D8B',
-                                                                      strokeWidth: 0.75,
-                                                                      outline: 'none'
-                                                                  },
-                                                                  pressed: {
-                                                                      fill: '#8294a5',
-                                                                      stroke: '#607D8B',
-                                                                      strokeWidth: 0.75,
-                                                                      outline: 'none'
-                                                                  }
-                                                              }
+                                                                default: {
+                                                                    fill: '#ECEFF1',
+                                                                    stroke: '#607D8B',
+                                                                    strokeWidth: 0.75,
+                                                                    outline: 'none'
+                                                                },
+                                                                hover: {
+                                                                    fill: '#CFD8DC',
+                                                                    stroke: '#607D8B',
+                                                                    strokeWidth: 0.75,
+                                                                    outline: 'none'
+                                                                },
+                                                                pressed: {
+                                                                    fill: '#8294a5',
+                                                                    stroke: '#607D8B',
+                                                                    strokeWidth: 0.75,
+                                                                    outline: 'none'
+                                                                }
+                                                            }
                                                     }
                                                 />
                                             );
@@ -255,33 +259,33 @@ class CountryMap extends Component {
                                                     style={
                                                         detail && state.id === stateGeo.properties.ID
                                                             ? {
-                                                                  default: {
-                                                                      fill: '#ECEFF1',
-                                                                      stroke: '#607D8B',
-                                                                      strokeWidth: 0.75,
-                                                                      outline: 'none'
-                                                                  }
-                                                              }
+                                                                default: {
+                                                                    fill: '#ECEFF1',
+                                                                    stroke: '#607D8B',
+                                                                    strokeWidth: 0.75,
+                                                                    outline: 'none'
+                                                                }
+                                                            }
                                                             : {
-                                                                  default: {
-                                                                      fill: '#ECEFF1',
-                                                                      stroke: '#607D8B',
-                                                                      strokeWidth: 0.75,
-                                                                      outline: 'none'
-                                                                  },
-                                                                  hover: {
-                                                                      fill: '#CFD8DC',
-                                                                      stroke: '#607D8B',
-                                                                      strokeWidth: 0.75,
-                                                                      outline: 'none'
-                                                                  },
-                                                                  pressed: {
-                                                                      fill: '#8294a5',
-                                                                      stroke: '#607D8B',
-                                                                      strokeWidth: 0.75,
-                                                                      outline: 'none'
-                                                                  }
-                                                              }
+                                                                default: {
+                                                                    fill: '#ECEFF1',
+                                                                    stroke: '#607D8B',
+                                                                    strokeWidth: 0.75,
+                                                                    outline: 'none'
+                                                                },
+                                                                hover: {
+                                                                    fill: '#CFD8DC',
+                                                                    stroke: '#607D8B',
+                                                                    strokeWidth: 0.75,
+                                                                    outline: 'none'
+                                                                },
+                                                                pressed: {
+                                                                    fill: '#8294a5',
+                                                                    stroke: '#607D8B',
+                                                                    strokeWidth: 0.75,
+                                                                    outline: 'none'
+                                                                }
+                                                            }
                                                     }
                                                 />
                                             );
@@ -349,5 +353,17 @@ class CountryMap extends Component {
         );
     }
 }
+
+// prop type validation
+CountryMap.propTypes = {
+    onReset: PropTypes.func,
+    tablename: PropTypes.string,
+    id: PropTypes.string,
+    metroAreas: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+    width: PropTypes.number,
+    height: PropTypes.number,
+    onMSAClick: PropTypes.func,
+    onStateClick: PropTypes.func
+};
 
 export default CountryMap;

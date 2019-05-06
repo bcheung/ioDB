@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Spinner, Container, Col } from 'reactstrap';
+import React from 'react';
+import { Spinner, Container } from 'reactstrap';
 
-const LoadingComponent = props => (
+const LoadingComponent = () => (
     <Container
         style={{
             display: 'flex',
@@ -13,9 +13,5 @@ const LoadingComponent = props => (
         <Spinner color="primary" style={{ width: '3rem', height: '3rem' }} />
     </Container>
 );
-
-const styles = {
-    divStyle: {}
-};
 
 export { LoadingComponent };

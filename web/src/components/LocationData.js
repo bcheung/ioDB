@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, CardHeader, Table, Card, CardBody, CardTitle, CardText, CardSubtitle } from 'reactstrap';
+import { Row, Col, CardHeader, Card } from 'reactstrap';
+import { PropTypes } from 'prop-types';
 import './stylesheets/styles.css';
-import BootstrapTable from 'react-bootstrap-table-next';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import { RoutingTopTenWidget, WageSalaryTable } from '.';
@@ -53,5 +53,26 @@ class LocationData extends Component {
         );
     }
 }
+
+// Prop types validation
+LocationData.propTypes = {
+    instanceData: PropTypes.objectOf(
+        PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+            PropTypes.number,
+            PropTypes.string
+        ])
+    ),
+    primaryTable: PropTypes.string,
+    id: PropTypes.string,
+    occData: PropTypes.arrayOf(
+        PropTypes.objectOf(
+            PropTypes.oneOfType([
+                PropTypes.number,
+                PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+            ])
+        )
+    )
+};
 
 export default LocationData;

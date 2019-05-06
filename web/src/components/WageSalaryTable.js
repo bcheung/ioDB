@@ -1,24 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Row, Jumbotron, Col, Nav, Card } from 'reactstrap';
+import { Row } from 'reactstrap';
+import PropTypes from 'prop-types';
 import BootstrapTable from 'react-bootstrap-table-next';
 import { formatSalary, formatWage } from '../constants';
-
-const WageSalaryTable = ({ data }) => {
-    const tableData = getTableData(data);
-
-    return (
-        <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
-            <h1 style={{ margin: 'auto' }}>Wage and Salary Statistics</h1>
-            <BootstrapTable hover keyField="type" data={tableData.rows} columns={tableData.columns} />
-        </Row>
-    );
-};
-
-const styles = {
-    style: {}
-};
-
-export { WageSalaryTable };
 
 function getTableData(data) {
     return {
@@ -77,3 +61,27 @@ function getTableData(data) {
         ]
     };
 }
+
+const WageSalaryTable = ({ data }) => {
+    const tableData = getTableData(data);
+    console.log('wage salary table', data);
+    return (
+        <Row style={{ paddingLeft: '1em', paddingRight: '1em' }}>
+            <h1 style={{ margin: 'auto' }}>Wage and Salary Statistics</h1>
+            <BootstrapTable hover keyField="type" data={tableData.rows} columns={tableData.columns} />
+        </Row>
+    );
+};
+
+// Prop types validation
+WageSalaryTable.propTypes = {
+    data: PropTypes.objectOf(
+        PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string,
+            PropTypes.arrayOf(PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])))
+        ])
+    )
+};
+
+export { WageSalaryTable };

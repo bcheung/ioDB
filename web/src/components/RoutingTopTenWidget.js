@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
+import { PropTypes } from 'prop-types';
 import Select from 'react-select';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { fetchTopTenData, fetchJoinedTopTenData } from '../fetchAPI';
@@ -27,10 +28,12 @@ class TopTenWidget extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        const { primaryTable, id } = this.props;
+        const { selectedColumn } = this.state;
         if (
-            prevProps.primaryTable !== this.props.primaryTable ||
-            prevProps.id !== this.props.id ||
-            prevState.selectedColumn !== this.state.selectedColumn
+            prevProps.primaryTable !== primaryTable ||
+            prevProps.id !== id ||
+            prevState.selectedColumn !== selectedColumn
         ) {
             // console.log('componentDidUpdate', prevProps.primaryTable, this.props.primaryTable);
             this.fetchStats();
@@ -170,7 +173,17 @@ class TopTenWidget extends Component {
 
     render() {
         const { selectedColumn, instanceData, isPieGraph } = this.state;
-        const { title, instanceTitle, primaryTable, secondaryTable, population } = this.props;
+        const {
+            title,
+            instanceTitle,
+            primaryTable,
+            secondaryTable,
+            population,
+            pieHeight,
+            pieWidth,
+            barHeight,
+            barWidth
+        } = this.props;
         let options = groupedStats;
         if (population) {
             options = [popStats, ...groupedStats];
@@ -209,8 +222,8 @@ class TopTenWidget extends Component {
                         <Doughnut
                             onElementsClick={elems => this.handleClick(elems)}
                             data={instanceData}
-                            width={(this.props.pieWidth !== undefined) ? this.props.pieWidth : 600}
-                            height={(this.props.pieHeight !== undefined) ? this.props.pieHeight : 600}
+                            width={pieWidth !== undefined ? pieWidth : 600}
+                            height={pieHeight !== undefined ? pieHeight : 600}
                             options={{
                                 maintainAspectRatio: false,
                                 tooltips: {
@@ -232,8 +245,8 @@ class TopTenWidget extends Component {
                         <Bar
                             onElementsClick={elems => this.handleClick(elems)}
                             data={instanceData}
-                            width={(this.props.barWidth !== undefined) ? this.props.barWidth : 900}
-                            height={(this.props.barHeight !== undefined) ? this.props.barHeight : 500}
+                            width={barWidth !== undefined ? barWidth : 900}
+                            height={barHeight !== undefined ? barHeight : 500}
                             options={{
                                 // Customize chart options
                                 legend: {
@@ -266,5 +279,24 @@ const styles = {
 };
 
 const RoutingTopTenWidget = withRouter(TopTenWidget);
+
+// Prop types validation
+TopTenWidget.propTypes = {
+    pieHeight: PropTypes.number,
+    pieWidth: PropTypes.number,
+    barHeight: PropTypes.number,
+    barWidth: PropTypes.number,
+    title: PropTypes.string,
+    instanceTitle: PropTypes.string,
+    primaryTable: PropTypes.string,
+    secondaryTable: PropTypes.string,
+    population: PropTypes.bool,
+    id: PropTypes.string,
+    joined: PropTypes.bool,
+    history: PropTypes.objectOf(
+        PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.func, PropTypes.objectOf(PropTypes.string)])
+    ),
+    totalEmployment: PropTypes.number
+};
 
 export { RoutingTopTenWidget };

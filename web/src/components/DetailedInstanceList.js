@@ -11,6 +11,7 @@ import {
     NavLink,
     Col
 } from 'reactstrap';
+import PropTypes from 'prop-types';
 import { getDetailedModel, getInstanceNames, getModelRoutes } from '../constants';
 
 function renderInstanceLinks(detailedModel, data) {
@@ -54,6 +55,15 @@ const DetailedInstanceList = ({ majorModel, data, collapse, label, onClick }) =>
 
 const styles = {
     containerStyle: {}
+};
+
+// Prop types validation
+DetailedInstanceList.propTypes = {
+    majorModel: PropTypes.string,
+    data: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+    collapse: PropTypes.bool,
+    label: PropTypes.string,
+    onClick: PropTypes.func
 };
 
 export { DetailedInstanceList };

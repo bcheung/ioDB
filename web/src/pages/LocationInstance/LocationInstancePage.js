@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
+import { PropTypes } from 'prop-types';
 import CountryMap from '../../components/CountryMap';
 import LocationData from '../../components/LocationData';
 import { fetchInstanceData, fetchJoinedTopTenData, fetchJoinedInstanceData } from '../../fetchAPI';
@@ -7,7 +8,6 @@ import { fetchInstanceData, fetchJoinedTopTenData, fetchJoinedInstanceData } fro
 class LocationInstancePage extends Component {
     constructor(props) {
         super(props);
-        const { tablename, id } = props.match.params;
         this.state = {
             state: null,
             showStateInfo: false,
@@ -127,7 +127,8 @@ class LocationInstancePage extends Component {
     };
 
     render() {
-        const { tablename, id } = this.props.match.params;
+        const { match } = this.props;
+        const { tablename, id } = match.params;
         const { showStateInfo, showMSAInfo, state, stateData, stateOccData, MSA, MSAData, msaOccData } = this.state;
         console.log('render', tablename, id, stateData);
         return (
@@ -151,5 +152,15 @@ class LocationInstancePage extends Component {
         );
     }
 }
+
+// Prop type validation: checking if tablename and id are of type string
+LocationInstancePage.propTypes = {
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            tablename: PropTypes.string,
+            id: PropTypes.string
+        })
+    })
+};
 
 export default LocationInstancePage;

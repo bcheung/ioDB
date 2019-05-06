@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Row } from 'reactstrap';
-import ReactTable, { toggleRowSubComponent } from 'react-table';
+import PropTypes from 'prop-types';
+import ReactTable from 'react-table';
 import matchSorter from 'match-sorter';
 import {
     stats,
@@ -14,7 +15,6 @@ import {
     formatterType
 } from '../constants';
 import { ExpandDataTable } from './ExpandDataTable';
-import { WageSalaryTable } from './WageSalaryTable';
 import { FilterColumnComponent } from './FilterColumnComponent';
 
 function filterNum(filter, row) {
@@ -194,31 +194,27 @@ const DataTable = props => {
     );
 };
 
-const styles = {
-    divStyle: {}
+const RoutingDataTable = withRouter(DataTable);
+
+// Prop type validation
+DataTable.propTypes = {
+    joined: PropTypes.bool,
+    title: PropTypes.string,
+    data: PropTypes.arrayOf(
+        PropTypes.objectOf(
+            PropTypes.oneOfType([
+                PropTypes.number,
+                PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+            ])
+        )
+    ),
+    instanceTitle: PropTypes.string,
+    primaryTable: PropTypes.string,
+    routingTable: PropTypes.string,
+    history: PropTypes.objectOf(
+        PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.func, PropTypes.objectOf(PropTypes.string)])
+    ),
+    population: PropTypes.bool
 };
 
-const RoutingDataTable = withRouter(DataTable);
 export { RoutingDataTable };
-
-/* <div>
-                                <select
-                                    onChange={event => {
-                                        const val = { option: event.target.value, value: filter.value.value };
-                                        return onChange(val);
-                                    }}
-                                    style={{ width: '100%' }}
-                                    value={filter ? filter.option : 'e'}
-                                >
-                                    <option value="gte">GreaterEqual</option>
-                                    <option value="e">Equal</option>
-                                    <option value="lte">Less Equal </option>
-                                </select>
-                                <input
-                                    value={filter.value}
-                                    onChange={event => {
-                                        const val = { option: filter.value.option, value: event.target.value };
-                                        return onChange(val);
-                                    }}
-                                />
-                            </div> */

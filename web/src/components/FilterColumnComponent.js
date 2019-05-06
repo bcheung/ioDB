@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { Row, Container, Col, ButtonGroup, Button, Input } from 'reactstrap';
 
 class FilterColumnComponent extends Component {
@@ -6,6 +7,7 @@ class FilterColumnComponent extends Component {
 
     handleOptionClick = buttonID => {
         const { filter, onChange } = this.props;
+        console.log('onChange prop', onChange);
         const { option } = this.state;
         const newOption = option !== buttonID ? buttonID : 0;
         this.setState({ option: newOption });
@@ -54,5 +56,17 @@ class FilterColumnComponent extends Component {
         );
     }
 }
+
+// Prop types validation
+FilterColumnComponent.propTypes = {
+    filter: PropTypes.shape({
+        id: PropTypes.string,
+        value: PropTypes.shape({
+            option: PropTypes.number,
+            value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+        })
+    }),
+    onChange: PropTypes.func
+};
 
 export { FilterColumnComponent };

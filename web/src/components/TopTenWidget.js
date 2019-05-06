@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import Select from 'react-select';
+import PropTypes from 'prop-types';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { fetchTopTenData, fetchJoinedTopTenData } from '../fetchAPI';
 import { stats, statsWithPop, graphType } from '../constants';
@@ -18,12 +19,14 @@ class TopTenWidget extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        const { primaryTable, id } = this.props;
+        const { selectedColumn } = this.state;
         if (
-            prevProps.primaryTable !== this.props.primaryTable ||
-            prevProps.id !== this.props.id ||
-            prevState.selectedColumn !== this.state.selectedColumn
+            prevProps.primaryTable !== primaryTable ||
+            prevProps.id !== id ||
+            prevState.selectedColumn !== selectedColumn
         ) {
-            console.log('componentDidUpdate', prevProps.primaryTable, this.props.primaryTable);
+            console.log('componentDidUpdate', prevProps.primaryTable, primaryTable);
             this.fetchStats();
         }
     }
@@ -165,6 +168,17 @@ const styles = {
         width: 250,
         margin: 30
     }
+};
+
+// Prop types validation
+TopTenWidget.propTypes = {
+    primaryTable: PropTypes.string,
+    secondaryTable: PropTypes.string,
+    title: PropTypes.string,
+    population: PropTypes.number,
+    id: PropTypes.string,
+    joined: PropTypes.bool,
+    total_employment: PropTypes.number
 };
 
 export { TopTenWidget };
