@@ -6,6 +6,7 @@ import { fetchListData, fetchInstanceData, fetchJoinedInstanceData } from '../fe
 import ComparisonOccupation from './ComparisonOccupation';
 import ComparisonLocation from './ComparisonLocation';
 import ComparisonIndustry from './ComparisonIndustry';
+import { LoadingComponent } from '.';
 
 class ComparisonBar extends Component {
     state = {
@@ -15,7 +16,9 @@ class ComparisonBar extends Component {
         selectedModel: this.props.selectedModel,
         instance_1: null,
         instance_2: null,
+        isModelLoaded: false,
         isDataLoaded: false,
+        loading: false
     };
 
     componentDidMount() {
@@ -24,18 +27,34 @@ class ComparisonBar extends Component {
         this.fetchInstances(tablename);
     }
 
-    fetchInstances(tablename) {
-        fetchListData(tablename).then(data => {
-            this.setState({ instanceOptions: data });
-        });
-    };
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.state.loading !== nextState.loading) {
+            return true;
+        }
+        if (
+            this.state.selectedInstance_1 !== nextState.selectedInstance_1 ||
+            this.state.selectedInstance_2 !== nextState.selectedInstance_2
+        ) {
+            return true;
+        }
+        if (nextState.isModelLoaded && this.state.isModelLoaded !== nextState.isModelLoaded) {
+            return true;
+        }
+        if (nextState.isDataLoaded && this.state.isDataLoaded !== nextState.isDataLoaded) {
+            console.log('shouldComponentUpdate true', nextProps, nextState);
+            return true;
+        }
+        console.log('shouldComponentUpdate false', nextState);
+        return false;
+    }
 
     handleModelChange = selectedModel => {
-        this.setState({ 
-            selectedModel, 
-            selectedInstance_1: null, 
+        this.setState({
+            selectedModel,
+            selectedInstance_1: null,
             selectedInstance_2: null,
-            isDataLoaded: false,
+            isModelLoaded: false,
+            isDataLoaded: false
         });
         const { tablename } = selectedModel;
         this.fetchInstances(tablename);
@@ -43,60 +62,61 @@ class ComparisonBar extends Component {
     };
 
     handleInstance1Change = selectedInstance_1 => {
-        this.setState({ selectedInstance_1 });
+        this.setState({ selectedInstance_1, isDataLoaded: false });
     };
 
     handleInstance2Change = selectedInstance_2 => {
-        this.setState({ selectedInstance_2 });
+        this.setState({ selectedInstance_2, isDataLoaded: false });
     };
 
     onSearchRequest = async () => {
         const { selectedInstance_1, selectedInstance_2, selectedModel } = this.state;
+        this.setState({ loading: true });
         if (selectedInstance_1 !== null && selectedInstance_2 !== null) {
             const id_1 = selectedInstance_1.id;
             const id_2 = selectedInstance_2.id;
             const { tablename, route } = selectedModel;
-            var instance_1 = null;
-            var instance_2 = null;
-            if(tablename === "occupations_major") {
+            let instance_1 = null;
+            let instance_2 = null;
+            if (tablename === 'occupations_major') {
                 instance_1 = {
                     data: await fetchInstanceData(tablename, id_1),
-                    locationData: await fetchJoinedInstanceData(tablename, 'states', id_1),
-                }
+                    locationData: await fetchJoinedInstanceData(tablename, 'states', id_1)
+                };
                 instance_2 = {
                     data: await fetchInstanceData(tablename, id_2),
-                    locationData: await fetchJoinedInstanceData(tablename, 'states', id_2),
-                }
-            } else if (tablename === "states") {
+                    locationData: await fetchJoinedInstanceData(tablename, 'states', id_2)
+                };
+            } else if (tablename === 'states') {
                 instance_1 = {
-                    data: await fetchInstanceData(tablename, id_1),
-                }
+                    data: await fetchInstanceData(tablename, id_1)
+                };
                 instance_2 = {
-                    data: await fetchInstanceData(tablename, id_2),
-                }
-            } else if (tablename === "industries_3d") {
+                    data: await fetchInstanceData(tablename, id_2)
+                };
+            } else if (tablename === 'industries_3d') {
                 instance_1 = {
-                    data: await fetchInstanceData(tablename, id_1),
-                }
+                    data: await fetchInstanceData(tablename, id_1)
+                };
                 instance_2 = {
-                    data: await fetchInstanceData(tablename, id_2),
-                }
+                    data: await fetchInstanceData(tablename, id_2)
+                };
             }
             this.setState({
                 instance_1,
                 instance_2,
-                isDataLoaded: true
+                isDataLoaded: true,
+                loading: false
             });
         }
-    }
+    };
 
     getComparison = () => {
-        const { selectedInstance_1, selectedInstance_2, selectedModel, 
-            instance_1, instance_2 } = this.state;
-        switch(selectedModel.tablename) {
+        const { selectedInstance_1, selectedInstance_2, selectedModel, instance_1, instance_2 } = this.state;
+        switch (selectedModel.tablename) {
             case 'occupations_major':
                 return (
-                    <ComparisonOccupation 
+                    <ComparisonOccupation
                         instance_1={instance_1}
                         instance_2={instance_2}
                         selectedInstance_1={selectedInstance_1}
@@ -127,11 +147,23 @@ class ComparisonBar extends Component {
             default:
                 return null;
         }
+    };
+
+    fetchInstances(tablename) {
+        fetchListData(tablename).then(data => {
+            this.setState({ instanceOptions: data, isModelLoaded: true });
+        });
     }
 
     render() {
-        const { instanceOptions, selectedInstance_1, selectedInstance_2, selectedModel, 
-            isDataLoaded } = this.state;
+        const {
+            instanceOptions,
+            selectedInstance_1,
+            selectedInstance_2,
+            selectedModel,
+            isDataLoaded,
+            loading
+        } = this.state;
         const { modelOptions } = this.props;
         return (
             <div>
@@ -178,6 +210,7 @@ class ComparisonBar extends Component {
                         </Col>
                     </Row>
                 </Container>
+                {loading ? <LoadingComponent /> : null}
                 {isDataLoaded ? this.getComparison() : null}
             </div>
         );
@@ -190,7 +223,7 @@ const styles = {
     },
     containerStyle: {
         margin: 30
-    },
+    }
 };
 
 const RoutingComparisonBar = withRouter(ComparisonBar);

@@ -7,12 +7,14 @@ class ComparisonPage extends Component {
         super(props);
 
         this.state = {
-            selectedModel: modelOptions[0],
-        }
+            selectedModel: modelOptions[0]
+        };
     }
+
     setSelectedModel = selectedModel => {
         this.setState({ selectedModel });
     };
+
     render() {
         const { selectedModel } = this.state;
         return (
