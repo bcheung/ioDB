@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Conta
+import { Row, Container, Col, ButtonGroup, Button, Input } from 'reactstrap';
 
 class FilterColumnComponent extends Component {
     state = { option: 0 };

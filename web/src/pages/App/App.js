@@ -21,7 +21,7 @@ class App extends Component {
         this.state = {
             isOpen: false,
             selectedModel: modelOptions[0],
-            isCompare: false,
+            isCompare: false
         };
     }
 
@@ -53,13 +53,13 @@ class App extends Component {
                             </NavItem>
                             <NavItem>
                                 <NavLink href="#/test">Test</NavLink>
-                            </NavItem> */}
+                            </NavItem>
                             <NavItem>
                                 <NavLink href="#/comparison">Compare</NavLink>
                             </NavItem>
                         </Nav>
                     </Navbar>
-                    
+
                     <RoutingSearchBar
                         modelOptions={modelOptions}
                         selectedModel={selectedModel}
