@@ -143,6 +143,9 @@ class SearchBar extends Component {
                                 Go
                             </Button>
                         </Col>
+                    </Row>
+                    <br />
+                    <Row>
                         <Col md="2">
                             <UncontrolledButtonDropdown>
                                 <DropdownToggle id="toggler" style={{ marginBottom: '1rem' }} caret>
@@ -172,7 +175,7 @@ class SearchBar extends Component {
                             </Col> */}
                             <Col>
                                 <Button type="submit" color="primary" onClick={this.onAdvancedSearchRequest}>
-                                    Submit
+                                    Search
                                 </Button>
                             </Col>
                         </Row>

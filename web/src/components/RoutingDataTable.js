@@ -152,7 +152,7 @@ const DataTable = props => {
                 }}
                 className="-striped -highlight"
                 showPagination={false}
-                defaultPageSize={data.length}
+                defaultPageSize={-1}
                 style={{
                     height: '500px' // This will force the table body to overflow and scroll, since there is not enough room
                     // width: '1200px'
