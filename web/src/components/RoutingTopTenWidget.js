@@ -209,8 +209,8 @@ class TopTenWidget extends Component {
                         <Doughnut
                             onElementsClick={elems => this.handleClick(elems)}
                             data={instanceData}
-                            width={600}
-                            height={600}
+                            width={(this.props.pieWidth !== undefined) ? this.props.pieWidth : 600}
+                            height={(this.props.pieHeight !== undefined) ? this.props.pieHeight : 600}
                             options={{
                                 maintainAspectRatio: false,
                                 tooltips: {
@@ -232,8 +232,8 @@ class TopTenWidget extends Component {
                         <Bar
                             onElementsClick={elems => this.handleClick(elems)}
                             data={instanceData}
-                            width={900}
-                            height={500}
+                            width={(this.props.barWidth !== undefined) ? this.props.barWidth : 900}
+                            height={(this.props.barHeight !== undefined) ? this.props.barHeight : 500}
                             options={{
                                 // Customize chart options
                                 legend: {
