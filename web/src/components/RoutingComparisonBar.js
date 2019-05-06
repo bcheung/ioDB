@@ -71,14 +71,14 @@ class ComparisonBar extends Component {
 
     onSearchRequest = async () => {
         const { selectedInstance_1, selectedInstance_2, selectedModel } = this.state;
-        this.setState({ loading: true });
         if (selectedInstance_1 !== null && selectedInstance_2 !== null) {
+            this.setState({ loading: true });
             const id_1 = selectedInstance_1.id;
             const id_2 = selectedInstance_2.id;
             const { tablename, route } = selectedModel;
             let instance_1 = null;
             let instance_2 = null;
-            if (tablename === 'occupations_major') {
+            if (tablename === 'occupations_major' || tablename === 'occupations_detailed') {
                 instance_1 = {
                     data: await fetchInstanceData(tablename, id_1),
                     locationData: await fetchJoinedInstanceData(tablename, 'states', id_1)
@@ -87,14 +87,14 @@ class ComparisonBar extends Component {
                     data: await fetchInstanceData(tablename, id_2),
                     locationData: await fetchJoinedInstanceData(tablename, 'states', id_2)
                 };
-            } else if (tablename === 'states') {
+            } else if (tablename === 'states' || tablename === 'metro_areas') {
                 instance_1 = {
                     data: await fetchInstanceData(tablename, id_1)
                 };
                 instance_2 = {
                     data: await fetchInstanceData(tablename, id_2)
                 };
-            } else if (tablename === 'industries_3d') {
+            } else if (tablename === 'industries_3d' || tablename === 'industries_4d') {
                 instance_1 = {
                     data: await fetchInstanceData(tablename, id_1)
                 };
@@ -113,39 +113,39 @@ class ComparisonBar extends Component {
 
     getComparison = () => {
         const { selectedInstance_1, selectedInstance_2, selectedModel, instance_1, instance_2 } = this.state;
-        switch (selectedModel.tablename) {
-            case 'occupations_major':
-                return (
-                    <ComparisonOccupation
-                        instance_1={instance_1}
-                        instance_2={instance_2}
-                        selectedInstance_1={selectedInstance_1}
-                        selectedInstance_2={selectedInstance_2}
-                        selectedModel={selectedModel}
-                    />
-                );
-            case 'industries_3d':
-                return (
-                    <ComparisonIndustry
-                        instance_1={instance_1}
-                        instance_2={instance_2}
-                        selectedInstance_1={selectedInstance_1}
-                        selectedInstance_2={selectedInstance_2}
-                        selectedModel={selectedModel}
-                    />
-                );
-            case 'states':
-                return (
-                    <ComparisonLocation
-                        instance_1={instance_1}
-                        instance_2={instance_2}
-                        selectedInstance_1={selectedInstance_1}
-                        selectedInstance_2={selectedInstance_2}
-                        selectedModel={selectedModel}
-                    />
-                );
-            default:
-                return null;
+        const { tablename } = selectedModel;
+        if (tablename === 'occupations_major' || tablename === 'occupations_detailed') {
+            return (
+                <ComparisonOccupation
+                    instance_1={instance_1}
+                    instance_2={instance_2}
+                    selectedInstance_1={selectedInstance_1}
+                    selectedInstance_2={selectedInstance_2}
+                    selectedModel={selectedModel}
+                />
+            );
+        }
+        if (tablename === 'industries_3d' || tablename === 'industries_4d') {
+            return (
+                <ComparisonIndustry
+                    instance_1={instance_1}
+                    instance_2={instance_2}
+                    selectedInstance_1={selectedInstance_1}
+                    selectedInstance_2={selectedInstance_2}
+                    selectedModel={selectedModel}
+                />
+            );
+        }
+        if (tablename === 'states' || tablename === 'metro_areas') {
+            return (
+                <ComparisonLocation
+                    instance_1={instance_1}
+                    instance_2={instance_2}
+                    selectedInstance_1={selectedInstance_1}
+                    selectedInstance_2={selectedInstance_2}
+                    selectedModel={selectedModel}
+                />
+            );
         }
     };
 
