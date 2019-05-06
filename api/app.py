@@ -175,13 +175,13 @@ def get_joined_top_ten(tablename, key_model, id, column_name):
 def get_filtered():
     data = []
     filters = request.get_json()
-    tablename = filters['table']
+    tablename = filters['tablename']
     model = model_switcher.get(tablename, None)
     schema = schema_switcher.get(tablename, None)
     if model != None and schema != None:
         query = model.query
         for key in filters:
-            if filters[key] != None and key != "table":
+            if filters[key] != None and key != "tablename":
                 operator = filters[key]['operator']
                 value = filters[key]['value']
                 if operator == 'gt':
