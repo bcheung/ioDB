@@ -43,7 +43,7 @@ class Industry4dModel(db.Model):
 
 
 class Industry4dSchema(ma.ModelSchema):
-    industry_3d = fields.Nested(
+    industries_3d = fields.Nested(
         'self', only=["id", "title"])
 
     class Meta:
@@ -70,7 +70,7 @@ class Industry3dModel(db.Model):
     annual_75 = db.Column(db.Integer)
     annual_90 = db.Column(db.Integer)
 
-    industries_4d = db.relationship('Industry4dModel', backref='industry_3d')
+    industries_4d = db.relationship('Industry4dModel', backref='industries_3d')
 
     def __init__(self, id, title, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90, description=''):
         self.id = id

@@ -46,7 +46,7 @@ class OccupationDetailedModel(db.Model):
 
 
 class OccupationDetailedSchema(ma.ModelSchema):
-    occupation_major = fields.Nested(
+    occupations_major = fields.Nested(
         'self', only=["id", "title"])
 
     class Meta:
@@ -74,7 +74,7 @@ class OccupationMajorModel(db.Model):
     annual_90 = db.Column(db.Integer)
 
     occupations_detailed = db.relationship(
-        'OccupationDetailedModel', backref='occupation_major')
+        'OccupationDetailedModel', backref='occupations_major')
 
     def __init__(self, id, title, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90, description=''):
         self.id = id

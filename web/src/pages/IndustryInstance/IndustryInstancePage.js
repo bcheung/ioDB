@@ -93,13 +93,7 @@ class IndustryInstancePage extends Component {
             return (
                 <Container>
                     <Col>
-                        <InstanceInfo
-                            title={industryData.title}
-                            idLabel="NAICS Code"
-                            id={industryData.id}
-                            totalEmployment={industryData.total_employment}
-                            description={industryData.description}
-                        />
+                        <InstanceInfo idLabel="NAICS Code" tablename={tablename} data={industryData} />
                         {isMajorModel[tablename] && industryData ? (
                             <SpecificInstanceList
                                 collapse={collapse}

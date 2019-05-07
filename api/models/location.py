@@ -45,7 +45,7 @@ class MetroAreaModel(db.Model):
 
 
 class MetroAreaSchema(ma.ModelSchema):
-    state = fields.Nested(
+    states = fields.Nested(
         'self', only=["id", "title"])
 
     class Meta:
@@ -73,7 +73,7 @@ class StateModel(db.Model):
     annual_90 = db.Column(db.Integer)
     total_population = db.Column(db.Integer)
 
-    metro_areas = db.relationship('MetroAreaModel', backref='state')
+    metro_areas = db.relationship('MetroAreaModel', backref='states')
 
     def __init__(self, id, state_symbol, title, total_employment, hourly_mean, hourly_10, hourly_25, hourly_median, hourly_75, hourly_90, annual_mean, annual_10, annual_25, annual_median, annual_75, annual_90, total_population=0):
         self.id = id
