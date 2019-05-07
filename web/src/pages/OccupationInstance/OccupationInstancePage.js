@@ -23,9 +23,7 @@ class OccupationInstancePage extends Component {
             occupationData: null,
             industryData: null,
             locationData: null,
-            isMapLoaded: false,
-            isDataLoaded: false,
-            collapse: false
+            isDataLoaded: false
         };
     }
 
@@ -49,7 +47,7 @@ class OccupationInstancePage extends Component {
             this.fetchData(tablename, id);
             return false;
         }
-        if (nextState.isDataLoaded || nextState.isMapLoaded) {
+        if (nextState.isDataLoaded !== this.state.isDataLoaded) {
             console.log('shouldComponentUpdate true', nextProps, nextState);
             return true;
         }
@@ -77,18 +75,13 @@ class OccupationInstancePage extends Component {
         });
     };
 
-    // Handles toggle button for collapsible detailed occupations list
-    toggle = () => {
-        this.setState(state => ({ collapse: !state.collapse }));
-    };
-
     // rendering components onto page:
     // Header, wage and salary table, choropleth map, top ten graph, and joined instance tables
     render() {
         console.log('render');
         const { match } = this.props;
         const { tablename, id } = match.params;
-        const { isDataLoaded, occupationData, locationData, industryData, collapse } = this.state;
+        const { isDataLoaded, occupationData, locationData, industryData } = this.state;
 
         return (
             <Container>
@@ -98,9 +91,7 @@ class OccupationInstancePage extends Component {
                             <InstanceInfo idLabel="Occupation Code" tablename={tablename} data={occupationData} />
                             {isMajorModel[tablename] && occupationData ? (
                                 <SpecificInstanceList
-                                    collapse={collapse}
                                     label="Show Specific Occupations List"
-                                    onClick={this.toggle}
                                     majorModel={tablename}
                                     data={occupationData.occupations_detailed}
                                 />

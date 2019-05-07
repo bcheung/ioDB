@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import {
     Container,
-    Button,
-    NavbarToggler,
-    Collapse,
-    NavbarBrand,
     Nav,
     Navbar,
     NavItem,
     NavLink,
-    Col
+    Col,
+    UncontrolledButtonDropdown,
+    UncontrolledCollapse,
+    DropdownToggle
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { getSpecificModel, getModelLabelPlural, getModelRoutes } from '../constants';
@@ -24,46 +23,37 @@ function renderInstanceLinks(detailedModel, data) {
     ));
 }
 
-const SpecificInstanceList = ({ majorModel, data, collapse, label, onClick }) => {
+const SpecificInstanceList = ({ majorModel, data, label }) => {
     const detailedModel = getSpecificModel[majorModel];
-    const detailedInstanceName = getModelLabelPlural[detailedModel];
+    const specificModelName = getModelLabelPlural[detailedModel];
     return (
         <div>
-            <Button color="primary" onClick={onClick} style={{ marginBottom: '1rem' }}>
-                {label}
-            </Button>
             <Container>
-                <br />
-                <Nav expand="md" sticky="side" className="shadow-sm py-0">
-                    <div className="sidebar-sticky">
-                        <Collapse isOpen={collapse}>
-                            <Navbar color="light" light expand="md">
-                                <Nav className="align-items-md-center">
-                                    <Col>
-                                        <p>{detailedInstanceName}:</p>
-                                        {renderInstanceLinks(detailedModel, data)}
-                                    </Col>
-                                </Nav>
-                            </Navbar>
-                        </Collapse>
-                    </div>
-                </Nav>
+                <UncontrolledButtonDropdown>
+                    <DropdownToggle id="toggler" style={{ marginBottom: '1rem' }} caret>
+                        {label}
+                    </DropdownToggle>
+                </UncontrolledButtonDropdown>
+                <UncontrolledCollapse toggler="#toggler">
+                    <Navbar color="light" light expand="md" className="sidebar-sticky">
+                        <Nav className="align-items-md-center">
+                            <Col>
+                                <p>{specificModelName}:</p>
+                                {renderInstanceLinks(detailedModel, data)}
+                            </Col>
+                        </Nav>
+                    </Navbar>
+                </UncontrolledCollapse>
             </Container>
         </div>
     );
-};
-
-const styles = {
-    containerStyle: {}
 };
 
 // Prop types validation
 SpecificInstanceList.propTypes = {
     majorModel: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
-    collapse: PropTypes.bool,
-    label: PropTypes.string,
-    onClick: PropTypes.func
+    label: PropTypes.string
 };
 
 export { SpecificInstanceList };

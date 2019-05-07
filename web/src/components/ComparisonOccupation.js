@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { Row, Col } from 'reactstrap';
 import { RoutingChoroplethMap } from './RoutingChoroplethMap';
 import { RoutingTopTenWidget } from './RoutingTopTenWidget';
@@ -106,5 +107,40 @@ class ComparisonOccupation extends Component {
         );
     }
 }
+
+// prop types validation
+ComparisonOccupation.propTypes = {
+    instance_1: PropTypes.shape({
+        data: PropTypes.objectOf(
+            PropTypes.oneOfType([
+                PropTypes.number,
+                PropTypes.string,
+                PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+                PropTypes.objectOf(PropTypes.string)
+            ])
+        ),
+        locationData: PropTypes.arrayOf(
+            PropTypes.objectOf(
+                PropTypes.oneOfType([
+                    PropTypes.number,
+                    PropTypes.string,
+                    PropTypes.arrayOf(PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))),
+                    PropTypes.objectOf(PropTypes.string)
+                ])
+            )
+        )
+    }),
+    instance_2: PropTypes.shape({
+        data: PropTypes.objectOf(
+            PropTypes.oneOfType([
+                PropTypes.number,
+                PropTypes.string,
+                PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
+                PropTypes.objectOf(PropTypes.string)
+            ])
+        )
+    }),
+    selectedModel: PropTypes.objectOf(PropTypes.string)
+};
 
 export default ComparisonOccupation;

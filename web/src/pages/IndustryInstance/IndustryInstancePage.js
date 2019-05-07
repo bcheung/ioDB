@@ -17,8 +17,7 @@ class IndustryInstancePage extends Component {
     state = {
         industryData: null,
         occupationData: null,
-        isDataLoaded: false,
-        collapse: false
+        isDataLoaded: false
     };
 
     componentDidMount() {
@@ -39,18 +38,13 @@ class IndustryInstancePage extends Component {
             this.fetchData(tablename, id);
             return false;
         }
-        if (nextState.isDataLoaded) {
+        if (nextState.isDataLoaded !== this.state.isDataLoaded) {
             console.log('shouldComponentUpdate true', nextProps, nextState);
             return true;
         }
         console.log('shouldComponentUpdate false', nextState);
         return false;
     }
-
-    // Handles toggle button for collapsible detailed occupations list
-    toggle = () => {
-        this.setState(state => ({ collapse: !state.collapse }));
-    };
 
     fetchData = async (tablename, id) => {
         console.log('fetchData', tablename, id);
@@ -96,9 +90,7 @@ class IndustryInstancePage extends Component {
                         <InstanceInfo idLabel="NAICS Code" tablename={tablename} data={industryData} />
                         {isMajorModel[tablename] && industryData ? (
                             <SpecificInstanceList
-                                collapse={collapse}
                                 label="Show Specific Industries List"
-                                onClick={this.toggle}
                                 majorModel={tablename}
                                 data={industryData.industries_4d}
                             />
