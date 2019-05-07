@@ -11,7 +11,7 @@ import CountryMap from '../CountryMap';
  *  1. Renders
  *  2. Given Null
  *  3. Given Non Null
- *' <DetailedInstanceList majorModel={tablename} data={industryData.industries_4d} />
+ *' <SpecificInstanceList majorModel={tablename} data={industryData.industries_4d} />
  */
 Enzyme.configure({ adapter: new Adapter() });
 // Before Each Test could fit in here and will give hardcoded data

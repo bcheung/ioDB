@@ -6,7 +6,7 @@ import './industry-instance-page.css';
 import { isMajorModel } from '../../constants';
 import {
     RoutingDataTable,
-    DetailedInstanceList,
+    SpecificInstanceList,
     RoutingTopTenWidget,
     WageSalaryTable,
     InstanceInfo,
@@ -70,7 +70,7 @@ class IndustryInstancePage extends Component {
         const { industryData } = this.state;
 
         if (industryData) {
-            return <DetailedInstanceList majorModel={tablename} data={industryData.industries_4d} />;
+            return <SpecificInstanceList majorModel={tablename} data={industryData.industries_4d} />;
         }
     };
 
@@ -101,7 +101,7 @@ class IndustryInstancePage extends Component {
                             description={industryData.description}
                         />
                         {isMajorModel[tablename] && industryData ? (
-                            <DetailedInstanceList
+                            <SpecificInstanceList
                                 collapse={collapse}
                                 label="Show Specific Industries List"
                                 onClick={this.toggle}

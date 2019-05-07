@@ -24,7 +24,7 @@ function renderInstanceLinks(detailedModel, data) {
     ));
 }
 
-const DetailedInstanceList = ({ majorModel, data, collapse, label, onClick }) => {
+const SpecificInstanceList = ({ majorModel, data, collapse, label, onClick }) => {
     const detailedModel = getSpecificModel[majorModel];
     const detailedInstanceName = getModelLabelPlural[detailedModel];
     return (
@@ -58,7 +58,7 @@ const styles = {
 };
 
 // Prop types validation
-DetailedInstanceList.propTypes = {
+SpecificInstanceList.propTypes = {
     majorModel: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
     collapse: PropTypes.bool,
@@ -66,4 +66,4 @@ DetailedInstanceList.propTypes = {
     onClick: PropTypes.func
 };
 
-export { DetailedInstanceList };
+export { SpecificInstanceList };

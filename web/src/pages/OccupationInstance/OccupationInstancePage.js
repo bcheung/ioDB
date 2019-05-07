@@ -5,7 +5,7 @@ import { fetchInstanceData, fetchJoinedInstanceData } from '../../fetchAPI';
 import './occupation-instance-page.css';
 import { isMajorModel } from '../../constants';
 import {
-    DetailedInstanceList,
+    SpecificInstanceList,
     RoutingTopTenWidget,
     WageSalaryTable,
     InstanceInfo,
@@ -89,21 +89,15 @@ class OccupationInstancePage extends Component {
         const { match } = this.props;
         const { tablename, id } = match.params;
         const { isDataLoaded, occupationData, locationData, industryData, collapse } = this.state;
-        console.log(this.mapContainer);
+
         return (
             <Container>
                 {isDataLoaded ? (
                     <div>
                         <Col>
-                            <InstanceInfo
-                                title={occupationData.title}
-                                idLabel="Occupation Code"
-                                id={occupationData.id}
-                                totalEmployment={occupationData.total_employment}
-                                description={occupationData.description}
-                            />
+                            <InstanceInfo idLabel="Occupation Code" tablename={tablename} data={occupationData} />
                             {isMajorModel[tablename] && occupationData ? (
-                                <DetailedInstanceList
+                                <SpecificInstanceList
                                     collapse={collapse}
                                     label="Show Specific Occupations List"
                                     onClick={this.toggle}

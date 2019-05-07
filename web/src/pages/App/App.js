@@ -15,7 +15,7 @@ import './App.css';
 class App extends Component {
     constructor(props) {
         super(props);
-
+        // for react table
         this.toggle = this.toggle.bind(this);
         this.state = {
             isOpen: false,
@@ -27,6 +27,7 @@ class App extends Component {
         this.setState({ selectedModel });
     };
 
+    // for react table
     toggle() {
         const { isOpen } = this.state;
         this.setState({ isOpen: !isOpen });

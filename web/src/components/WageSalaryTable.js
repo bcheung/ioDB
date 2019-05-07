@@ -49,7 +49,8 @@ WageSalaryTable.propTypes = {
         PropTypes.oneOfType([
             PropTypes.number,
             PropTypes.string,
-            PropTypes.arrayOf(PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])))
+            PropTypes.arrayOf(PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))),
+            PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
         ])
     )
 };

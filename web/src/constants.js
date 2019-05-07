@@ -181,6 +181,12 @@ export const isMajorModel = {
     metro_areas: false
 };
 
+export const getMajorModel = {
+    occupations_detailed: 'occupations_major',
+    industries_4d: 'industries_3d',
+    metro_areas: 'states'
+};
+
 export const getSpecificModel = {
     occupations_major: 'occupations_detailed',
     industries_3d: 'industries_4d',
