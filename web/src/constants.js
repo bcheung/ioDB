@@ -3,8 +3,8 @@ export const modelOptions = [
     { title: 'Specific Occupations', tablename: 'occupations_detailed', route: 'occupation' },
     { title: 'Major Industries', tablename: 'industries_3d', route: 'industry' },
     { title: 'Specific Industries', tablename: 'industries_4d', route: 'industry' },
-    { title: 'States', tablename: 'states', route: 'location' },
-    { title: 'Metropolitan Areas', tablename: 'metro_areas', route: 'location' }
+    { title: 'States', tablename: 'states', route: 'location' }
+    // { title: 'Metropolitan Areas', tablename: 'metro_areas', route: 'location' }
 ];
 
 export const getModelRoutes = {
@@ -32,6 +32,47 @@ export function getJoinedTablename(primaryTable, secondaryTable) {
     }
     return joinedPrimary + joinedSecondary;
 }
+
+// major and specific models
+export const isMajorModel = {
+    occupations_major: true,
+    occupations_detailed: false,
+    industries_3d: true,
+    industries_4d: false,
+    states: true,
+    metro_areas: false
+};
+
+export const getMajorModel = {
+    occupations_detailed: 'occupations_major',
+    industries_4d: 'industries_3d',
+    metro_areas: 'states'
+};
+
+export const getSpecificModel = {
+    occupations_major: 'occupations_detailed',
+    industries_3d: 'industries_4d',
+    states: 'metro_areas'
+};
+
+// label for models
+export const getModelLabelPlural = {
+    occupations_major: 'Major Occupations',
+    occupations_detailed: 'Specific Occupations',
+    industries_3d: 'Major Industries',
+    industries_4d: 'Specific Industries',
+    states: 'States',
+    metro_areas: 'Metropolitan Areas'
+};
+
+export const getModelLabelSingular = {
+    occupations_major: 'Major Occupation',
+    occupations_detailed: 'Specific Occupation',
+    industries_3d: 'Major Industry',
+    industries_4d: 'Specific Industry',
+    states: 'State',
+    metro_areas: 'Metropolitan Area'
+};
 
 // format wage and salary
 const wageFormatter = new Intl.NumberFormat('en-US', {
@@ -170,44 +211,3 @@ export const groupedStats = [
         options: salaryStats
     }
 ];
-
-// major and specific models
-export const isMajorModel = {
-    occupations_major: true,
-    occupations_detailed: false,
-    industries_3d: true,
-    industries_4d: false,
-    states: true,
-    metro_areas: false
-};
-
-export const getMajorModel = {
-    occupations_detailed: 'occupations_major',
-    industries_4d: 'industries_3d',
-    metro_areas: 'states'
-};
-
-export const getSpecificModel = {
-    occupations_major: 'occupations_detailed',
-    industries_3d: 'industries_4d',
-    states: 'metro_areas'
-};
-
-// label for models
-export const getModelLabelPlural = {
-    occupations_major: 'Major Occupations',
-    occupations_detailed: 'Specific Occupations',
-    industries_3d: 'Major Industries',
-    industries_4d: 'Specific Industries',
-    states: 'States',
-    metro_areas: 'Metropolitan Areas'
-};
-
-export const getModelLabelSingular = {
-    occupations_major: 'Major Occupation',
-    occupations_detailed: 'Specific Occupation',
-    industries_3d: 'Major Industry',
-    industries_4d: 'Specific Industry',
-    states: 'State',
-    metro_areas: 'Metropolitan Area'
-};
