@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Input, InputGroup, InputGroupAddon, Button, ButtonGroup } from 'reactstrap';
+import { PropTypes } from 'prop-types';
 import { FilterColumnComponent } from './FilterColumnComponent';
 
 function checkNull(filterValue) {
@@ -85,4 +86,12 @@ class AdvancedSearchFilter extends Component {
         );
     }
 }
+
+// prop types validation
+AdvancedSearchFilter.propTypes = {
+    id: PropTypes.string,
+    onChange: PropTypes.func,
+    label: PropTypes.string
+};
+
 export { AdvancedSearchFilter };
