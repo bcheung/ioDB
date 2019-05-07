@@ -1,44 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Row } from 'reactstrap';
 import PropTypes from 'prop-types';
 import BootstrapTable from 'react-bootstrap-table-next';
-import { formatSalary, formatWage } from '../constants';
+import { formatSalary, formatWage, wageSalaryTableColumns } from '../constants';
 
 function getTableData(data) {
     return {
         title: data.title,
         total_employment: data.total_employment,
-        columns: [
-            {
-                dataField: 'type',
-                text: 'Type'
-            },
-            {
-                dataField: 'mean',
-                text: 'Mean'
-            },
-
-            {
-                dataField: '10',
-                text: '10th Percentile'
-            },
-            {
-                dataField: '25',
-                text: '25th Percentile'
-            },
-            {
-                dataField: 'median',
-                text: 'Median'
-            },
-            {
-                dataField: '75',
-                text: '75th Percentile'
-            },
-            {
-                dataField: '90',
-                text: '90th Percentile'
-            }
-        ],
+        columns: wageSalaryTableColumns,
         rows: [
             {
                 type: 'Annual Salary',

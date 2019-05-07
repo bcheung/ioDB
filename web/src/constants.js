@@ -1,12 +1,10 @@
-export const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-
 export const modelOptions = [
+    { title: 'Major Occupations', tablename: 'occupations_major', route: 'occupation' },
+    { title: 'Specific Occupations', tablename: 'occupations_detailed', route: 'occupation' },
     { title: 'Major Industries', tablename: 'industries_3d', route: 'industry' },
     { title: 'Specific Industries', tablename: 'industries_4d', route: 'industry' },
     { title: 'States', tablename: 'states', route: 'location' },
-    { title: 'Metropolitan Areas', tablename: 'metro_areas', route: 'location' },
-    { title: 'Major Occupations', tablename: 'occupations_major', route: 'occupation' },
-    { title: 'Specific Occupations', tablename: 'occupations_detailed', route: 'occupation' }
+    { title: 'Metropolitan Areas', tablename: 'metro_areas', route: 'location' }
 ];
 
 export const getModelRoutes = {
@@ -35,41 +33,7 @@ export function getJoinedTablename(primaryTable, secondaryTable) {
     return joinedPrimary + joinedSecondary;
 }
 
-const joinedTablePrimaryKeys = {
-    ind_3d_occ_major: {
-        id_1: 'industry_3d_id',
-        id_2: 'occupation_major_id'
-    },
-    ind_4d_occ_major: {
-        id_1: 'industry_4d_id',
-        id_2: 'occupation_major_id'
-    },
-    ind_3d_occ_detailed: {
-        id_1: 'industry_3d_id',
-        id_2: 'occupation_detailed_id'
-    },
-    ind_4d_occ_detailed: {
-        id_1: 'industry_4d_id',
-        id_2: 'occupation_detailed_id'
-    },
-    state_occ_major: {
-        id_1: 'state_id',
-        id_2: 'occupation_major_id'
-    },
-    metro_area_occ_major: {
-        id_1: 'metro_area_id',
-        id_2: 'occupation_major_id'
-    },
-    state_occ_detailed: {
-        id_1: 'state_id',
-        id_2: 'occupation_detailed_id'
-    },
-    metro_area_occ_detailed: {
-        id_1: 'metro_area_id',
-        id_2: 'occupation_detailed_id'
-    }
-};
-
+// format wage and salary
 const wageFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD'
@@ -132,6 +96,49 @@ export const formatterType = {
     total_population: formatNum
 };
 
+export const wageSalaryTableColumns = [
+    {
+        dataField: 'type',
+        text: 'Type'
+    },
+    {
+        dataField: 'mean',
+        text: 'Mean'
+    },
+
+    {
+        dataField: '10',
+        text: '10th Percentile'
+    },
+    {
+        dataField: '25',
+        text: '25th Percentile'
+    },
+    {
+        dataField: 'median',
+        text: 'Median'
+    },
+    {
+        dataField: '75',
+        text: '75th Percentile'
+    },
+    {
+        dataField: '90',
+        text: '90th Percentile'
+    }
+];
+
+// graph type and label
+export const graphType = {
+    hourly_median: { label: 'Hourly Wage Median', graph: 'bar' },
+    hourly_mean: { label: 'Hourly Wage Mean', graph: 'bar' },
+    annual_median: { label: 'Annual Salary Median', graph: 'bar' },
+    annual_mean: { label: 'Annual Salary Mean', graph: 'bar' },
+    total_employment: { label: 'Employment', graph: 'pie' },
+    total_population: { label: 'Population', graph: 'pie' }
+};
+
+// stat labels and keys
 export const wageStats = [
     { label: 'Hourly Median', value: 'hourly_median' },
     { label: 'Hourly Mean', value: 'hourly_mean' }
@@ -164,15 +171,7 @@ export const groupedStats = [
     }
 ];
 
-export const graphType = {
-    hourly_median: { label: 'Hourly Wage Median', graph: 'bar' },
-    hourly_mean: { label: 'Hourly Wage Mean', graph: 'bar' },
-    annual_median: { label: 'Annual Salary Median', graph: 'bar' },
-    annual_mean: { label: 'Annual Salary Mean', graph: 'bar' },
-    total_employment: { label: 'Employment', graph: 'pie' },
-    total_population: { label: 'Population', graph: 'pie' }
-};
-
+// major and specific models
 export const isMajorModel = {
     occupations_major: true,
     occupations_detailed: false,
@@ -182,17 +181,27 @@ export const isMajorModel = {
     metro_areas: false
 };
 
-export const getDetailedModel = {
+export const getSpecificModel = {
     occupations_major: 'occupations_detailed',
     industries_3d: 'industries_4d',
     states: 'metro_areas'
 };
 
-export const getInstanceNames = {
+// label for models
+export const getModelLabelPlural = {
     occupations_major: 'Major Occupations',
     occupations_detailed: 'Specific Occupations',
     industries_3d: 'Major Industries',
     industries_4d: 'Specific Industries',
     states: 'States',
     metro_areas: 'Metropolitan Areas'
+};
+
+export const getModelLabelSingular = {
+    occupations_major: 'Major Occupation',
+    occupations_detailed: 'Specific Occupation',
+    industries_3d: 'Major Industry',
+    industries_4d: 'Specific Industry',
+    states: 'State',
+    metro_areas: 'Metropolitan Area'
 };

@@ -5,7 +5,6 @@ import './stylesheets/styles.css';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import { RoutingTopTenWidget, WageSalaryTable } from '.';
-// picture of flag?
 import { RoutingDataTable } from './RoutingDataTable';
 import { formatNum } from '../constants';
 

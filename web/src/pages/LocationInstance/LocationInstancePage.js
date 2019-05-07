@@ -20,61 +20,10 @@ class LocationInstancePage extends Component {
         };
     }
 
-    // componentDidMount() {
-    //     const { tablename, id } = this.props.match.params;
-    //     this.fetchData(tablename, id);
-    // }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log('shouldComponentUpdate LocationInstancePage', nextProps);
-        // if (
-        //     nextProps.match.params.tablename !== this.props.match.params.tablename ||
-        //     nextProps.match.params.id !== this.props.match.params.id
-        // ) {
-        //     // this.setState({ isDataLoaded: false });
-        //     console.log('shouldComponentUpdate true props', nextProps.match.params.id);
-        //     // const { tablename, id } = nextProps.match.params;
-        //     // this.fetchData(tablename, id);
-        //     return true;
-        // }
-        // if (nextState.showStateInfo !== this.state.showStateInfo || nextState.showMSAInfo !== this.state.showMSAInfo) {
-        //     // this.setState({ isDataLoaded: false });
-        //     console.log('shouldComponentUpdate true fetch state');
-        //     // const { tablename, id } = nextProps.match.params;
-        //     // this.fetchData(tablename, id);
-        //     return true;
-        // }
-        // // if (nextState.isDataLoaded) {
-        // //     console.log('shouldComponentUpdate true', nextProps, nextState);
-        // //     return true;
-        // // }
-        // // console.log('shouldComponentUpdate false', nextState);
-        // return false;
-        return true;
-    }
-
     handleStateClick = async geographyProps => {
         const stateInitial = geographyProps.HASC_1.substring(geographyProps.HASC_1.length - 2);
-        // await fetch(`${proxyurl}${urlNAME}`)
-        //   .then(response => response.json())
-        //   .then(data => {
-        //     console.log(data);
-        //     this.setState({ stateData: data });
-        //   });
-        // const response = await axios.get(`${url}`);
-
         const stateData = await fetchInstanceData('states', geographyProps.ID);
         const stateOccData = await fetchJoinedInstanceData('states', 'occupations_major', geographyProps.ID);
-
-        // const proxyurl = 'https://cors-anywhere.herokuapp.com/';
-        // const url = 'http://www.iodb.info/api/instance/states/'+geographyProps.ID;
-
-        // const response = await axios.get(`${url}`);
-        // const response = await axios.get(`${proxyurl}${url}`);
-        // const data = response.data;
-
-        // console.log(response);
-        // console.log(data);
 
         this.setState({
             state: {
@@ -100,8 +49,6 @@ class LocationInstancePage extends Component {
                 return null;
             }
 
-            // console.log(response);
-            // console.log(data);
             this.setState({
                 MSA: {
                     name: geographyProps.NAME,

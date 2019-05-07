@@ -12,7 +12,7 @@ import {
     Col
 } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { getDetailedModel, getInstanceNames, getModelRoutes } from '../constants';
+import { getSpecificModel, getModelLabelPlural, getModelRoutes } from '../constants';
 
 function renderInstanceLinks(detailedModel, data) {
     const route = getModelRoutes[detailedModel];
@@ -25,8 +25,8 @@ function renderInstanceLinks(detailedModel, data) {
 }
 
 const DetailedInstanceList = ({ majorModel, data, collapse, label, onClick }) => {
-    const detailedModel = getDetailedModel[majorModel];
-    const detailedInstanceName = getInstanceNames[detailedModel];
+    const detailedModel = getSpecificModel[majorModel];
+    const detailedInstanceName = getModelLabelPlural[detailedModel];
     return (
         <div>
             <Button color="primary" onClick={onClick} style={{ marginBottom: '1rem' }}>

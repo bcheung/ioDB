@@ -86,10 +86,12 @@ class ChoroplethMap extends Component {
         history.push(`/${route}/states/${geography.properties.ID}`);
     };
 
-    projection = () =>
-        geoTimes()
-            .translate([this.props.width / 2, this.props.height / 2])
+    projection = () => {
+        const { width, height } = this.props;
+        return geoTimes()
+            .translate([width / 2, height / 2])
             .scale(160);
+    };
 
     renderGeography = (projection, stateGeo, key, stateData) => {
         console.log('renderGeography');
@@ -150,8 +152,8 @@ class ChoroplethMap extends Component {
     };
 
     render() {
-        const { instanceTitle, width, height, data, history } = this.props;
-        const { zoom, center, statesData } = this.state;
+        const { instanceTitle, width, height, data } = this.props;
+        const { statesData } = this.state;
 
         console.log('choropleth props data', data);
         return (

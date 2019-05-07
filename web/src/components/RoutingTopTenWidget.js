@@ -11,7 +11,7 @@ import {
     graphType,
     popStats,
     getModelRoutes,
-    getInstanceNames,
+    getModelLabelPlural,
     formatterType
 } from '../constants';
 
@@ -192,9 +192,9 @@ class TopTenWidget extends Component {
         if (title) {
             header = title;
         } else if (secondaryTable) {
-            header = `Top 10 ${getInstanceNames[secondaryTable]} for ${instanceTitle}`;
+            header = `Top 10 ${getModelLabelPlural[secondaryTable]} for ${instanceTitle}`;
         } else {
-            header = `Top 10 ${getInstanceNames[primaryTable]}`;
+            header = `Top 10 ${getModelLabelPlural[primaryTable]}`;
         }
         return (
             <Container>
@@ -270,13 +270,6 @@ class TopTenWidget extends Component {
         );
     }
 }
-
-const styles = {
-    containerStyle: {
-        width: 250,
-        margin: 30
-    }
-};
 
 const RoutingTopTenWidget = withRouter(TopTenWidget);
 

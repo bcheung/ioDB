@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
-import { Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Row } from 'reactstrap';
-import { HashRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import { Navbar, NavbarBrand, Nav, NavItem, NavLink, Row } from 'reactstrap';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import HomePage from '../Home/HomePage';
 import AboutPage from '../About/AboutPage';
 import IndustryInstancePage from '../IndustryInstance/IndustryInstancePage';
 import OccupationInstancePage from '../OccupationInstance/OccupationInstancePage';
 import LocationInstancePage from '../LocationInstance/LocationInstancePage';
-import './App.css';
-import { RoutingSearchBar, RoutingTopTenWidget } from '../../components';
-import { modelOptions } from '../../constants';
-import TestPage from '../TestPage';
 import ComparisonPage from '../Comparison/ComparisonPage';
-import { RoutingComparisonBar } from '../../components/RoutingComparisonBar';
+// import TestPage from '../TestPage';
+import { RoutingSearchBar } from '../../components';
+import { modelOptions } from '../../constants';
+import './App.css';
 
 class App extends Component {
     constructor(props) {
@@ -20,8 +19,7 @@ class App extends Component {
         this.toggle = this.toggle.bind(this);
         this.state = {
             isOpen: false,
-            selectedModel: modelOptions[0],
-            isCompare: false
+            selectedModel: modelOptions[0]
         };
     }
 

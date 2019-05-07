@@ -7,6 +7,7 @@ import ComparisonOccupation from './ComparisonOccupation';
 import ComparisonLocation from './ComparisonLocation';
 import ComparisonIndustry from './ComparisonIndustry';
 import { LoadingComponent } from '.';
+import { getModelLabelSingular } from '../constants';
 
 class ComparisonBar extends Component {
     state = {
@@ -57,8 +58,9 @@ class ComparisonBar extends Component {
             isDataLoaded: false
         });
         const { tablename } = selectedModel;
+        const { setSelectedModel } = this.props;
         this.fetchInstances(tablename);
-        this.props.setSelectedModel(selectedModel);
+        setSelectedModel(selectedModel);
     };
 
     handleInstance1Change = selectedInstance_1 => {
@@ -116,36 +118,14 @@ class ComparisonBar extends Component {
         const { tablename } = selectedModel;
         if (tablename === 'occupations_major' || tablename === 'occupations_detailed') {
             return (
-                <ComparisonOccupation
-                    instance_1={instance_1}
-                    instance_2={instance_2}
-                    selectedInstance_1={selectedInstance_1}
-                    selectedInstance_2={selectedInstance_2}
-                    selectedModel={selectedModel}
-                />
+                <ComparisonOccupation instance_1={instance_1} instance_2={instance_2} selectedModel={selectedModel} />
             );
         }
         if (tablename === 'industries_3d' || tablename === 'industries_4d') {
-            return (
-                <ComparisonIndustry
-                    instance_1={instance_1}
-                    instance_2={instance_2}
-                    selectedInstance_1={selectedInstance_1}
-                    selectedInstance_2={selectedInstance_2}
-                    selectedModel={selectedModel}
-                />
-            );
+            return <ComparisonIndustry instance_1={instance_1} instance_2={instance_2} selectedModel={selectedModel} />;
         }
         if (tablename === 'states' || tablename === 'metro_areas') {
-            return (
-                <ComparisonLocation
-                    instance_1={instance_1}
-                    instance_2={instance_2}
-                    selectedInstance_1={selectedInstance_1}
-                    selectedInstance_2={selectedInstance_2}
-                    selectedModel={selectedModel}
-                />
-            );
+            return <ComparisonLocation instance_1={instance_1} instance_2={instance_2} selectedModel={selectedModel} />;
         }
     };
 
@@ -167,9 +147,20 @@ class ComparisonBar extends Component {
         const { modelOptions } = this.props;
         return (
             <div>
-                <Container style={styles.containerStyle}>
+                <Container>
                     <h1>Select two {selectedModel.title} to compare:</h1>
                     <Row>
+                        <Col md="3">
+                            <Select
+                                className="dropDown"
+                                options={modelOptions}
+                                value={selectedModel}
+                                onChange={this.handleModelChange}
+                                isSearchable={false}
+                                getOptionLabel={option => option.title}
+                                getOptionValue={option => option.tablename}
+                            />
+                        </Col>
                         <Col>
                             <Select
                                 className="dropDown"
@@ -178,7 +169,7 @@ class ComparisonBar extends Component {
                                 onChange={this.handleInstance1Change}
                                 getOptionLabel={option => option.title}
                                 getOptionValue={option => option.id}
-                                placeholder={`Search ${selectedModel.title}`}
+                                placeholder={`Select a ${getModelLabelSingular[selectedModel.tablename]}`}
                             />
                         </Col>
                         <Col>
@@ -189,18 +180,7 @@ class ComparisonBar extends Component {
                                 onChange={this.handleInstance2Change}
                                 getOptionLabel={option => option.title}
                                 getOptionValue={option => option.id}
-                                placeholder={`Search ${selectedModel.title}`}
-                            />
-                        </Col>
-                        <Col md="3">
-                            <Select
-                                className="dropDown"
-                                options={modelOptions}
-                                value={selectedModel}
-                                onChange={this.handleModelChange}
-                                isSearchable={false}
-                                getOptionLabel={option => option.title}
-                                getOptionValue={option => option.tablename}
+                                placeholder={`Select a ${getModelLabelSingular[selectedModel.tablename]}`}
                             />
                         </Col>
                         <Col md="1">
@@ -216,15 +196,6 @@ class ComparisonBar extends Component {
         );
     }
 }
-
-const styles = {
-    dropDown: {
-        width: 150
-    },
-    containerStyle: {
-        margin: 30
-    }
-};
 
 const RoutingComparisonBar = withRouter(ComparisonBar);
 export { RoutingComparisonBar };

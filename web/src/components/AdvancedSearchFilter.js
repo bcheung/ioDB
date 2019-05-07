@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import { Row, Col, Input, InputGroup, InputGroupAddon, Button, ButtonGroup } from 'reactstrap';
-import { FilterColumnComponent } from './FilterColumnComponent';
 
 function checkNull(filterValue) {
     if (filterValue.operator === '' && filterValue.value === '') {
@@ -17,10 +17,10 @@ class AdvancedSearchFilter extends Component {
         const { operator, value } = this.state;
         const newOperator = operator !== buttonID ? buttonID : '';
         this.setState({ operator: newOperator });
-        onChange(id, {
-            operator: newOperator,
-            value
-        });
+
+        const filterValue = checkNull({ operator: newOperator, value });
+
+        onChange(id, filterValue);
     };
 
     handleInputChange = event => {
@@ -29,18 +29,17 @@ class AdvancedSearchFilter extends Component {
         const { id, onChange } = this.props;
         const { operator } = this.state;
         this.setState({ value: newValue });
-        const filterValue = {
-            operator,
-            value: newValue
-        };
 
-        onChange(id, checkNull(filterValue));
+        const filterValue = checkNull({ operator, value: newValue });
+
+        onChange(id, filterValue);
     };
 
     clearFilter = () => {
         const { id, onChange } = this.props;
         const filterValue = { operator: '', value: '' };
         this.setState(filterValue);
+
         onChange(id, checkNull(filterValue));
     };
 
@@ -85,4 +84,12 @@ class AdvancedSearchFilter extends Component {
         );
     }
 }
+
+// Prop types validation
+AdvancedSearchFilter.propTypes = {
+    id: PropTypes.string,
+    label: PropTypes.string,
+    onChange: PropTypes.func
+};
+
 export { AdvancedSearchFilter };

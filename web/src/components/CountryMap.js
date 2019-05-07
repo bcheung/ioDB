@@ -133,10 +133,12 @@ class CountryMap extends Component {
         onMSAClick(geography.properties);
     };
 
-    projection = () =>
-        geoTimes()
-            .translate([this.props.width / 2, this.props.height / 2])
+    projection = () => {
+        const { width, height } = this.props;
+        return geoTimes()
+            .translate([width / 2, height / 2])
             .scale(160);
+    };
 
     render() {
         const { width, height, id, tablename, metroAreas } = this.props;
@@ -201,33 +203,33 @@ class CountryMap extends Component {
                                                     style={
                                                         detail && state.id === stateGeo.properties.ID
                                                             ? {
-                                                                default: {
-                                                                    fill: '#ECEFF1',
-                                                                    stroke: '#607D8B',
-                                                                    strokeWidth: 0.75,
-                                                                    outline: 'none'
-                                                                }
-                                                            }
+                                                                  default: {
+                                                                      fill: '#ECEFF1',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  }
+                                                              }
                                                             : {
-                                                                default: {
-                                                                    fill: '#ECEFF1',
-                                                                    stroke: '#607D8B',
-                                                                    strokeWidth: 0.75,
-                                                                    outline: 'none'
-                                                                },
-                                                                hover: {
-                                                                    fill: '#CFD8DC',
-                                                                    stroke: '#607D8B',
-                                                                    strokeWidth: 0.75,
-                                                                    outline: 'none'
-                                                                },
-                                                                pressed: {
-                                                                    fill: '#8294a5',
-                                                                    stroke: '#607D8B',
-                                                                    strokeWidth: 0.75,
-                                                                    outline: 'none'
-                                                                }
-                                                            }
+                                                                  default: {
+                                                                      fill: '#ECEFF1',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  },
+                                                                  hover: {
+                                                                      fill: '#CFD8DC',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  },
+                                                                  pressed: {
+                                                                      fill: '#8294a5',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  }
+                                                              }
                                                     }
                                                 />
                                             );
@@ -259,33 +261,33 @@ class CountryMap extends Component {
                                                     style={
                                                         detail && state.id === stateGeo.properties.ID
                                                             ? {
-                                                                default: {
-                                                                    fill: '#ECEFF1',
-                                                                    stroke: '#607D8B',
-                                                                    strokeWidth: 0.75,
-                                                                    outline: 'none'
-                                                                }
-                                                            }
+                                                                  default: {
+                                                                      fill: '#ECEFF1',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  }
+                                                              }
                                                             : {
-                                                                default: {
-                                                                    fill: '#ECEFF1',
-                                                                    stroke: '#607D8B',
-                                                                    strokeWidth: 0.75,
-                                                                    outline: 'none'
-                                                                },
-                                                                hover: {
-                                                                    fill: '#CFD8DC',
-                                                                    stroke: '#607D8B',
-                                                                    strokeWidth: 0.75,
-                                                                    outline: 'none'
-                                                                },
-                                                                pressed: {
-                                                                    fill: '#8294a5',
-                                                                    stroke: '#607D8B',
-                                                                    strokeWidth: 0.75,
-                                                                    outline: 'none'
-                                                                }
-                                                            }
+                                                                  default: {
+                                                                      fill: '#ECEFF1',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  },
+                                                                  hover: {
+                                                                      fill: '#CFD8DC',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  },
+                                                                  pressed: {
+                                                                      fill: '#8294a5',
+                                                                      stroke: '#607D8B',
+                                                                      strokeWidth: 0.75,
+                                                                      outline: 'none'
+                                                                  }
+                                                              }
                                                     }
                                                 />
                                             );

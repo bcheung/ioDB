@@ -163,13 +163,6 @@ class TopTenWidget extends Component {
     }
 }
 
-const styles = {
-    containerStyle: {
-        width: 250,
-        margin: 30
-    }
-};
-
 // Prop types validation
 TopTenWidget.propTypes = {
     primaryTable: PropTypes.string,

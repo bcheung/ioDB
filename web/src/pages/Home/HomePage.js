@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import { PropTypes } from 'prop-types';
 import { RoutingTopTenWidget } from '../../components/RoutingTopTenWidget';
-import { getInstanceNames } from '../../constants';
+import { getModelLabelPlural } from '../../constants';
 
 class HomePage extends Component {
     render() {
         const { tablename } = this.props;
-        const instanceName = getInstanceNames[tablename];
+        const instanceName = getModelLabelPlural[tablename];
         return <Container>{<RoutingTopTenWidget primaryTable={tablename} />}</Container>;
     }
 }

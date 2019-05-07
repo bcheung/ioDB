@@ -4,11 +4,6 @@ import {
     Card,
     CardImg,
     CardText,
-    CardBody,
-    CardTitle,
-    Button,
-    Row,
-    Col,
     Container,
     CardDeck,
     CardHeader,
@@ -87,7 +82,7 @@ const contributorInfo = {
             'Create 3 static web pages for 3 different industry instances and deploy onto GCP. Worked on Industry instance page and chart components. Researched React-ChartJS-2 and Reactstrap UI libraries. Verified REST API documentation. Created Testing Plan for Phase 3'
     }
 };
-const contributorStats = {
+const defContributorStats = {
     CooperTravis: {
         commits: 0,
         issues: 0,
@@ -122,7 +117,7 @@ const contributorStats = {
 
 class AboutPage extends Component {
     state = {
-        contributorStats,
+        contributorStats: defContributorStats,
         issuesTotal: 0,
         commitsTotal: 0,
         unitTestsTotal: 0
@@ -167,7 +162,7 @@ class AboutPage extends Component {
                 // for each element in array (contributor is the variable for the element)
                 // do something
                 const username = contributor.author.login;
-                contributorStats[username].commits = contributor.total;
+                defContributorStats[username].commits = contributor.total;
                 commitsTotal += contributor.total;
             });
 
@@ -186,7 +181,7 @@ class AboutPage extends Component {
             console.log('fetchIssues', data);
             data.forEach(issue => {
                 const username = issue.user.login;
-                contributorStats[username].issues++;
+                defContributorStats[username].issues++;
                 issuesTotal++;
             });
 
@@ -200,13 +195,13 @@ class AboutPage extends Component {
         this.fetchIssues();
         this.fetchCommits();
         this.calculateUnitTests();
-        this.setState({ contributorStats });
+        this.setState({ contributorStats: defContributorStats });
     }
 
     calculateUnitTests() {
         let unitTestsTotal = 0;
         this.contributorKeys.forEach(username => {
-            unitTestsTotal += contributorStats[username].unitTests;
+            unitTestsTotal += defContributorStats[username].unitTests;
         });
         this.setState({ unitTestsTotal });
     }

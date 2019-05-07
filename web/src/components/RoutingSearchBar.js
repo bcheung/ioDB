@@ -24,6 +24,7 @@ const styles = {
         margin: 30
     }
 };
+
 class SearchBar extends Component {
     state = {
         instanceOptions: [],
@@ -101,32 +102,14 @@ class SearchBar extends Component {
         });
     }
 
-    // appendFilter() {
-    //     const newFilter = `filter-${this.state.filters.length}`;
-    //     this.setState(prevState => ({
-    //         filters: prevState.filters.concat([newFilter])
-    //     }));
-    // }
-
     render() {
-        const { instanceOptions, selectedInstance, selectedModel, filters, filteredData } = this.state;
+        const { instanceOptions, selectedInstance, selectedModel, filteredData } = this.state;
         const { modelOptions } = this.props;
         console.log('modelOptions', modelOptions);
         return (
             <Container>
                 <Container style={styles.containerStyle}>
                     <Row>
-                        <Col>
-                            <Select
-                                className="dropDown"
-                                options={instanceOptions}
-                                value={selectedInstance}
-                                onChange={this.handleInstanceChange}
-                                getOptionLabel={option => option.title}
-                                getOptionValue={option => option.id}
-                                placeholder={`Search ${selectedModel.title}`}
-                            />
-                        </Col>
                         <Col md="3">
                             <Select
                                 className="dropDown"
@@ -136,6 +119,17 @@ class SearchBar extends Component {
                                 isSearchable={false}
                                 getOptionLabel={option => option.title}
                                 getOptionValue={option => option.tablename}
+                            />
+                        </Col>
+                        <Col>
+                            <Select
+                                className="dropDown"
+                                options={instanceOptions}
+                                value={selectedInstance}
+                                onChange={this.handleInstanceChange}
+                                getOptionLabel={option => option.title}
+                                getOptionValue={option => option.id}
+                                placeholder={`Search ${selectedModel.title}`}
                             />
                         </Col>
                         <Col md="0.5">

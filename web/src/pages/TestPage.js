@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
-import 'react-table/react-table.css';
 import { fetchInstanceData, fetchJoinedTopTenData, fetchJoinedInstanceData, fetchFilteredResults } from '../fetchAPI';
 import { RoutingTopTenWidget } from '../components/RoutingTopTenWidget';
 import { stats } from '../constants';

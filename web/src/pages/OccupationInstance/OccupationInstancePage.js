@@ -57,43 +57,6 @@ class OccupationInstancePage extends Component {
         return false;
     }
 
-    // Finding the maximum loc_quotient value for this locationData set
-    getMaxLocQuotient = locationData => {
-        let maxLocQuotient = 0;
-        console.log('locationData array quotient calculation', locationData);
-        locationData.forEach(stateData => {
-            if (stateData.loc_quotient > maxLocQuotient) {
-                maxLocQuotient = stateData.loc_quotient;
-            }
-        });
-        return maxLocQuotient;
-    };
-
-    // using locationData passed in from api fetch request to color choropleth map
-    createHeatMapping = locationData => {
-        // For use to calculate state fill shade color
-        const expression = ['match', ['get', 'STATE_ID']];
-
-        // Maximum location quotient
-        const maxLocQuotient = this.getMaxLocQuotient(locationData);
-        // Calculate color
-        locationData.forEach(stateData => {
-            if (stateData.loc_quotient === -1.0) {
-                // grey color if no location quotient for state
-                const color = `rgba(${102}, ${102}, ${121}, 0.75)`;
-                expression.push(stateData.states.id, color);
-            } else {
-                const green = 255 - (stateData.loc_quotient / maxLocQuotient) * 255;
-                const color = `rgba(${255}, ${green}, ${132}, 0.75)`;
-                expression.push(stateData.states.id, color);
-            }
-        });
-        // Last value is the default
-        expression.push('rgba(0,0,0,0)');
-
-        return expression;
-    };
-
     // fetching the occupation, industry, and location data from the api using
     // the specific tablename and id passed in through props
     fetchData = async (tablename, id) => {
@@ -120,7 +83,7 @@ class OccupationInstancePage extends Component {
     };
 
     // rendering components onto page:
-    // Header, wage and salary table, choropleth map, circle graph, and table
+    // Header, wage and salary table, choropleth map, top ten graph, and joined instance tables
     render() {
         console.log('render');
         const { match } = this.props;

@@ -2,16 +2,15 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Row } from 'reactstrap';
 import PropTypes from 'prop-types';
+import 'react-table/react-table.css';
 import ReactTable from 'react-table';
 import matchSorter from 'match-sorter';
 import {
-    stats,
     getModelRoutes,
-    getInstanceNames,
+    getModelLabelPlural,
     wageStats,
     salaryStats,
     employmentStats,
-    popStats,
     formatterType
 } from '../constants';
 import { ExpandDataTable } from './ExpandDataTable';
@@ -38,7 +37,7 @@ function filterNum(filter, row) {
 function createColumns(joined, routingTable, population) {
     const columns = [
         {
-            Header: getInstanceNames[routingTable],
+            Header: getModelLabelPlural[routingTable],
             columns: [
                 {
                     id: 'id', // Required because our accessor is not a string
@@ -133,9 +132,9 @@ const DataTable = props => {
     if (title) {
         header = title;
     } else if (routingTable) {
-        header = `Other ${getInstanceNames[routingTable]} for ${instanceTitle}`;
+        header = `Other ${getModelLabelPlural[routingTable]} for ${instanceTitle}`;
     } else {
-        header = `${getInstanceNames[primaryTable]}`;
+        header = `${getModelLabelPlural[primaryTable]}`;
     }
     return (
         <div style={{ padding: '1em' }}>
